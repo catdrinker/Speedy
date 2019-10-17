@@ -1,2 +1,2 @@
-include ':app', ':lib', ':annotation'
+include ':app', ':lib', ':annotation', ':processor'
 rootProject.name='Speedy'
