@@ -23,7 +23,6 @@ bin
 gen
 build
 out
-lib
 
 target
 pom.xml.*
