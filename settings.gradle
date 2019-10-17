@@ -1,0 +1,2 @@
+include ':app', ':lib', ':annotation'
+rootProject.name='Speedy'
