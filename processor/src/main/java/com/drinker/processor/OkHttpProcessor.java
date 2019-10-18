@@ -38,27 +38,27 @@ public class OkHttpProcessor extends AbstractProcessor {
         filer = processingEnv.getFiler();
         elements = processingEnv.getElementUtils();
         messager = processingEnv.getMessager();
-        messager.printMessage(Diagnostic.Kind.ERROR, "hehehehehehehe ----- ");
+        messager.printMessage(Diagnostic.Kind.WARNING, "hehehehehehehe ----- ");
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        /*Set<? extends Element> getElement = roundEnv.getElementsAnnotatedWith(Get.class);
+        Set<? extends Element> getElement = roundEnv.getElementsAnnotatedWith(Get.class);
         Set<? extends Element> postElement = roundEnv.getElementsAnnotatedWith(Post.class);
 
         for (Element element : getElement) {
             ExecutableElement executableElement = (ExecutableElement) element;
             TypeElement typeElement = (TypeElement) executableElement.getEnclosingElement();
             String string = typeElement.getQualifiedName().toString();
-            messager.printMessage(Diagnostic.Kind.ERROR, "element " + element + " tpye element " + typeElement + " " + string);
+            messager.printMessage(Diagnostic.Kind.WARNING, "element " + element + " tpye element " + typeElement + " " + string);
         }
 
         for (Element element : postElement) {
             ExecutableElement executableElement = (ExecutableElement) element;
             TypeElement typeElement = (TypeElement) executableElement.getEnclosingElement();
             String string = typeElement.getQualifiedName().toString();
-            messager.printMessage(Diagnostic.Kind.ERROR, "element " + element + " tpye element " + typeElement + " " + string);
-        }*/
+            messager.printMessage(Diagnostic.Kind.WARNING, "element " + element + " tpye element " + typeElement + " " + string);
+        }
         return false;
     }
 
