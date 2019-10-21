@@ -31,7 +31,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class ServiceHandler {
+class ServiceHandler {
     private Set<? extends Element> serviceElements;
     private Elements elements;
     private Messager messager;
@@ -44,22 +44,17 @@ public class ServiceHandler {
         this.filer = filer;
     }
 
-    protected void process() {
-
+    void process() {
         for (Element serviceElement : serviceElements) {
             String packageName = elements.getPackageOf(serviceElement).getQualifiedName().toString();
             TypeElement element = (TypeElement) serviceElement;
             List<? extends Element> enclosedElements = element.getEnclosedElements();
             // TODO 获取到对应service, 准备开始写文件
-            /**
-             * 准备一个classType
-             */
             TypeSpec.Builder classBuilder = TypeSpec.classBuilder(element.getSimpleName().toString() + "_impl");
             for (Element enclosedElement : enclosedElements) {
                 if (enclosedElement instanceof ExecutableElement) {
                     ExecutableElement executableElement = (ExecutableElement) enclosedElement;
                     messager.printMessage(Diagnostic.Kind.WARNING, "element" + element + "enclose" + enclosedElement);
-
 
                     List<? extends VariableElement> parameters = executableElement.getParameters();
                     // 解析对应的get method
@@ -101,7 +96,7 @@ public class ServiceHandler {
                                 .addCode("$T request = new $T.Builder()\n", Request.class, Request.class)
                                 .addCode(".url($S)\n", postAnnotation.url())
                                 .addCode(".post(formBody)\n")
-                                .addStatement(".build()\n")
+                                .addCode(".build();\n")
                                 .addCode("")
                                 .addStatement("return client.newCall(request)")
                                 .returns(ClassName.get("okhttp3", "Call"))
@@ -126,7 +121,7 @@ public class ServiceHandler {
                     .build();
 
             /**
-             * 尝试write
+             * write to android default build directory
              */
             try {
                 javaFile.writeTo(filer);
