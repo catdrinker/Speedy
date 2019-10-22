@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         val speedy = Speedy.Builder()
-            .baseUrl(BaseUrl.get("http://www.google.com"))
+            .baseUrl(BaseHttpUrl.get("http://www.google.com"))
             .callFactory(client)
             .build()
 
@@ -38,11 +38,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val inputStream = response.body()?.byteStream()
-                inputStream?.let {
-                    val byteArray = ByteArray(1024)
-
-                }
+                Log.i(
+                    "MainActivity",
+                    "call" + call.isCanceled + call.cancel() + response.isSuccessful
+                )
             }
         })
 

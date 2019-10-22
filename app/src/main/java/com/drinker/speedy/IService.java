@@ -10,10 +10,10 @@ import okhttp3.Call;
 @Service
 public interface IService {
 
-    @Get(url = "http://www.baidu.com")
+    @Get(url = "/user/login")
     Call getLogin(@Param("first") String firstParam, @Param("second") String secondParam);
 
 
-    @Post(url = "https://www.google.com")
+    @Post(url = "/user/sign_up")
     Call getSign(@Param("key") String keyParam, @Param("value") String valueParam);
 }

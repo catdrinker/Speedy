@@ -21,11 +21,13 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
+import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -72,7 +74,7 @@ class ServiceHandler {
                         MethodSpec methodSpec = MethodSpec.overriding(executableElement)
                                 .addCode("$T request = new $T.Builder()", Request.class, Request.class)
                                 .addCode(".get()\n")
-                                .addCode(".url($S)\n", getAnnotation.url())
+                                .addCode(".url(baseHttpUrl+$S)\n", getAnnotation.url())
                                 .addStatement(".build()")
                                 .addStatement("return client.newCall(request)")
                                 .returns(ClassName.get("okhttp3", "Call"))
@@ -91,10 +93,9 @@ class ServiceHandler {
                         }
                         methodSpecBuilder.addCode(".build()");
 
-
                         MethodSpec methodSpec = methodSpecBuilder.addStatement("")
                                 .addCode("$T request = new $T.Builder()\n", Request.class, Request.class)
-                                .addCode(".url($S)\n", postAnnotation.url())
+                                .addCode(".url(baseHttpUrl+$S)\n", postAnnotation.url())
                                 .addCode(".post(formBody)\n")
                                 .addCode(".build();\n")
                                 .addCode("")
@@ -107,13 +108,27 @@ class ServiceHandler {
                 }
             }
 
-            FieldSpec clientFiledSpec = FieldSpec.builder(OkHttpClient.class, "client")
-                    .initializer("new OkHttpClient()")
+            FieldSpec clientFiled = FieldSpec.builder(Call.Factory.class, "client")
+                    .addModifiers(Modifier.PRIVATE)
                     .build();
 
+            FieldSpec baseHttpUrlField = FieldSpec.builder(String.class, "baseHttpUrl")
+                    .addModifiers(Modifier.PRIVATE)
+                    .build();
+
+            // 添加构造函数
+            MethodSpec constructor = MethodSpec.constructorBuilder()
+                    .addModifiers(Modifier.PUBLIC)
+                    .addParameter(Call.Factory.class, "client")
+                    .addParameter(String.class, "baseHttpUrl")
+                    .addStatement("this.client = client")
+                    .addStatement("this.baseHttpUrl = baseHttpUrl")
+                    .build();
 
             TypeSpec typeSpec = classBuilder.addSuperinterface(ClassName.get(packageName, serviceElement.getSimpleName().toString()))
-                    .addField(clientFiledSpec)
+                    .addField(clientFiled)
+                    .addField(baseHttpUrlField)
+                    .addMethod(constructor)
                     .build();
 
             JavaFile javaFile = JavaFile.builder(packageName, typeSpec)
