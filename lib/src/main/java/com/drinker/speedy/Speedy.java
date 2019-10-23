@@ -9,8 +9,8 @@ import okhttp3.OkHttpClient;
 
 public class Speedy {
 
-    final Call.Factory callFactory;
-    final BaseHttpUrl baseHttpUrl;
+    private final Call.Factory callFactory;
+    private final BaseHttpUrl baseHttpUrl;
 
     public Speedy(Builder builder) {
         callFactory = builder.callFactory;
@@ -25,18 +25,12 @@ public class Speedy {
         String implName = name + "_impl";
         try {
             Class<?> implService = Class.forName(implName);
-            System.out.println("implservice " + implService);
-
             Constructor<?>[] constructors = implService.getConstructors();
             if(constructors.length != 1) return null;
-
-            // TODO 这里直接获取构造函数一直出错,先采用这种方式
-            Constructor c = constructors[0];
-            System.out.println("implservice c is "+c);
-//            Constructor<?> serviceConstructor = implService.getConstructor(okhttp3.Call.class, String.class);
-            Object newInstance = c.newInstance(callFactory, baseHttpUrl.baseUrl);
+            Constructor<?> serviceConstructor = implService.getConstructor(okhttp3.Call.Factory.class, String.class);
+            Object newInstance = serviceConstructor.newInstance(callFactory, baseHttpUrl.baseUrl);
             return (T) newInstance;
-        } catch (InstantiationException | InvocationTargetException | IllegalAccessException | ClassNotFoundException e) {
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException e) {
             throw new InitSpeedyFailException("can't init service cause " + e);
         }
     }
