@@ -12,7 +12,7 @@ public class Speedy {
     private final Call.Factory callFactory;
     private final BaseHttpUrl baseHttpUrl;
 
-    public Speedy(Builder builder) {
+    private Speedy(Builder builder) {
         callFactory = builder.callFactory;
         baseHttpUrl = builder.baseHttpUrl;
     }
