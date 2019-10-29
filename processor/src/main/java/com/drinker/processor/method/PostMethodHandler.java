@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 import okhttp3.FormBody;
@@ -34,7 +35,7 @@ public class PostMethodHandler implements IHttpMethodHandler {
 
             return methodSpecBuilder.addStatement("")
                     .addCode("$T request = new $T.Builder()\n", Request.class, Request.class)
-                    .addCode(".url(baseHttpUrl+$S)\n", postAnnotation.url())
+                    .addCode(".url(baseHttpUrl+$S)\n", postAnnotation.value())
                     .addCode(".post(formBody)\n")
                     .addCode(".build();\n")
                     .addCode("")

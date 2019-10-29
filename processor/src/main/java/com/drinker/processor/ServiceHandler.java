@@ -3,6 +3,7 @@ package com.drinker.processor;
 import com.drinker.processor.method.GetMethodHandler;
 import com.drinker.processor.method.IHttpMethodHandler;
 import com.drinker.processor.method.PostMethodHandler;
+import com.drinker.processor.method.PutMethodHandler;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -99,6 +100,7 @@ class ServiceHandler {
         List<IHttpMethodHandler> handlers = new ArrayList<>();
         handlers.add(new GetMethodHandler());
         handlers.add(new PostMethodHandler());
+        handlers.add(new PutMethodHandler());
 
         for (IHttpMethodHandler handler : handlers) {
             MethodSpec methodSpec = handler.process(element, parameters, messager);

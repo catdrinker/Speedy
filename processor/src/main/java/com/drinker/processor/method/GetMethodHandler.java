@@ -24,7 +24,7 @@ public class GetMethodHandler implements IHttpMethodHandler {
             return MethodSpec.overriding(executableElement)
                     .addCode("$T request = new $T.Builder()", Request.class, Request.class)
                     .addCode(".get()\n")
-                    .addCode(".url(baseHttpUrl+$S)\n", getAnnotation.url())
+                    .addCode(".url(baseHttpUrl+$S)\n", getAnnotation.value())
                     .addStatement(".build()")
                     .addStatement("return client.newCall(request)")
                     .returns(ClassName.get("okhttp3", "Call"))
