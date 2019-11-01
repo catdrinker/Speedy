@@ -1,5 +1,6 @@
 package com.drinker.processor;
 
+import com.drinker.processor.method.DeleteMethod;
 import com.drinker.processor.method.GetMethodHandler;
 import com.drinker.processor.method.IHttpMethodHandler;
 import com.drinker.processor.method.PostMethodHandler;
@@ -101,6 +102,7 @@ class ServiceHandler {
         handlers.add(new GetMethodHandler());
         handlers.add(new PostMethodHandler());
         handlers.add(new PutMethodHandler());
+        handlers.add(new DeleteMethod());
 
         for (IHttpMethodHandler handler : handlers) {
             MethodSpec methodSpec = handler.process(element, parameters, messager);
