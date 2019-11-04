@@ -1,5 +1,7 @@
 package com.drinker.speedy;
 
+import android.service.autofill.UserData;
+
 import com.drinker.annotation.Body;
 import com.drinker.annotation.Delete;
 import com.drinker.annotation.Get;
@@ -19,7 +21,7 @@ public interface IService {
 
 
     @Post("/user/sign_up")
-    Call getSign(@Param("key") String keyParam, @Param("value") String valueParam);
+    com.drinker.speedy.Call<UserData> getSign(@Param("key") String keyParam, @Param("value") String valueParam);
 
     @Put("/user/sign")
     Call get(@Body RequestBody body);
@@ -28,5 +30,5 @@ public interface IService {
     Call deleteJsp();
 
     @Delete("/user/deleteBody")
-    Call deleteBody(@Body RequestBody body);
+    com.drinker.speedy.Call<UserData> deleteBody(@Body RequestBody body);
 }

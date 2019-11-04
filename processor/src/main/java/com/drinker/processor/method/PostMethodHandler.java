@@ -4,13 +4,13 @@ import com.drinker.annotation.Param;
 import com.drinker.annotation.Post;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
 
 import java.util.List;
 
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 import okhttp3.FormBody;
@@ -33,13 +33,17 @@ public class PostMethodHandler implements IHttpMethodHandler {
             }
             methodSpecBuilder.addCode(".build()");
 
+//            return new WrapperCall<>(responseBodyConverter, newCall, client, request);
+
+            // TODO
             return methodSpecBuilder.addStatement("")
                     .addCode("$T request = new $T.Builder()\n", Request.class, Request.class)
                     .addCode(".url(baseHttpUrl+$S)\n", postAnnotation.value())
                     .addCode(".post(formBody)\n")
                     .addCode(".build();\n")
                     .addCode("")
-                    .addStatement("return client.newCall(request)")
+                    .addStatement("okhttp3.Call newCall = client.newCall(request)")
+                    .addStatement("return new WrapperCall<>(responseBodyConverter, newCall, client, request)")
                     .returns(ClassName.get("okhttp3", "Call"))
                     .build();
         }
