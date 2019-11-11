@@ -10,25 +10,23 @@ import com.drinker.annotation.Post;
 import com.drinker.annotation.Put;
 import com.drinker.annotation.Service;
 
-import okhttp3.Call;
 import okhttp3.RequestBody;
 
 @Service
 public interface IService {
 
     @Get("/home/login?name={source}&pwd={pwd}")
-    Call getLogin(@Param("first") String firstParam, @Param("second") String secondParam);
-
+    Call<Home> getLogin(@Param("first") String firstParam, @Param("second") String secondParam);
 
     @Post("/user/sign_up")
-    com.drinker.speedy.Call<UserData> getSign(@Param("key") String keyParam, @Param("value") String valueParam);
+    Call<Home> getSign(@Param("key") String keyParam, @Param("value") String valueParam);
 
     @Put("/user/sign")
-    Call get(@Body RequestBody body);
+    Call<Home> get(@Body RequestBody body);
 
     @Delete("/user/index.jsp")
-    Call deleteJsp();
+    Call<Home> deleteJsp();
 
     @Delete("/user/deleteBody")
-    com.drinker.speedy.Call<UserData> deleteBody(@Body RequestBody body);
+    Call<Home> deleteBody(@Body RequestBody body);
 }

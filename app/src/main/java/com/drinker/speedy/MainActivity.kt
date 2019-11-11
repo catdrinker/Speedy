@@ -2,12 +2,8 @@ package com.drinker.speedy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import okhttp3.Call
-import okhttp3.Callback
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -35,18 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         btn.setOnClickListener {
             val loginCall = service.getLogin("loginwithme", "ph124356")
-            loginCall.enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    Log.e("MainActivity", "fail call" + call.isCanceled + call + e)
+            loginCall.enqueue(object : com.drinker.speedy.Callback<Home> {
+                override fun onResponse(call: com.drinker.speedy.Call<Home>?, response: Home?) {
                 }
 
-                override fun onResponse(call: Call, response: Response) {
-                    Log.e(
-                        "MainActivity",
-                        "call" + call.isCanceled + call.cancel() + response.isSuccessful
-                    )
-
-                    Log.i("MainActivity", "response $response")
+                override fun onFailure(call: com.drinker.speedy.Call<Home>?, e: IOException?) {
                 }
             })
         }

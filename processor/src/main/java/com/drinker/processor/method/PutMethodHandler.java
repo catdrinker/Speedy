@@ -2,8 +2,8 @@ package com.drinker.processor.method;
 
 import com.drinker.annotation.Body;
 import com.drinker.annotation.Put;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
 
 import java.util.List;
 
@@ -12,7 +12,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-import okhttp3.Request;
+import static com.drinker.processor.OkHttpClassName.REQUEST;
+import static com.drinker.processor.OkHttpClassName.REQUEST_BODY_BUILDER;
 
 public class PutMethodHandler implements IHttpMethodHandler {
     @Override
@@ -32,14 +33,16 @@ public class PutMethodHandler implements IHttpMethodHandler {
             if (!"okhttp3.RequestBody".equals(typeMirror.toString())) {
                 throw new IllegalArgumentException("put param must be okhttp3.RequestBody");
             }
+            TypeMirror returnType = executableElement.getReturnType();
             return MethodSpec.overriding(executableElement)
-                    .addCode("$T request = new $T.Builder()\n", Request.class, Request.class)
+                    .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
                     .addCode(".url(baseHttpUrl+$S)\n", putAnnotation.value())
                     .addCode(".put(" + simpleName + ")\n")
                     .addCode(".build();\n")
                     .addCode("")
-                    .addStatement("return client.newCall(request)")
-                    .returns(ClassName.get("okhttp3", "Call"))
+                    .addStatement("okhttp3.Call newCall = client.newCall(request)")
+                    .addStatement("return new WrapperCall<>(respConverter, newCall, client, request)")
+                    .returns(TypeName.get(returnType))
                     .build();
         }
         return null;

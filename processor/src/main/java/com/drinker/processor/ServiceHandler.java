@@ -26,24 +26,15 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
-import okhttp3.Call;
+import static com.drinker.processor.OkHttpClassName.CALL_FACTORY;
+import static com.drinker.processor.OkHttpClassName.CONVERTER;
 
-class ServiceHandler {
-    private Set<? extends Element> serviceElements;
-    private Elements elements;
-    private Messager messager;
-    private Filer filer;
+class ServiceHandler implements ProcessHandler {
 
     private final static String IMPL = "_impl";
 
-    ServiceHandler(Set<? extends Element> serviceElements, Elements elements, Messager messager, Filer filer) {
-        this.serviceElements = serviceElements;
-        this.messager = messager;
-        this.elements = elements;
-        this.filer = filer;
-    }
-
-    void process() {
+    @Override
+    public void process(Set<? extends Element> serviceElements, Elements elements, Messager messager, Filer filer) {
         for (Element serviceElement : serviceElements) {
             String packageName = elements.getPackageOf(serviceElement).getQualifiedName().toString();
             TypeElement element = (TypeElement) serviceElement;
@@ -61,7 +52,7 @@ class ServiceHandler {
                 }
             }
 
-            FieldSpec clientFiled = FieldSpec.builder(Call.Factory.class, "client")
+            FieldSpec clientFiled = FieldSpec.builder(CALL_FACTORY, "client")
                     .addModifiers(Modifier.PRIVATE)
                     .build();
 
@@ -69,10 +60,14 @@ class ServiceHandler {
                     .addModifiers(Modifier.PRIVATE)
                     .build();
 
+            FieldSpec converterField = FieldSpec.builder(CONVERTER, "respConverter")
+                    .addModifiers(Modifier.PRIVATE)
+                    .build();
+
             // 添加构造函数
             MethodSpec constructor = MethodSpec.constructorBuilder()
                     .addModifiers(Modifier.PUBLIC)
-                    .addParameter(Call.Factory.class, "client")
+                    .addParameter(CALL_FACTORY, "client")
                     .addParameter(String.class, "baseHttpUrl")
                     .addStatement("this.client = client")
                     .addStatement("this.baseHttpUrl = baseHttpUrl")
@@ -81,6 +76,7 @@ class ServiceHandler {
             TypeSpec typeSpec = classBuilder.addSuperinterface(ClassName.get(packageName, serviceElement.getSimpleName().toString()))
                     .addField(clientFiled)
                     .addField(baseHttpUrlField)
+                    .addField(converterField)
                     .addMethod(constructor)
                     .build();
 

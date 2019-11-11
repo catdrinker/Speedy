@@ -1,11 +1,7 @@
 package com.drinker.processor;
 
-import com.drinker.annotation.Get;
-import com.drinker.annotation.Param;
-import com.drinker.annotation.Post;
 import com.drinker.annotation.Service;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -43,9 +39,10 @@ public class OkHttpProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        // create service file
         Set<? extends Element> serviceElements = roundEnv.getElementsAnnotatedWith(Service.class);
-        ServiceHandler serviceHandler = new ServiceHandler(serviceElements, elements, messager,filer);
-        serviceHandler.process();
+        ProcessHandler serviceHandler = new ServiceHandler();
+        serviceHandler.process(serviceElements, elements, messager, filer);
         return false;
     }
 
