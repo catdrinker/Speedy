@@ -15,5 +15,6 @@ public class OkHttpClassName {
             .nestedClass("Builder");
 
     public static ClassName CONVERTER = ClassName.get("com.drinker.speedy", "Converter");
-
+    public static ClassName DELIVERY = ClassName.get("com.drinker.speedy", "IDelivery");
+    public static ClassName CALL_ADAPTER = ClassName.get("com.drinker.speedy", "CallAdapter");
 }

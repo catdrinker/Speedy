@@ -11,6 +11,7 @@ import javax.annotation.processing.Messager;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import javax.tools.Diagnostic;
 
 import static com.drinker.processor.OkHttpClassName.REQUEST;
 import static com.drinker.processor.OkHttpClassName.REQUEST_BODY_BUILDER;
@@ -38,6 +39,7 @@ public class DeleteMethod implements IHttpMethodHandler {
                 }
             }
             TypeMirror returnType = executableElement.getReturnType();
+            messager.printMessage(Diagnostic.Kind.WARNING,"return type "+returnType +returnType.getKind());
             return MethodSpec.overriding(executableElement)
                     .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
                     .addCode(".url(baseHttpUrl+$S)\n", deleteAnnotation.value())
@@ -45,7 +47,7 @@ public class DeleteMethod implements IHttpMethodHandler {
                     .addCode(".build();\n")
                     .addCode("")
                     .addStatement("okhttp3.Call newCall = client.newCall(request)")
-                    .addStatement("return new WrapperCall<>(respConverter, newCall, client, request)")
+                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
                     .returns(TypeName.get(returnType))
                     .build();
         }

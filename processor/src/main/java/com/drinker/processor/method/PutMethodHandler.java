@@ -41,7 +41,7 @@ public class PutMethodHandler implements IHttpMethodHandler {
                     .addCode(".build();\n")
                     .addCode("")
                     .addStatement("okhttp3.Call newCall = client.newCall(request)")
-                    .addStatement("return new WrapperCall<>(respConverter, newCall, client, request)")
+                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
                     .returns(TypeName.get(returnType))
                     .build();
         }

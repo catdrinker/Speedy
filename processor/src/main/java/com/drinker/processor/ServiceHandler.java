@@ -26,8 +26,10 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
+import static com.drinker.processor.OkHttpClassName.CALL_ADAPTER;
 import static com.drinker.processor.OkHttpClassName.CALL_FACTORY;
 import static com.drinker.processor.OkHttpClassName.CONVERTER;
+import static com.drinker.processor.OkHttpClassName.DELIVERY;
 
 class ServiceHandler implements ProcessHandler {
 
@@ -64,6 +66,14 @@ class ServiceHandler implements ProcessHandler {
                     .addModifiers(Modifier.PRIVATE)
                     .build();
 
+            FieldSpec deliveryField = FieldSpec.builder(DELIVERY, "delivery")
+                    .addModifiers(Modifier.PRIVATE)
+                    .build();
+
+            FieldSpec callAdapterField = FieldSpec.builder(CALL_ADAPTER, "callAdapter")
+                    .addModifiers(Modifier.PRIVATE)
+                    .build();
+
             // 添加构造函数
             MethodSpec constructor = MethodSpec.constructorBuilder()
                     .addModifiers(Modifier.PUBLIC)
@@ -71,12 +81,17 @@ class ServiceHandler implements ProcessHandler {
                     .addParameter(String.class, "baseHttpUrl")
                     .addStatement("this.client = client")
                     .addStatement("this.baseHttpUrl = baseHttpUrl")
+                    .addStatement("this.respConverter = respConverter")
+                    .addStatement("this.delivery = delivery")
+                    .addStatement("this.callAdapter = callAdapter")
                     .build();
 
             TypeSpec typeSpec = classBuilder.addSuperinterface(ClassName.get(packageName, serviceElement.getSimpleName().toString()))
                     .addField(clientFiled)
                     .addField(baseHttpUrlField)
                     .addField(converterField)
+                    .addField(deliveryField)
+                    .addField(callAdapterField)
                     .addMethod(constructor)
                     .build();
 

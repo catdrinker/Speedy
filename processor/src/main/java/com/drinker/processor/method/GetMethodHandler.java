@@ -29,7 +29,7 @@ public class GetMethodHandler implements IHttpMethodHandler {
                     .addCode(".url(baseHttpUrl+$S)\n", getAnnotation.value())
                     .addStatement(".build()")
                     .addStatement("okhttp3.Call newCall = client.newCall(request)")
-                    .addStatement("return new WrapperCall<>(respConverter, newCall, client, request)")
+                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
                     .returns(TypeName.get(returnType))
                     .build();
         }
