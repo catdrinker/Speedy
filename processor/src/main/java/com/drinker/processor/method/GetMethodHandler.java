@@ -10,6 +10,7 @@ import javax.annotation.processing.Messager;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import javax.tools.Diagnostic;
 
 import static com.drinker.processor.OkHttpClassName.REQUEST;
 import static com.drinker.processor.OkHttpClassName.REQUEST_BODY_BUILDER;
@@ -23,13 +24,20 @@ public class GetMethodHandler implements IHttpMethodHandler {
         Get getAnnotation = executableElement.getAnnotation(Get.class);
         if (getAnnotation != null) {
             TypeMirror returnType = executableElement.getReturnType();
+
+            messager.printMessage(Diagnostic.Kind.WARNING, "return type " + returnType + " " + returnType.getKind() + " " + returnType.toString() +" "+returnType.getKind().name());
             return MethodSpec.overriding(executableElement)
                     .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
                     .addCode(".get()\n")
                     .addCode(".url(baseHttpUrl+$S)\n", getAnnotation.value())
                     .addStatement(".build()")
                     .addStatement("okhttp3.Call newCall = client.newCall(request)")
-                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
+                    .addStatement("Call wrapperCall = new WrapperCall<>(respConverter, delivery, newCall, client, request)")
+
+//            Call<Home> wrapperCall =  new WrapperCall<>(respConverter, delivery, newCall, client, request);
+//            return (Call<Home>) callAdapter.adapt(wrapperCall);
+                    .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
+
                     .returns(TypeName.get(returnType))
                     .build();
         }

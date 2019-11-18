@@ -31,11 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         btn.setOnClickListener {
             val loginCall = service.getLogin("loginwithme", "ph124356")
-            loginCall.enqueue(object : com.drinker.speedy.Callback<Home> {
-                override fun onResponse(call: com.drinker.speedy.Call<Home>?, response: Home?) {
+            loginCall.enqueue(object : Callback<Home> {
+                override fun onResponse(call: Call<Home>?, response: Home?) {
                 }
 
-                override fun onFailure(call: com.drinker.speedy.Call<Home>?, e: IOException?) {
+                override fun onFailure(call: Call<Home>?, e: IOException?) {
                 }
             })
         }
