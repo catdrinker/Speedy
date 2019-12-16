@@ -12,16 +12,14 @@ public class WrapperCall<T> implements Call<T> {
     private okhttp3.Call.Factory callFactory;
     private Request rawRequest;
     private Converter<ResponseBody, T> converter;
-    private IDelivery delivery;
 
     private boolean isExecuted;
 
-    public WrapperCall(Converter<ResponseBody, T> converter, IDelivery delivery, okhttp3.Call rawCall, okhttp3.Call.Factory callFactory, Request rawRequest) {
+    public WrapperCall(Converter<ResponseBody, T> converter, okhttp3.Call rawCall, okhttp3.Call.Factory callFactory, Request rawRequest) {
         this.converter = converter;
         this.rawCall = rawCall;
         this.callFactory = callFactory;
         this.rawRequest = rawRequest;
-        this.delivery = delivery;
     }
 
     @Override
@@ -79,10 +77,6 @@ public class WrapperCall<T> implements Call<T> {
 
     public Request getRawRequest() {
         return rawRequest;
-    }
-
-    public void setRawRequest(Request rawRequest) {
-        this.rawRequest = rawRequest;
     }
 
 }

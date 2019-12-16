@@ -79,10 +79,12 @@ class ServiceHandler implements ProcessHandler {
                     .addModifiers(Modifier.PUBLIC)
                     .addParameter(CALL_FACTORY, "client")
                     .addParameter(String.class, "baseHttpUrl")
+                    .addParameter(CONVERTER,"respConverter")
+                    .addParameter(CALL_ADAPTER,"callAdapter")
                     .addStatement("this.client = client")
                     .addStatement("this.baseHttpUrl = baseHttpUrl")
                     .addStatement("this.respConverter = respConverter")
-                    .addStatement("this.delivery = delivery")
+//                    .addStatement("this.delivery = delivery")
                     .addStatement("this.callAdapter = callAdapter")
                     .build();
 
@@ -90,7 +92,7 @@ class ServiceHandler implements ProcessHandler {
                     .addField(clientFiled)
                     .addField(baseHttpUrlField)
                     .addField(converterField)
-                    .addField(deliveryField)
+//                    .addField(deliveryField)
                     .addField(callAdapterField)
                     .addMethod(constructor)
                     .build();

@@ -12,8 +12,11 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import static com.drinker.processor.OkHttpClassName.OK_HTTP_CALL;
 import static com.drinker.processor.OkHttpClassName.REQUEST;
 import static com.drinker.processor.OkHttpClassName.REQUEST_BODY_BUILDER;
+import static com.drinker.processor.OkHttpClassName.SPEEDY_CALL;
+import static com.drinker.processor.OkHttpClassName.SPEEDY_WRAPPER_CALL;
 
 public class PutMethodHandler implements IHttpMethodHandler {
     @Override
@@ -40,8 +43,12 @@ public class PutMethodHandler implements IHttpMethodHandler {
                     .addCode(".put(" + simpleName + ")\n")
                     .addCode(".build();\n")
                     .addCode("")
-                    .addStatement("okhttp3.Call newCall = client.newCall(request)")
-                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
+                    .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
+//                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
+
+                    .addStatement("$T wrapperCall = new $T<>(respConverter, newCall, client, request)", SPEEDY_CALL, SPEEDY_WRAPPER_CALL)
+                    .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
+
                     .returns(TypeName.get(returnType))
                     .build();
         }

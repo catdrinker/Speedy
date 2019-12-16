@@ -2,8 +2,13 @@ package com.drinker.speedy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import androidx.lifecycle.Observer
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -23,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         val speedy = Speedy.Builder()
             .baseUrl(BaseHttpUrl.get("https://www.baidu.com"))
             .callFactory(client)
+            .callAdapter(LiveDataAdapter<Any>())
             .build()
 
         val service = speedy.getService(IService::class.java)
@@ -31,15 +37,13 @@ class MainActivity : AppCompatActivity() {
 
         btn.setOnClickListener {
             val loginCall = service.getLogin("loginwithme", "ph124356")
-            loginCall.enqueue(object : Callback<Home> {
-                override fun onResponse(call: Call<Home>?, response: Home?) {
-                }
-
-                override fun onFailure(call: Call<Home>?, e: IOException?) {
+            loginCall.observe(this, Observer {
+                if (it.status == ResultStatus.ERROR) {
+                    Log.w("MainActivity", "status error ${it.exception}")
+                } else if (it.status == ResultStatus.SUCCESS) {
+                    Log.i("MainActivity", "status success ${it.resp}")
                 }
             })
         }
-
-
     }
 }

@@ -2,9 +2,9 @@ package com.drinker.speedy;
 
 import okhttp3.ResponseBody;
 
-public class DefaultConverter<T> implements ResponseBodyConverter<T> {
+public class DefaultConverter implements ResponseBodyConverter<ResponseBody> {
     @Override
-    public T transform(ResponseBody value) {
-        return null;
+    public ResponseBody transform(ResponseBody value) {
+        return value;
     }
 }

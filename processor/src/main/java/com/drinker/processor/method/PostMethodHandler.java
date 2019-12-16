@@ -14,9 +14,12 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 import static com.drinker.processor.OkHttpClassName.FORM_BODY;
+import static com.drinker.processor.OkHttpClassName.OK_HTTP_CALL;
 import static com.drinker.processor.OkHttpClassName.REQUEST;
 import static com.drinker.processor.OkHttpClassName.REQUEST_BODY_BUILDER;
 import static com.drinker.processor.OkHttpClassName.REQ_BODY;
+import static com.drinker.processor.OkHttpClassName.SPEEDY_CALL;
+import static com.drinker.processor.OkHttpClassName.SPEEDY_WRAPPER_CALL;
 
 public class PostMethodHandler implements IHttpMethodHandler {
 
@@ -41,8 +44,11 @@ public class PostMethodHandler implements IHttpMethodHandler {
                     .addCode(".post(formBody)\n")
                     .addCode(".build();\n")
                     .addCode("")
-                    .addStatement("okhttp3.Call newCall = client.newCall(request)")
-                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
+                    .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
+//                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
+                    .addStatement("$T wrapperCall = new $T<>(respConverter, newCall, client, request)", SPEEDY_CALL, SPEEDY_WRAPPER_CALL)
+                    .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
+
                     .returns(TypeName.get(returnType))
                     .build();
         }
