@@ -34,6 +34,7 @@ public class WrapperCall<T> implements Call<T> {
         if (response.isSuccessful()) {
             return Response.success(response, body);
         } else {
+            // TODO changed body
             return Response.error(response, null, response.body());
         }
     }
@@ -55,7 +56,8 @@ public class WrapperCall<T> implements Call<T> {
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 T body = converter.transform(response.body());
-                callback.onResponse(WrapperCall.this, body);
+                Response<T> wrappedResponse = Response.success(response, body);
+                callback.onResponse(WrapperCall.this, wrappedResponse);
             }
         });
     }
