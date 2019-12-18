@@ -2,6 +2,7 @@ package com.drinker.speedy;
 
 import androidx.lifecycle.LiveData;
 
+import com.drinker.adapter.Result;
 import com.drinker.annotation.Body;
 import com.drinker.annotation.Delete;
 import com.drinker.annotation.Get;
