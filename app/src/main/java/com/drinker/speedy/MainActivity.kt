@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val speedy = Speedy.Builder()
             .baseUrl(BaseHttpUrl.get("https://www.baidu.com"))
             .callFactory(client)
-            .callAdapter(LiveDataAdapter<Any>(true))
+            .callAdapter(LiveDataAdapter.create(true))
             .build()
 
         val service = speedy.getService(IService::class.java)

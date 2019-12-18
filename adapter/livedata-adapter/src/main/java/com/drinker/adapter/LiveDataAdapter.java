@@ -7,12 +7,16 @@ import com.drinker.speedy.CallAdapter;
 
 public class LiveDataAdapter<T> implements CallAdapter<T, LiveData<Result<T>>> {
 
+    public static LiveDataAdapter create(boolean isAsync) {
+        return new LiveDataAdapter(isAsync);
+    }
+
     /**
      * isAsync method with http
      */
     private boolean isAsync;
 
-    public LiveDataAdapter(boolean isAsync) {
+    private LiveDataAdapter(boolean isAsync) {
         this.isAsync = isAsync;
     }
 

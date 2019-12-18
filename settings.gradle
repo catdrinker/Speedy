@@ -1,8 +1,7 @@
-include ':app', ':livedata-adapter',
+include ':app',
         ':lib',
         ':annotation',
         ':processor',
-//        'adapter:livedata-adapter',
         'converter:gson-converter',
         'adapter:livedata-adapter'
 rootProject.name = 'Speedy'
