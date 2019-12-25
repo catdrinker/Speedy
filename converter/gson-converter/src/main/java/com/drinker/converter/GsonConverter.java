@@ -1,6 +1,5 @@
-package com.example.converter;
+package com.drinker.converter;
 
-import com.drinker.speedy.Converter;
 import com.drinker.speedy.ResponseBodyConverter;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -26,10 +25,10 @@ public class GsonConverter<T> implements ResponseBodyConverter<T> {
     }
 
     // TODO 改成每个方法创建一个新的Converter，这里还是要传入factory
-    public static GsonConverter<?> create(Type type){
+    static GsonConverter<?> create(Type type) {
         Gson gson = new Gson();
         TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(type));
-        return new GsonConverter<>(gson,adapter);
+        return new GsonConverter<>(gson, adapter);
     }
 
     @Override

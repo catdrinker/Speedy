@@ -25,10 +25,12 @@ public class WrapperCall<T> implements Call<T> {
     @Override
     public Response<T> execute() throws IOException {
         assert rawCall != null;
-        if (isExecuted) {
-            throw new IllegalStateException("one call only can execute one time");
+        synchronized (this){
+            if (isExecuted) {
+                throw new IllegalStateException("one call only can execute one time");
+            }
+            isExecuted = true;
         }
-        isExecuted = true;
         okhttp3.Response response = rawCall.execute();
         T body = converter.transform(response.body());
         if (response.isSuccessful()) {
@@ -42,10 +44,12 @@ public class WrapperCall<T> implements Call<T> {
     @Override
     public void enqueue(final Callback<T> callback) {
         assert rawCall != null;
-        if (isExecuted) {
-            throw new IllegalStateException("one call only can execute one time");
+        synchronized (this) {
+            if (isExecuted) {
+                throw new IllegalStateException("one call only can execute one time");
+            }
+            isExecuted = true;
         }
-        isExecuted = true;
 
         rawCall.enqueue(new okhttp3.Callback() {
             @Override
