@@ -8,9 +8,9 @@ public interface Converter<T, R> {
 
     interface Factory {
 
-        <T> RequestBodyConverter<T> reqBodyConverter(Class<T> Type);
+        <T> RequestBodyConverter reqBodyConverter(Class<T> Type);
 
-        <T> ResponseBodyConverter<T> respBodyConverter(Class<T> type);
+        <T> ResponseBodyConverter respBodyConverter(Class<T> type);
     }
 }
 

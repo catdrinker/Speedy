@@ -31,7 +31,7 @@ public class GetMethodHandler implements IHttpMethodHandler {
                     .addCode(".url(baseHttpUrl+$S)\n", getAnnotation.value())
                     .addStatement(".build()")
                     .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-                    .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.<$T>respBodyConverter($T.class), newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType, generateType)
+                    .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter($T.class), newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType)
                     .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
 
                     .returns(TypeName.get(returnType))
