@@ -6,6 +6,6 @@ import javax.lang.model.element.Element;
 
 public interface ProcessHandler {
 
-   void process(Set<? extends Element> componentElements);
+   void process(Set<? extends Element> serviceElements);
 
 }

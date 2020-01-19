@@ -51,6 +51,12 @@ class MainActivity : AppCompatActivity() {
 
         val service = speedy.getService(IService::class.java)
 
+
+        val service1 = ServiceMap.getService(IService::class.java)
+
+
+
+
         val btn = findViewById<Button>(R.id.btn)
 
         btn.setOnClickListener {

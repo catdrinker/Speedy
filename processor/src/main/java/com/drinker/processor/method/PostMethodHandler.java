@@ -13,13 +13,13 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
-import static com.drinker.processor.OkHttpClassName.FORM_BODY;
-import static com.drinker.processor.OkHttpClassName.OK_HTTP_CALL;
-import static com.drinker.processor.OkHttpClassName.REQUEST;
-import static com.drinker.processor.OkHttpClassName.REQUEST_BODY_BUILDER;
-import static com.drinker.processor.OkHttpClassName.REQ_BODY;
-import static com.drinker.processor.OkHttpClassName.SPEEDY_CALL;
-import static com.drinker.processor.OkHttpClassName.SPEEDY_WRAPPER_CALL;
+import static com.drinker.processor.SpeedyClassName.FORM_BODY;
+import static com.drinker.processor.SpeedyClassName.OK_HTTP_CALL;
+import static com.drinker.processor.SpeedyClassName.REQUEST;
+import static com.drinker.processor.SpeedyClassName.REQUEST_BODY_BUILDER;
+import static com.drinker.processor.SpeedyClassName.REQ_BODY;
+import static com.drinker.processor.SpeedyClassName.SPEEDY_CALL;
+import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 
 public class PostMethodHandler implements IHttpMethodHandler {
 

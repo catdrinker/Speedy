@@ -2,9 +2,7 @@ package com.drinker.processor.method;
 
 import com.drinker.annotation.Body;
 import com.drinker.annotation.Put;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 import java.util.List;
@@ -14,11 +12,11 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-import static com.drinker.processor.OkHttpClassName.OK_HTTP_CALL;
-import static com.drinker.processor.OkHttpClassName.REQUEST;
-import static com.drinker.processor.OkHttpClassName.REQUEST_BODY_BUILDER;
-import static com.drinker.processor.OkHttpClassName.SPEEDY_CALL;
-import static com.drinker.processor.OkHttpClassName.SPEEDY_WRAPPER_CALL;
+import static com.drinker.processor.SpeedyClassName.OK_HTTP_CALL;
+import static com.drinker.processor.SpeedyClassName.REQUEST;
+import static com.drinker.processor.SpeedyClassName.REQUEST_BODY_BUILDER;
+import static com.drinker.processor.SpeedyClassName.SPEEDY_CALL;
+import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 
 public class PutMethodHandler implements IHttpMethodHandler {
     @Override

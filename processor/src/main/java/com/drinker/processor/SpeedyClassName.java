@@ -2,10 +2,10 @@ package com.drinker.processor;
 
 import com.squareup.javapoet.ClassName;
 
-public class OkHttpClassName {
+public class SpeedyClassName {
 
-    private static String OK_HTTP_PACKAGE = "okhttp3";
-    private static String SPEEDY_PACKAGE = "com.drinker.speedy";
+    public static String OK_HTTP_PACKAGE = "okhttp3";
+    public static String SPEEDY_PACKAGE = "com.drinker.speedy";
 
 
     public static ClassName OK_HTTP_CALL = ClassName.get(OK_HTTP_PACKAGE, "Call");

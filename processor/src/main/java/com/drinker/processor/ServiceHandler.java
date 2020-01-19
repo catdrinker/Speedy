@@ -29,10 +29,10 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
-import static com.drinker.processor.OkHttpClassName.CALL_ADAPTER;
-import static com.drinker.processor.OkHttpClassName.CALL_FACTORY;
-import static com.drinker.processor.OkHttpClassName.CONVERTER_FACTORY;
-import static com.drinker.processor.OkHttpClassName.DELIVERY;
+import static com.drinker.processor.SpeedyClassName.CALL_ADAPTER;
+import static com.drinker.processor.SpeedyClassName.CALL_FACTORY;
+import static com.drinker.processor.SpeedyClassName.CONVERTER_FACTORY;
+import static com.drinker.processor.SpeedyClassName.DELIVERY;
 
 class ServiceHandler implements ProcessHandler {
 

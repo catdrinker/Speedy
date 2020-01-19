@@ -28,6 +28,8 @@ public class OkHttpProcessor extends AbstractProcessor {
 
     private Messager messager;
 
+    private ProcessHandler mapHandler;
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -41,9 +43,14 @@ public class OkHttpProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         // create service file
         Set<? extends Element> serviceElements = roundEnv.getElementsAnnotatedWith(Service.class);
-        messager.printMessage(Diagnostic.Kind.WARNING,"serviceElements "+serviceElements);
-        ProcessHandler serviceHandler = new ServiceHandler(elements,messager,filer);
+        messager.printMessage(Diagnostic.Kind.WARNING, "serviceElements " + serviceElements);
+        ProcessHandler serviceHandler = new ServiceHandler(elements, messager, filer);
         serviceHandler.process(serviceElements);
+        if (mapHandler == null && !serviceElements.isEmpty()) {
+            mapHandler = new ServiceMapHandler(elements, messager, filer);
+            mapHandler.process(serviceElements);
+        }
+
         return false;
     }
 

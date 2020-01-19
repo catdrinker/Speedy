@@ -11,11 +11,11 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-import static com.drinker.processor.OkHttpClassName.OK_HTTP_CALL;
-import static com.drinker.processor.OkHttpClassName.REQUEST;
-import static com.drinker.processor.OkHttpClassName.REQUEST_BODY_BUILDER;
-import static com.drinker.processor.OkHttpClassName.SPEEDY_CALL;
-import static com.drinker.processor.OkHttpClassName.SPEEDY_WRAPPER_CALL;
+import static com.drinker.processor.SpeedyClassName.OK_HTTP_CALL;
+import static com.drinker.processor.SpeedyClassName.REQUEST;
+import static com.drinker.processor.SpeedyClassName.REQUEST_BODY_BUILDER;
+import static com.drinker.processor.SpeedyClassName.SPEEDY_CALL;
+import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 
 
 public class GetMethodHandler implements IHttpMethodHandler {
