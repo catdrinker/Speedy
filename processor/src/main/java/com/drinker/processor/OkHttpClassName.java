@@ -19,11 +19,16 @@ public class OkHttpClassName {
     public static ClassName REQ_BODY = ClassName.get(OK_HTTP_PACKAGE, "RequestBody");
     public static ClassName FORM_BODY = ClassName.get(OK_HTTP_PACKAGE, "FormBody");
 
+    public static ClassName RESP_BODY = ClassName.get(OK_HTTP_PACKAGE, "ResponseBody");
+
     public static ClassName REQUEST = ClassName.get(OK_HTTP_PACKAGE, "Request");
     public static ClassName REQUEST_BODY_BUILDER = ClassName.get(OK_HTTP_PACKAGE, "Request")
             .nestedClass("Builder");
 
     public static ClassName CONVERTER = ClassName.get(SPEEDY_PACKAGE, "Converter");
+    public static ClassName CONVERTER_FACTORY = ClassName.get(SPEEDY_PACKAGE, "Converter").nestedClass("Factory");
+
     public static ClassName DELIVERY = ClassName.get(SPEEDY_PACKAGE, "IDelivery");
     public static ClassName CALL_ADAPTER = ClassName.get(SPEEDY_PACKAGE, "CallAdapter");
+    public static ClassName CALL_ADAPTER_FACTORY = ClassName.get(SPEEDY_PACKAGE, "CallAdapter").nestedClass("Factory");
 }

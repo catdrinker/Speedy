@@ -10,13 +10,13 @@ public class Speedy {
 
     private final Call.Factory callFactory;
     private final BaseHttpUrl baseHttpUrl;
-    private final Converter converter;
+    private final Converter.Factory converterFactory;
     private final CallAdapter<?, ?> callAdapter;
 
     private Speedy(Builder builder) {
         baseHttpUrl = builder.baseHttpUrl;
         callFactory = builder.callFactory;
-        converter = builder.converter;
+        converterFactory = builder.converterFactory;
         callAdapter = builder.callAdapter;
     }
 
@@ -30,8 +30,8 @@ public class Speedy {
             Class<?> implService = Class.forName(implName);
             Constructor<?>[] constructors = implService.getConstructors();
             if (constructors.length != 1) return null;
-            Constructor<?> serviceConstructor = implService.getConstructor(okhttp3.Call.Factory.class, String.class, Converter.class, CallAdapter.class);
-            Object newInstance = serviceConstructor.newInstance(callFactory, baseHttpUrl.baseUrl, converter, callAdapter);
+            Constructor<?> serviceConstructor = implService.getConstructor(okhttp3.Call.Factory.class, String.class, Converter.Factory.class, CallAdapter.class);
+            Object newInstance = serviceConstructor.newInstance(callFactory, baseHttpUrl.baseUrl, converterFactory, callAdapter);
             return (T) newInstance;
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException e) {
             throw new InitSpeedyFailException("can't init service cause " + e);
@@ -41,7 +41,7 @@ public class Speedy {
     public static class Builder {
         private Call.Factory callFactory;
         private BaseHttpUrl baseHttpUrl;
-        private Converter converter;
+        private Converter.Factory converterFactory;
         private CallAdapter callAdapter;
 
         public Builder callFactory(Call.Factory callFactory) {
@@ -54,8 +54,8 @@ public class Speedy {
             return this;
         }
 
-        public Builder converter(Converter converter) {
-            this.converter = converter;
+        public Builder converterFactroy(Converter.Factory converterFactory) {
+            this.converterFactory = converterFactory;
             return this;
         }
 
@@ -71,8 +71,8 @@ public class Speedy {
             if (baseHttpUrl == null || baseHttpUrl.baseUrl.isEmpty()) {
                 throw new NullPointerException("baseHttp url can't be null" + baseHttpUrl);
             }
-            if (converter == null) {
-                converter = new DefaultConverter();
+            if (converterFactory == null) {
+                converterFactory = new DefaultConverterFactory();
             }
             if (callAdapter == null) {
                 callAdapter = new CallAdapter.DefaultCallAdapter();

@@ -1,6 +1,5 @@
 package com.drinker.speedy;
 
-import java.lang.reflect.Type;
 
 public interface CallAdapter<T, R> {
 

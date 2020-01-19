@@ -11,7 +11,6 @@ import javax.annotation.processing.Messager;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import javax.tools.Diagnostic;
 
 import static com.drinker.processor.OkHttpClassName.OK_HTTP_CALL;
 import static com.drinker.processor.OkHttpClassName.REQUEST;
@@ -22,7 +21,7 @@ import static com.drinker.processor.OkHttpClassName.SPEEDY_WRAPPER_CALL;
 public class DeleteMethod implements IHttpMethodHandler {
 
     @Override
-    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, Messager messager) {
+    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, Messager messager) {
         Delete deleteAnnotation = executableElement.getAnnotation(Delete.class);
         if (deleteAnnotation != null) {
             if (parameters.size() > 1) {
@@ -41,8 +40,6 @@ public class DeleteMethod implements IHttpMethodHandler {
                     throw new IllegalArgumentException("put param must be okhttp3.RequestBody");
                 }
             }
-            TypeMirror returnType = executableElement.getReturnType();
-            messager.printMessage(Diagnostic.Kind.WARNING, "return type " + returnType + returnType.getKind());
             return MethodSpec.overriding(executableElement)
                     .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
                     .addCode(".url(baseHttpUrl+$S)\n", deleteAnnotation.value())
@@ -50,10 +47,8 @@ public class DeleteMethod implements IHttpMethodHandler {
                     .addCode(".build();\n")
                     .addCode("")
                     .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-//                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
-                    .addStatement("$T wrapperCall = new $T<>(respConverter, newCall, client, request)", SPEEDY_CALL, SPEEDY_WRAPPER_CALL)
+                    .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.<$T>respBodyConverter($T.class), newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType, generateType)
                     .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
-
                     .returns(TypeName.get(returnType))
                     .build();
         }

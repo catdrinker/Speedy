@@ -9,6 +9,8 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
@@ -23,20 +25,31 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
 import static com.drinker.processor.OkHttpClassName.CALL_ADAPTER;
 import static com.drinker.processor.OkHttpClassName.CALL_FACTORY;
-import static com.drinker.processor.OkHttpClassName.CONVERTER;
+import static com.drinker.processor.OkHttpClassName.CONVERTER_FACTORY;
 import static com.drinker.processor.OkHttpClassName.DELIVERY;
 
 class ServiceHandler implements ProcessHandler {
 
     private final static String IMPL = "_impl";
+    private Elements elements;
+    private Messager messager;
+    private Filer filer;
+
+
+    public ServiceHandler(Elements elements, Messager messager, Filer filer) {
+        this.elements = elements;
+        this.messager = messager;
+        this.filer = filer;
+    }
 
     @Override
-    public void process(Set<? extends Element> serviceElements, Elements elements, Messager messager, Filer filer) {
+    public void process(Set<? extends Element> serviceElements) {
         for (Element serviceElement : serviceElements) {
             String packageName = elements.getPackageOf(serviceElement).getQualifiedName().toString();
             TypeElement element = (TypeElement) serviceElement;
@@ -48,8 +61,7 @@ class ServiceHandler implements ProcessHandler {
                     // 写方法
                     ExecutableElement executableElement = (ExecutableElement) enclosedElement;
                     messager.printMessage(Diagnostic.Kind.WARNING, "element" + element + "enclose" + enclosedElement);
-                    List<? extends VariableElement> parameters = executableElement.getParameters();
-                    MethodSpec methodSpec = getMethodSpec(executableElement, parameters, messager);
+                    MethodSpec methodSpec = checkReturnType(executableElement);
                     classBuilder.addMethod(methodSpec);
                 }
             }
@@ -62,7 +74,7 @@ class ServiceHandler implements ProcessHandler {
                     .addModifiers(Modifier.PRIVATE)
                     .build();
 
-            FieldSpec converterField = FieldSpec.builder(CONVERTER, "respConverter")
+            FieldSpec converterField = FieldSpec.builder(CONVERTER_FACTORY, "converterFactory")
                     .addModifiers(Modifier.PRIVATE)
                     .build();
 
@@ -79,11 +91,11 @@ class ServiceHandler implements ProcessHandler {
                     .addModifiers(Modifier.PUBLIC)
                     .addParameter(CALL_FACTORY, "client")
                     .addParameter(String.class, "baseHttpUrl")
-                    .addParameter(CONVERTER,"respConverter")
-                    .addParameter(CALL_ADAPTER,"callAdapter")
+                    .addParameter(CONVERTER_FACTORY, "converterFactory")
+                    .addParameter(CALL_ADAPTER, "callAdapter")
                     .addStatement("this.client = client")
                     .addStatement("this.baseHttpUrl = baseHttpUrl")
-                    .addStatement("this.respConverter = respConverter")
+                    .addStatement("this.converterFactory = converterFactory")
 //                    .addStatement("this.delivery = delivery")
                     .addStatement("this.callAdapter = callAdapter")
                     .build();
@@ -110,7 +122,7 @@ class ServiceHandler implements ProcessHandler {
     }
 
 
-    private MethodSpec getMethodSpec(ExecutableElement element, List<? extends VariableElement> parameters, Messager messager) {
+    private MethodSpec getMethodSpec(ExecutableElement element, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
         List<IHttpMethodHandler> handlers = new ArrayList<>();
         handlers.add(new GetMethodHandler());
         handlers.add(new PostMethodHandler());
@@ -118,12 +130,35 @@ class ServiceHandler implements ProcessHandler {
         handlers.add(new DeleteMethod());
 
         for (IHttpMethodHandler handler : handlers) {
-            MethodSpec methodSpec = handler.process(element, parameters, messager);
+            MethodSpec methodSpec = handler.process(element, parameters, returnType, generateType, messager);
             if (methodSpec != null) {
                 return methodSpec;
             }
         }
         throw new NullPointerException("method must has annotation like @Get @Post...");
+    }
+
+    private MethodSpec checkReturnType(ExecutableElement element) {
+        List<? extends VariableElement> parameters = element.getParameters();
+        TypeMirror returnType = element.getReturnType();
+        TypeName returnTypeName = ClassName.get(returnType);
+        messager.printMessage(Diagnostic.Kind.WARNING, "return type " + returnTypeName);
+        if (returnTypeName instanceof ParameterizedTypeName) {
+            List<TypeName> genericReturnTypes = ((ParameterizedTypeName) returnTypeName).typeArguments;
+            if (genericReturnTypes != null && !genericReturnTypes.isEmpty()) {
+                // 确保只有一个包装的返回值
+                assert genericReturnTypes.size() == 1;
+
+                TypeName generateType = genericReturnTypes.get(0);
+                return getMethodSpec(element, parameters, returnType, generateType);
+            } else {
+                throw new IllegalStateException("return value must wrapped by generic type like Call<User> ...");
+            }
+        } else {
+            throw new IllegalStateException("return type is not ParameterizedTypeName");
+        }
+
+
     }
 
 }

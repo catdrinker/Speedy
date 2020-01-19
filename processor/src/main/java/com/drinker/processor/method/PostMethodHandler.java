@@ -24,7 +24,7 @@ import static com.drinker.processor.OkHttpClassName.SPEEDY_WRAPPER_CALL;
 public class PostMethodHandler implements IHttpMethodHandler {
 
     @Override
-    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, Messager messager) {
+    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, Messager messager) {
         Post postAnnotation = executableElement.getAnnotation(Post.class);
         if (postAnnotation != null) {
             MethodSpec.Builder methodSpecBuilder = MethodSpec.overriding(executableElement)
@@ -37,7 +37,6 @@ public class PostMethodHandler implements IHttpMethodHandler {
             }
             methodSpecBuilder.addCode(".build()");
 
-            TypeMirror returnType = executableElement.getReturnType();
             return methodSpecBuilder.addStatement("")
                     .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
                     .addCode(".url(baseHttpUrl+$S)\n", postAnnotation.value())
@@ -45,10 +44,8 @@ public class PostMethodHandler implements IHttpMethodHandler {
                     .addCode(".build();\n")
                     .addCode("")
                     .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-//                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
-                    .addStatement("$T wrapperCall = new $T<>(respConverter, newCall, client, request)", SPEEDY_CALL, SPEEDY_WRAPPER_CALL)
+                    .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.<$T>respBodyConverter($T.class), newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType, generateType)
                     .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
-
                     .returns(TypeName.get(returnType))
                     .build();
         }

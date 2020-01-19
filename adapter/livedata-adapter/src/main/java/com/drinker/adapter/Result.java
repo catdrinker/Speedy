@@ -9,9 +9,9 @@ public class Result<T> {
     private T response;
 
     @Nullable
-    private Exception exception;
+    private Throwable exception;
 
-    private Result(ResultStatus status, @Nullable T response, @Nullable Exception exception) {
+    private Result(ResultStatus status, @Nullable T response, @Nullable Throwable exception) {
         this.status = status;
         this.response = response;
         this.exception = exception;
@@ -21,7 +21,7 @@ public class Result<T> {
         return new Result<>(ResultStatus.SUCCESS, response, null);
     }
 
-    public static <T> Result<T> failure(Exception e) {
+    public static <T> Result<T> failure(Throwable e) {
         return new Result<>(ResultStatus.FAILURE, null, e);
     }
 
@@ -43,9 +43,19 @@ public class Result<T> {
     }
 
     @Nullable
-    public Exception getException() {
+    public Throwable getException() {
         return exception;
     }
+
+
+    public boolean isSuccess() {
+        return this.status == ResultStatus.SUCCESS;
+    }
+
+    public boolean isFailure() {
+        return this.status == ResultStatus.FAILURE;
+    }
+
 
     public void setException(@Nullable Exception exception) {
         this.exception = exception;

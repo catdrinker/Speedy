@@ -1,11 +1,9 @@
 package com.drinker.adapter;
 
-import androidx.lifecycle.LiveData;
-
 import com.drinker.speedy.Call;
 import com.drinker.speedy.CallAdapter;
 
-public class LiveDataAdapter<T> implements CallAdapter<T, LiveData<Result<T>>> {
+public class LiveDataAdapter<T> implements CallAdapter<T, LiveResult<T>> {
 
     public static LiveDataAdapter create(boolean isAsync) {
         return new LiveDataAdapter(isAsync);
@@ -21,13 +19,13 @@ public class LiveDataAdapter<T> implements CallAdapter<T, LiveData<Result<T>>> {
     }
 
     @Override
-    public LiveData<Result<T>> adapt(Call<T> call) {
-        LiveResult<T> liveResult;
+    public LiveResult<T> adapt(Call<T> call) {
+        LiveService<T> liveService;
         if (isAsync) {
-            liveResult = new EnqueueLiveResult<>();
+            liveService = new EnqueueLiveService<>();
         } else {
-            liveResult = new ExecuteLiveResult<>();
+            liveService = new ExecuteLiveService<>();
         }
-        return liveResult.service(call);
+        return liveService.service(call);
     }
 }

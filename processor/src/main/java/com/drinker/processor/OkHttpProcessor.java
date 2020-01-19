@@ -42,8 +42,8 @@ public class OkHttpProcessor extends AbstractProcessor {
         // create service file
         Set<? extends Element> serviceElements = roundEnv.getElementsAnnotatedWith(Service.class);
         messager.printMessage(Diagnostic.Kind.WARNING,"serviceElements "+serviceElements);
-        ProcessHandler serviceHandler = new ServiceHandler();
-        serviceHandler.process(serviceElements, elements, messager, filer);
+        ProcessHandler serviceHandler = new ServiceHandler(elements,messager,filer);
+        serviceHandler.process(serviceElements);
         return false;
     }
 

@@ -2,7 +2,9 @@ package com.drinker.processor.method;
 
 import com.drinker.annotation.Body;
 import com.drinker.annotation.Put;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 import java.util.List;
@@ -20,7 +22,7 @@ import static com.drinker.processor.OkHttpClassName.SPEEDY_WRAPPER_CALL;
 
 public class PutMethodHandler implements IHttpMethodHandler {
     @Override
-    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, Messager messager) {
+    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, Messager messager) {
         Put putAnnotation = executableElement.getAnnotation(Put.class);
         if (putAnnotation != null) {
             if (parameters.size() > 1) {
@@ -36,7 +38,6 @@ public class PutMethodHandler implements IHttpMethodHandler {
             if (!"okhttp3.RequestBody".equals(typeMirror.toString())) {
                 throw new IllegalArgumentException("put param must be okhttp3.RequestBody");
             }
-            TypeMirror returnType = executableElement.getReturnType();
             return MethodSpec.overriding(executableElement)
                     .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
                     .addCode(".url(baseHttpUrl+$S)\n", putAnnotation.value())
@@ -44,11 +45,8 @@ public class PutMethodHandler implements IHttpMethodHandler {
                     .addCode(".build();\n")
                     .addCode("")
                     .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-//                    .addStatement("return new WrapperCall<>(respConverter, delivery, newCall, client, request)")
-
-                    .addStatement("$T wrapperCall = new $T<>(respConverter, newCall, client, request)", SPEEDY_CALL, SPEEDY_WRAPPER_CALL)
+                    .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.<$T>respBodyConverter($T.class), newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType, generateType)
                     .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
-
                     .returns(TypeName.get(returnType))
                     .build();
         }

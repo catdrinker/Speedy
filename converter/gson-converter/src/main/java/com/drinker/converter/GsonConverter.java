@@ -4,19 +4,17 @@ import com.drinker.speedy.ResponseBodyConverter;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.TypeAdapter;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import okhttp3.ResponseBody;
 
 public class GsonConverter<T> implements ResponseBodyConverter<T> {
 
     private final Gson gson;
-    private final TypeAdapter<T> adapter;
+    private TypeAdapter<T> adapter;
 
 
     private GsonConverter(Gson gson, TypeAdapter<T> adapter) {
@@ -25,9 +23,7 @@ public class GsonConverter<T> implements ResponseBodyConverter<T> {
     }
 
     // TODO 改成每个方法创建一个新的Converter，这里还是要传入factory
-    static GsonConverter<?> create(Type type) {
-        Gson gson = new Gson();
-        TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(type));
+    public static <T> GsonConverter<T> create(Gson gson, TypeAdapter<T> adapter) {
         return new GsonConverter<>(gson, adapter);
     }
 

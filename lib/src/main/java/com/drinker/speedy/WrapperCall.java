@@ -25,7 +25,7 @@ public class WrapperCall<T> implements Call<T> {
     @Override
     public Response<T> execute() throws IOException {
         assert rawCall != null;
-        synchronized (this){
+        synchronized (this) {
             if (isExecuted) {
                 throw new IllegalStateException("one call only can execute one time");
             }
@@ -58,10 +58,15 @@ public class WrapperCall<T> implements Call<T> {
             }
 
             @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                T body = converter.transform(response.body());
-                Response<T> wrappedResponse = Response.success(response, body);
-                callback.onResponse(WrapperCall.this, wrappedResponse);
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+                try {
+                    T body = converter.transform(response.body());
+                    Response<T> wrappedResponse = Response.success(response, body);
+                    callback.onResponse(WrapperCall.this, wrappedResponse);
+                } catch (Throwable e) {
+                    throwIfFatal(e);
+                    callback.onFailure(WrapperCall.this, e);
+                }
             }
         });
     }
@@ -83,6 +88,16 @@ public class WrapperCall<T> implements Call<T> {
 
     public Request getRawRequest() {
         return rawRequest;
+    }
+
+    static void throwIfFatal(Throwable t) {
+        if (t instanceof VirtualMachineError) {
+            throw (VirtualMachineError) t;
+        } else if (t instanceof ThreadDeath) {
+            throw (ThreadDeath) t;
+        } else if (t instanceof LinkageError) {
+            throw (LinkageError) t;
+        }
     }
 
 }
