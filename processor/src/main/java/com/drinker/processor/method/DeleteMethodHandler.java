@@ -7,7 +7,6 @@ import com.squareup.javapoet.TypeName;
 
 import java.util.List;
 
-import javax.annotation.processing.Messager;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -18,10 +17,10 @@ import static com.drinker.processor.SpeedyClassName.REQUEST_BODY_BUILDER;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_CALL;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 
-public class DeleteMethod implements IHttpMethodHandler {
+public class DeleteMethodHandler implements IHttpMethodHandler {
 
     @Override
-    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, Messager messager) {
+    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
         Delete deleteAnnotation = executableElement.getAnnotation(Delete.class);
         if (deleteAnnotation != null) {
             if (parameters.size() > 1) {

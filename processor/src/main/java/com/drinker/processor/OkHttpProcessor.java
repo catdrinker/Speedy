@@ -15,7 +15,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
-import javax.tools.Diagnostic;
 
 
 @SupportedAnnotationTypes({"com.drinker.annotation.Get", "com.drinker.annotation.Post"})
@@ -26,8 +25,6 @@ public class OkHttpProcessor extends AbstractProcessor {
 
     private Elements elements;
 
-    private Messager messager;
-
     private ProcessHandler mapHandler;
 
     @Override
@@ -35,7 +32,7 @@ public class OkHttpProcessor extends AbstractProcessor {
         super.init(processingEnv);
         filer = processingEnv.getFiler();
         elements = processingEnv.getElementUtils();
-        messager = processingEnv.getMessager();
+        Messager messager = processingEnv.getMessager();
         Log.init(messager);
         Log.w("hehehehehehehe ----- " + elements + " filter " + filer);
     }
@@ -44,11 +41,11 @@ public class OkHttpProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         // create service file
         Set<? extends Element> serviceElements = roundEnv.getElementsAnnotatedWith(Service.class);
-        messager.printMessage(Diagnostic.Kind.WARNING, "serviceElements " + serviceElements);
-        ProcessHandler serviceHandler = new ServiceHandler(elements, messager, filer);
+        Log.w("serviceElements " + serviceElements);
+        ProcessHandler serviceHandler = new ServiceHandler(elements, filer);
         serviceHandler.process(serviceElements);
         if (mapHandler == null && !serviceElements.isEmpty()) {
-            mapHandler = new ServiceMapHandler(elements, messager, filer);
+            mapHandler = new ServiceMapHandler(elements, filer);
             mapHandler.process(serviceElements);
         }
 

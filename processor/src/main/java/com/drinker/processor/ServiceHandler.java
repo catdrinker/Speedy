@@ -1,6 +1,6 @@
 package com.drinker.processor;
 
-import com.drinker.processor.method.DeleteMethod;
+import com.drinker.processor.method.DeleteMethodHandler;
 import com.drinker.processor.method.GetMethodHandler;
 import com.drinker.processor.method.IHttpMethodHandler;
 import com.drinker.processor.method.PostMethodHandler;
@@ -27,7 +27,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
-import javax.tools.Diagnostic;
 
 import static com.drinker.processor.SpeedyClassName.CALL_ADAPTER;
 import static com.drinker.processor.SpeedyClassName.CALL_FACTORY;
@@ -38,13 +37,11 @@ class ServiceHandler implements ProcessHandler {
 
     private final static String IMPL = "_impl";
     private Elements elements;
-    private Messager messager;
     private Filer filer;
 
 
-    public ServiceHandler(Elements elements, Messager messager, Filer filer) {
+    public ServiceHandler(Elements elements, Filer filer) {
         this.elements = elements;
-        this.messager = messager;
         this.filer = filer;
     }
 
@@ -60,7 +57,7 @@ class ServiceHandler implements ProcessHandler {
                 if (enclosedElement instanceof ExecutableElement) {
                     // 写方法
                     ExecutableElement executableElement = (ExecutableElement) enclosedElement;
-                    messager.printMessage(Diagnostic.Kind.WARNING, "element" + element + "enclose" + enclosedElement);
+                    Log.w("element" + element + "enclose" + enclosedElement);
                     MethodSpec methodSpec = checkReturnType(executableElement);
                     classBuilder.addMethod(methodSpec);
                 }
@@ -127,10 +124,10 @@ class ServiceHandler implements ProcessHandler {
         handlers.add(new GetMethodHandler());
         handlers.add(new PostMethodHandler());
         handlers.add(new PutMethodHandler());
-        handlers.add(new DeleteMethod());
+        handlers.add(new DeleteMethodHandler());
 
         for (IHttpMethodHandler handler : handlers) {
-            MethodSpec methodSpec = handler.process(element, parameters, returnType, generateType, messager);
+            MethodSpec methodSpec = handler.process(element, parameters, returnType, generateType);
             if (methodSpec != null) {
                 return methodSpec;
             }
@@ -142,7 +139,7 @@ class ServiceHandler implements ProcessHandler {
         List<? extends VariableElement> parameters = element.getParameters();
         TypeMirror returnType = element.getReturnType();
         TypeName returnTypeName = ClassName.get(returnType);
-        messager.printMessage(Diagnostic.Kind.WARNING, "return type " + returnTypeName);
+        Log.w("return type " + returnTypeName);
         if (returnTypeName instanceof ParameterizedTypeName) {
             List<TypeName> genericReturnTypes = ((ParameterizedTypeName) returnTypeName).typeArguments;
             if (genericReturnTypes != null && !genericReturnTypes.isEmpty()) {

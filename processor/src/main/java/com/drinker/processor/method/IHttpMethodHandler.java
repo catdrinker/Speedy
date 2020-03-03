@@ -12,5 +12,5 @@ import javax.lang.model.type.TypeMirror;
 
 public interface IHttpMethodHandler {
 
-    MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, Messager messager);
+    MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType);
 }

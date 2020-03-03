@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.processing.Messager;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -27,7 +26,7 @@ public class GetMethodHandler implements IHttpMethodHandler {
 
 
     @Override
-    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, Messager messager) {
+    public MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
         Get getAnnotation = executableElement.getAnnotation(Get.class);
         if (getAnnotation != null) {
             String value = getAnnotation.value();

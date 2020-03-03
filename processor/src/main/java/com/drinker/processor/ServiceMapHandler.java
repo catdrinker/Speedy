@@ -1,19 +1,16 @@
 package com.drinker.processor;
 
 import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
 import java.util.Set;
 
 import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
-import javax.tools.Diagnostic;
 
 public class ServiceMapHandler implements ProcessHandler {
 
@@ -23,11 +20,9 @@ public class ServiceMapHandler implements ProcessHandler {
 
     private Elements elements;
 
-    private Messager messager;
 
-    public ServiceMapHandler(Elements elements, Messager messager, Filer filer) {
+    public ServiceMapHandler(Elements elements, Filer filer) {
         this.elements = elements;
-        this.messager = messager;
         this.filer = filer;
     }
 
@@ -35,7 +30,7 @@ public class ServiceMapHandler implements ProcessHandler {
     public void process(Set<? extends Element> serviceElements) {
         TypeSpec.Builder classBuilder = TypeSpec.classBuilder(SERVICE_MAP_NAME);
 
-        messager.printMessage(Diagnostic.Kind.WARNING, "just generate map process");
+        Log.w("just generate map process");
         for (Element serviceElement : serviceElements) {
             String packageName = elements.getPackageOf(serviceElement).getQualifiedName().toString();
             TypeElement element = (TypeElement) serviceElement;
