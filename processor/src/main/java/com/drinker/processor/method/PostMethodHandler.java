@@ -32,7 +32,7 @@ public class PostMethodHandler implements IHttpMethodHandler {
 
             for (VariableElement parameter : parameters) {
                 Param param = parameter.getAnnotation(Param.class);
-                methodSpecBuilder.addCode(".add($S, $S)\n", param.value(), parameter.getSimpleName().toString());
+                methodSpecBuilder.addCode(".add($S," + parameter.getSimpleName().toString() + ")\n", param.value());
                 messager.printMessage(Diagnostic.Kind.WARNING, "params is " + param);
             }
             methodSpecBuilder.addCode(".build()");

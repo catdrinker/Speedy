@@ -17,6 +17,12 @@ public interface IService {
     @Get("pl.json?rand=635840524184357321")
     LiveResult<Value> getLogin(@Param("first") String firstParam, @Param("second") String secondParam);
 
+    @Get("{node}/pl.json/{rand}?rand=635840524184357321")
+    LiveResult<Value> getLoginView(@Param("node") String node, @Param("rands") String rand);
+
+    @Get("node/pl.json/{map}/rand=635840524184357321")
+    LiveResult<Value> getLoginVi(@Param("map") String map, @Param("rand") String rand);
+
     @Post("/user/sign_up")
     LiveResult<Home> getSign(@Param("key") String keyParam, @Param("value") String valueParam);
 

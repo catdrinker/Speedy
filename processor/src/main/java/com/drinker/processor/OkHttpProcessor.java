@@ -36,7 +36,8 @@ public class OkHttpProcessor extends AbstractProcessor {
         filer = processingEnv.getFiler();
         elements = processingEnv.getElementUtils();
         messager = processingEnv.getMessager();
-        messager.printMessage(Diagnostic.Kind.WARNING, "hehehehehehehe ----- " + elements + " filter " + filer);
+        Log.init(messager);
+        Log.w("hehehehehehehe ----- " + elements + " filter " + filer);
     }
 
     @Override
