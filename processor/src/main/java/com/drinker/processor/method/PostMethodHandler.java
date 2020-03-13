@@ -1,5 +1,6 @@
 package com.drinker.processor.method;
 
+import com.drinker.annotation.Body;
 import com.drinker.annotation.Param;
 import com.drinker.annotation.Post;
 import com.drinker.processor.Log;
@@ -55,11 +56,18 @@ public class PostMethodHandler extends HttpMethodHandler {
                 continue;
             }
             Param param = parameter.getAnnotation(Param.class);
-            methodSpecBuilder.addCode(".add($S," + parameter.getSimpleName().toString() + ")\n", param.value());
-            Log.w("params is " + param);
+            if (param != null) {
+                methodSpecBuilder.addCode(".add($S," + parameter.getSimpleName().toString() + ")\n", param.value());
+                Log.w("params is " + param);
+            }
+            Body body = parameter.getAnnotation(Body.class);
+            if (body != null) {
+                Log.w("param is " + param);
+            }
         }
 
         methodSpecBuilder.addCode(".build()");
+
 
         return methodSpecBuilder.addStatement("")
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)

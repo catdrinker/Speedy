@@ -36,7 +36,7 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
             String usingFormat = null;
             for (VariableElement parameter : parameters) {
                 Param param = parameter.getAnnotation(Param.class);
-                if (format.equals(param.value())) {
+                if (param != null && format.equals(param.value())) {
                     Log.i("format has " + format);
                     usingFormat = parameter.getSimpleName().toString();
                     realParameters.add(parameter.getSimpleName().toString());
@@ -72,7 +72,7 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
                 urlString.append("\"").append(originalWords.get(i + 1)).append("\"");
             }
         }
-        return process(executableElement,parameters,returnType,generateType,urlString, realParameters);
+        return process(executableElement, parameters, returnType, generateType, urlString, realParameters);
     }
 
 

@@ -9,6 +9,7 @@ import com.drinker.annotation.Post;
 import com.drinker.annotation.Put;
 import com.drinker.annotation.Service;
 
+import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
 @Service
@@ -27,7 +28,7 @@ public interface IService {
     LiveResult<Value> getLoginVie(@Param("map") String map, @Param("rand") String rand);
 
     @Post("/user/sign_up")
-    LiveResult<Home> getSign(@Param("key") String keyParam, @Param("value") String valueParam);
+    LiveResult<Home> getSign(@Param("key") String keyParam, @Param("value") String valueParam, @Body FormBody body);
 
     @Post("/user/sign_up/{key}/let")
     LiveResult<Home> getSigns(@Param("key") String keyParam, @Param("value") String valueParam);
