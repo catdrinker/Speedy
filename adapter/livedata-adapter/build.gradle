@@ -27,12 +27,12 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
     // alternatively, just LiveData
     implementation "android.arch.lifecycle:livedata:1.1.1"
     // TODO use maven
     implementation project(':lib')
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation "junit:junit:$JUNIT"
+    androidTestImplementation "androidx.test:runner:$TEST_RUNNER"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_CORE"
 }

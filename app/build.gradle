@@ -24,16 +24,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    annotationProcessor project(':processor')
-    implementation project(':lib')
 
     implementation project(':annotation')
     // livedata adapter
@@ -42,9 +32,22 @@ dependencies {
     // gson converter
     implementation project(':converter:gson-converter')
 
-//    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+    //    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
 
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
+    implementation "androidx.core:core-ktx:$CORE_KT_X"
+    implementation "androidx.constraintlayout:constraintlayout:$CONSTRAINT_LAYOUT"
+    testImplementation "junit:junit:$JUNIT"
+    androidTestImplementation "androidx.test:runner:$TEST_RUNNER"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_CORE"
+    annotationProcessor project(':processor')
+    implementation project(':lib')
+
+
     // ViewModel and LiveData
-    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation "android.arch.lifecycle:extensions:$LIFECYCLE_EXTENSIONS"
 }
