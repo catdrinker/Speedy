@@ -1,7 +1,7 @@
-include ':app',
-        ':lib',
-        ':annotation',
-        ':processor',
-        'converter:gson-converter',
-        'adapter:livedata-adapter'
+include ':app'
+include ':lib'
+include ':annotation'
+include ':processor'
+include 'converter:gson-converter'
+include 'adapter:livedata-adapter'
 rootProject.name = 'Speedy'

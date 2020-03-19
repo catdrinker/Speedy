@@ -76,7 +76,7 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
     }
 
 
-    protected abstract MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<String> realParameters);
-
     protected abstract String getExtraUrl(ExecutableElement executableElement);
+
+    protected abstract MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<String> realParameters);
 }

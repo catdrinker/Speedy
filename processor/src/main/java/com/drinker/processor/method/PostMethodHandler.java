@@ -1,6 +1,8 @@
 package com.drinker.processor.method;
 
 import com.drinker.annotation.Body;
+import com.drinker.annotation.FormMap;
+import com.drinker.annotation.MultiPart;
 import com.drinker.annotation.Param;
 import com.drinker.annotation.Post;
 import com.drinker.processor.Log;
@@ -25,9 +27,14 @@ public class PostMethodHandler extends HttpMethodHandler {
 
     @Override
     protected String getExtraUrl(ExecutableElement executableElement) {
-        Post annotation = executableElement.getAnnotation(Post.class);
-        if (annotation != null) {
-            return annotation.value();
+        Post postAnnotation = executableElement.getAnnotation(Post.class);
+        MultiPart multiPartAnnotation = executableElement.getAnnotation(MultiPart.class);
+        // multipart 交给后续的handler 处理
+        if (multiPartAnnotation != null) {
+            return null;
+        }
+        if (postAnnotation != null) {
+            return postAnnotation.value();
         }
         return null;
     }
@@ -55,6 +62,13 @@ public class PostMethodHandler extends HttpMethodHandler {
             if (hasParam) {
                 continue;
             }
+            FormMap formMap = parameter.getAnnotation(FormMap.class);
+            if (formMap != null) {
+                if (parameters.size() != 1) {
+                    throw new IllegalArgumentException("FormMap");
+                }
+            }
+
             Param param = parameter.getAnnotation(Param.class);
             if (param != null) {
                 methodSpecBuilder.addCode(".add($S," + parameter.getSimpleName().toString() + ")\n", param.value());
