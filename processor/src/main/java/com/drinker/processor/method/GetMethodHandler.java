@@ -33,7 +33,6 @@ public class GetMethodHandler extends HttpMethodHandler {
 
     @Override
     protected void appendUrl(List<? extends VariableElement> parameters, List<Param> formatParams, StringBuilder urlString) {
-        super.appendUrl(parameters, formatParams, urlString);
         for (VariableElement parameter : parameters) {
             Param param = parameter.getAnnotation(Param.class);
             if (param == null || formatParams.contains(param)) {
@@ -53,25 +52,6 @@ public class GetMethodHandler extends HttpMethodHandler {
 
     @Override
     protected MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
-        // 添加get后面拼接的参数
-        for (VariableElement parameter : parameters) {
-            Param param = parameter.getAnnotation(Param.class);
-            if (param == null || formatParams.contains(param)) {
-                Log.w("find format param just skip it " + param);
-                continue;
-            }
-
-            String str = urlString.toString();
-            int index = str.indexOf("?");
-            if (index != -1) {
-                urlString.append("+").append("\"").append("&").append(param.value()).append("=").append("\"").append("+").append(parameter.getSimpleName());
-            } else {
-                urlString.append("+").append("\"").append("?").append(param.value()).append("=").append("\"").append("+").append(parameter.getSimpleName());
-            }
-        }
-
-        urlString.append(")\n");
-
         return MethodSpec.overriding(executableElement)
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
                 .addCode(".get()\n")

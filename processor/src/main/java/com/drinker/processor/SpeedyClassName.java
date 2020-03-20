@@ -10,6 +10,15 @@ public class SpeedyClassName {
     public static String OK_HTTP_PACKAGE = "okhttp3";
     public static String SPEEDY_PACKAGE = "com.drinker.speedy";
 
+    public static String JAVA_UTIL_PACKAGE = "java.util";
+
+    public static String JAVA_LANG_PACKAGE = "java.lang";
+
+    public static ClassName MAP = ClassName.get(JAVA_UTIL_PACKAGE,"Map");
+    public static ClassName MAP_ENTRY = MAP.nestedClass("Entry");
+
+    public static ClassName STRING = ClassName.get(JAVA_LANG_PACKAGE,"String");
+    public static ClassName ITERATOR = ClassName.get(JAVA_UTIL_PACKAGE,"Iterator");
 
     /**
      * about okhttp class name
@@ -21,6 +30,8 @@ public class SpeedyClassName {
 
     public static ClassName REQ_BODY = ClassName.get(OK_HTTP_PACKAGE, "RequestBody");
     public static ClassName FORM_BODY = ClassName.get(OK_HTTP_PACKAGE, "FormBody");
+    public static ClassName FORM_BODY_BUILDER = FORM_BODY.nestedClass("Builder");
+
 
     public static ClassName RESP_BODY = ClassName.get(OK_HTTP_PACKAGE, "ResponseBody");
 

@@ -3,11 +3,16 @@ package com.drinker.speedy;
 import com.drinker.adapter.LiveResult;
 import com.drinker.annotation.Body;
 import com.drinker.annotation.Delete;
+import com.drinker.annotation.Form;
+import com.drinker.annotation.FormMap;
 import com.drinker.annotation.Get;
 import com.drinker.annotation.Param;
+import com.drinker.annotation.ParamMap;
 import com.drinker.annotation.Post;
 import com.drinker.annotation.Put;
 import com.drinker.annotation.Service;
+
+import java.util.Map;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -27,12 +32,17 @@ public interface IService {
     @Get("node/pl.json/{map}/let")
     LiveResult<Value> getLoginVie(@Param("map") String map, @Param("rand") String rand);
 
+    @Form
     @Post("/user/sign_up")
-    LiveResult<Home> getSign(@Param("key") String keyParam, @Param("value") String valueParam, @Body FormBody body);
+    LiveResult<Home> getSign(@Param("key") String keyParam, @Param("value") String valueParam);
 
+    @FormMap
+    @Post("/user/sign_up")
+    LiveResult<Home> getSign1(@ParamMap Map<String,String> map);
+
+    @Form
     @Post("/user/sign_up/{key}/let")
     LiveResult<Home> getSigns(@Param("key") String keyParam, @Param("value") String valueParam);
-
 
     @Put("/user/sign")
     LiveResult<Home> get(@Body RequestBody body);

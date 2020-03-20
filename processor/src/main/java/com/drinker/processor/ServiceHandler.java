@@ -3,6 +3,7 @@ package com.drinker.processor;
 import com.drinker.processor.method.DeleteMethodHandler;
 import com.drinker.processor.method.GetMethodHandler;
 import com.drinker.processor.method.IHttpMethodHandler;
+import com.drinker.processor.method.PostFormMapMethodHandler;
 import com.drinker.processor.method.PostFormMethodHandler;
 import com.drinker.processor.method.PutMethodHandler;
 import com.squareup.javapoet.ClassName;
@@ -123,6 +124,7 @@ class ServiceHandler implements ProcessHandler {
         List<IHttpMethodHandler> handlers = new ArrayList<>();
         handlers.add(new GetMethodHandler());
         handlers.add(new PostFormMethodHandler());
+        handlers.add(new PostFormMapMethodHandler());
         handlers.add(new PutMethodHandler());
         handlers.add(new DeleteMethodHandler());
 
@@ -132,7 +134,7 @@ class ServiceHandler implements ProcessHandler {
                 return methodSpec;
             }
         }
-        throw new NullPointerException("method must has annotation like @Get @Post...");
+        throw new NullPointerException("no method handler handle it ,please check you'r service config");
     }
 
     private MethodSpec checkReturnType(ExecutableElement element) {
@@ -144,8 +146,9 @@ class ServiceHandler implements ProcessHandler {
             List<TypeName> genericReturnTypes = ((ParameterizedTypeName) returnTypeName).typeArguments;
             if (genericReturnTypes != null && !genericReturnTypes.isEmpty()) {
                 // 确保只有一个包装的返回值
-                assert genericReturnTypes.size() == 1;
-
+                if (genericReturnTypes.size() != 1) {
+                    throw new IllegalStateException("genericReturnTypes only can has one ");
+                }
                 TypeName generateType = genericReturnTypes.get(0);
                 return getMethodSpec(element, parameters, returnType, generateType);
             } else {
