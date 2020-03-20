@@ -1,15 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
-
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOL_VERSION as String
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionName VERSION_NAME as String
+        versionCode VERSION_CODE as int
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -29,7 +28,8 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
     // alternatively, just LiveData
-    implementation "android.arch.lifecycle:livedata:1.1.1"
+
+    implementation "android.arch.lifecycle:livedata:$LIFECYCLE_EXTENSIONS"
     // TODO use maven
     implementation project(':lib')
     testImplementation "junit:junit:$JUNIT"
