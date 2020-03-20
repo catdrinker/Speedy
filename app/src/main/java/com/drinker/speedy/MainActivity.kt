@@ -10,11 +10,6 @@ import com.drinker.adapter.ResultStatus
 import com.drinker.converter.GsonConverterFactory
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
@@ -45,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         val speedy = Speedy.Builder()
             .baseUrl(BaseHttpUrl.get("https://ditu.amap.com/service/pl/"))
             .callFactory(client)
-            .converterFactroy(GsonConverterFactory.create())
+            .converterFactory(GsonConverterFactory.create())
             .callAdapter(LiveDataAdapter.create(true))
             .build()
 
@@ -73,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
             })*/
 
-            val loginCall = service.getLogin("", "")
+            val loginCall = service.getLogin()
             loginCall.observe(this, Observer {
                 if (it.status == ResultStatus.FAILURE) {
                     Log.w("MainActivity", "status error ${it.exception}")

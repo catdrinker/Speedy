@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -40,7 +39,7 @@ class ServiceHandler implements ProcessHandler {
     private Filer filer;
 
 
-    public ServiceHandler(Elements elements, Filer filer) {
+    ServiceHandler(Elements elements, Filer filer) {
         this.elements = elements;
         this.filer = filer;
     }
@@ -89,11 +88,12 @@ class ServiceHandler implements ProcessHandler {
                     .addParameter(CALL_FACTORY, "client")
                     .addParameter(String.class, "baseHttpUrl")
                     .addParameter(CONVERTER_FACTORY, "converterFactory")
+                    .addParameter(DELIVERY,"delivery")
                     .addParameter(CALL_ADAPTER, "callAdapter")
                     .addStatement("this.client = client")
                     .addStatement("this.baseHttpUrl = baseHttpUrl")
                     .addStatement("this.converterFactory = converterFactory")
-//                    .addStatement("this.delivery = delivery")
+                    .addStatement("this.delivery = delivery")
                     .addStatement("this.callAdapter = callAdapter")
                     .build();
 
@@ -101,7 +101,7 @@ class ServiceHandler implements ProcessHandler {
                     .addField(clientFiled)
                     .addField(baseHttpUrlField)
                     .addField(converterField)
-//                    .addField(deliveryField)
+                    .addField(deliveryField)
                     .addField(callAdapterField)
                     .addMethod(constructor)
                     .build();

@@ -16,7 +16,7 @@ import okhttp3.RequestBody;
 public interface IService {
 
     @Get("pl.json?rand=635840524184357321")
-    LiveResult<Value> getLogin(@Param("first") String firstParam, @Param("second") String secondParam);
+    LiveResult<Value> getLogin();
 
     @Get("{node}/pl.json/{rand}?rand=635840524184357321")
     LiveResult<Value> getLoginView(@Param("node") String node, @Param("rands") String rand);

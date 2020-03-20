@@ -11,12 +11,14 @@ public class Speedy {
     private final Call.Factory callFactory;
     private final BaseHttpUrl baseHttpUrl;
     private final Converter.Factory converterFactory;
+    private final IDelivery delivery;
     private final CallAdapter<?, ?> callAdapter;
 
     private Speedy(Builder builder) {
         baseHttpUrl = builder.baseHttpUrl;
         callFactory = builder.callFactory;
         converterFactory = builder.converterFactory;
+        delivery = builder.delivery;
         callAdapter = builder.callAdapter;
     }
 
@@ -30,8 +32,8 @@ public class Speedy {
             Class<?> implService = Class.forName(implName);
             Constructor<?>[] constructors = implService.getConstructors();
             if (constructors.length != 1) return null;
-            Constructor<?> serviceConstructor = implService.getConstructor(okhttp3.Call.Factory.class, String.class, Converter.Factory.class, CallAdapter.class);
-            Object newInstance = serviceConstructor.newInstance(callFactory, baseHttpUrl.baseUrl, converterFactory, callAdapter);
+            Constructor<?> serviceConstructor = implService.getConstructor(okhttp3.Call.Factory.class, String.class, Converter.Factory.class, IDelivery.class, CallAdapter.class);
+            Object newInstance = serviceConstructor.newInstance(callFactory, baseHttpUrl.baseUrl, converterFactory, delivery, callAdapter);
             return (T) newInstance;
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException e) {
             throw new InitSpeedyFailException("can't init service cause " + e);
@@ -42,6 +44,7 @@ public class Speedy {
         private Call.Factory callFactory;
         private BaseHttpUrl baseHttpUrl;
         private Converter.Factory converterFactory;
+        private IDelivery delivery;
         private CallAdapter callAdapter;
 
         public Builder callFactory(Call.Factory callFactory) {
@@ -54,7 +57,7 @@ public class Speedy {
             return this;
         }
 
-        public Builder converterFactroy(Converter.Factory converterFactory) {
+        public Builder converterFactory(Converter.Factory converterFactory) {
             this.converterFactory = converterFactory;
             return this;
         }
@@ -76,6 +79,9 @@ public class Speedy {
             }
             if (callAdapter == null) {
                 callAdapter = new CallAdapter.DefaultCallAdapter();
+            }
+            if (delivery == null) {
+                delivery = new IDelivery.DefaultDelivery();
             }
             return new Speedy(this);
         }
