@@ -3,7 +3,7 @@ package com.drinker.processor;
 import com.drinker.processor.method.DeleteMethodHandler;
 import com.drinker.processor.method.GetMethodHandler;
 import com.drinker.processor.method.IHttpMethodHandler;
-import com.drinker.processor.method.PostMethodHandler;
+import com.drinker.processor.method.PostFormMethodHandler;
 import com.drinker.processor.method.PutMethodHandler;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
@@ -88,7 +88,7 @@ class ServiceHandler implements ProcessHandler {
                     .addParameter(CALL_FACTORY, "client")
                     .addParameter(String.class, "baseHttpUrl")
                     .addParameter(CONVERTER_FACTORY, "converterFactory")
-                    .addParameter(DELIVERY,"delivery")
+                    .addParameter(DELIVERY, "delivery")
                     .addParameter(CALL_ADAPTER, "callAdapter")
                     .addStatement("this.client = client")
                     .addStatement("this.baseHttpUrl = baseHttpUrl")
@@ -122,7 +122,7 @@ class ServiceHandler implements ProcessHandler {
     private MethodSpec getMethodSpec(ExecutableElement element, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
         List<IHttpMethodHandler> handlers = new ArrayList<>();
         handlers.add(new GetMethodHandler());
-        handlers.add(new PostMethodHandler());
+        handlers.add(new PostFormMethodHandler());
         handlers.add(new PutMethodHandler());
         handlers.add(new DeleteMethodHandler());
 

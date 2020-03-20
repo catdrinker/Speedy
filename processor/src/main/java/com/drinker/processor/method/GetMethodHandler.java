@@ -22,31 +22,45 @@ import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 public class GetMethodHandler extends HttpMethodHandler {
 
     @Override
-    protected String getExtraUrl(ExecutableElement executableElement) {
-        Get getAnnotation = executableElement.getAnnotation(Get.class);
-        if (getAnnotation != null) {
-            return getAnnotation.value();
-        }
-        return null;
+    protected boolean handle(ExecutableElement executableElement) {
+        return executableElement.getAnnotation(Get.class) != null;
     }
 
     @Override
-    protected MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<String> realParameters) {
-        // 添加get后面拼接的参数
+    protected String getExtraUrl(ExecutableElement executableElement) {
+        return executableElement.getAnnotation(Get.class).value();
+    }
+
+    @Override
+    protected void appendUrl(List<? extends VariableElement> parameters, List<Param> formatParams, StringBuilder urlString) {
+        super.appendUrl(parameters, formatParams, urlString);
         for (VariableElement parameter : parameters) {
-            boolean hasParam = false;
-            for (String realParameter : realParameters) {
-                if (realParameter.equals(parameter.getSimpleName().toString())) {
-                    Log.i("has real param " + realParameter);
-                    hasParam = true;
-                    break;
-                }
-            }
-            Log.w("after loop " + parameter.getSimpleName() + hasParam);
-            if (hasParam) {
+            Param param = parameter.getAnnotation(Param.class);
+            if (param == null || formatParams.contains(param)) {
+                Log.w("find format param just skip it " + param);
                 continue;
             }
+            String str = urlString.toString();
+            int index = str.indexOf("?");
+            if (index != -1) {
+                urlString.append("+").append("\"").append("&").append(param.value()).append("=").append("\"").append("+").append(parameter.getSimpleName());
+            } else {
+                urlString.append("+").append("\"").append("?").append(param.value()).append("=").append("\"").append("+").append(parameter.getSimpleName());
+            }
+        }
+        urlString.append(")\n");
+    }
+
+    @Override
+    protected MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
+        // 添加get后面拼接的参数
+        for (VariableElement parameter : parameters) {
             Param param = parameter.getAnnotation(Param.class);
+            if (param == null || formatParams.contains(param)) {
+                Log.w("find format param just skip it " + param);
+                continue;
+            }
+
             String str = urlString.toString();
             int index = str.indexOf("?");
             if (index != -1) {
