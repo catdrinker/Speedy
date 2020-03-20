@@ -2,8 +2,6 @@ package com.drinker.processor.method;
 
 import com.drinker.annotation.Body;
 import com.drinker.annotation.Delete;
-import com.drinker.annotation.Form;
-import com.drinker.annotation.MultiPart;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 

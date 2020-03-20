@@ -40,7 +40,7 @@ public class PostFormMapMethodHandler extends HttpPostHandler {
 
     @Override
     protected MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
-        VariableElement mapParameter = getParamMapParameter(parameters, formatParams);
+        VariableElement mapParameter = getParamMapParameter(parameters);
         if (mapParameter != null) {
             return MethodSpec.overriding(executableElement)
                     .addStatement("$T bodyBuilder = new $T()", FORM_BODY_BUILDER, FORM_BODY_BUILDER)
@@ -66,7 +66,7 @@ public class PostFormMapMethodHandler extends HttpPostHandler {
         return null;
     }
 
-    private VariableElement getParamMapParameter(List<? extends VariableElement> parameters, List<Param> formatParams) {
+    private VariableElement getParamMapParameter(List<? extends VariableElement> parameters) {
         for (VariableElement parameter : parameters) {
             ParamMap annotation = parameter.getAnnotation(ParamMap.class);
             if (annotation != null) {
