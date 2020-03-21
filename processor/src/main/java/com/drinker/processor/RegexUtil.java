@@ -9,13 +9,13 @@ import java.util.regex.Pattern;
 
 public class RegexUtil {
 
-    public static final String PARAM = "[a-zA-Z][a-zA-Z0-9_-]*";
+    private static final String PARAM = "[a-zA-Z][a-zA-Z0-9_-]*";
     private static final String WRAP_PARAM = "\\{" + PARAM + "\\}";
     private static final Pattern PARAM_URL_REGEX = Pattern.compile("\\{(" + PARAM + ")\\}");
     private static final Pattern PARAM_NAME_REGEX = Pattern.compile(PARAM);
 
 
-    public static Set<String> generateURL(String value) {
+    public static Set<String> generateUrl(String value) {
         Set<String> patterns = new LinkedHashSet<>();
         int question = value.indexOf('?');
         if (question != -1 && question < value.length() - 1) {

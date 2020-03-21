@@ -33,6 +33,6 @@ dependencies {
     // TODO use maven
     implementation project(':lib')
     testImplementation "junit:junit:$JUNIT"
-    androidTestImplementation "androidx.test:runner:$TEST_RUNNER"
+    androidTestImplementation "androidx.test.ext:junit:$TEST_RUNNER"
     androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_CORE"
 }

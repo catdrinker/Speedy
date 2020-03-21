@@ -157,8 +157,6 @@ class ServiceHandler implements ProcessHandler {
         } else {
             throw new IllegalStateException("return type is not ParameterizedTypeName");
         }
-
-
     }
 
 }

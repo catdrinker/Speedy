@@ -33,18 +33,15 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
 
     private MethodSpec methodProcess(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
         String extraUrl = getExtraUrl(executableElement);
-        Set<String> formats = RegexUtil.generateURL(extraUrl);
+        Set<String> formats = RegexUtil.generateUrl(extraUrl);
         List<String> originalWords = RegexUtil.getOriginalWords(extraUrl);
         if (originalWords.size() <= formats.size()) {
             throw new IllegalStateException("original word size must > format size");
         }
-
         List<String> formatParameters = getFormatParameters(parameters, formats);
         List<Param> formatParams = getFormatParams(parameters, formats);
         assert formatParameters.size() == originalWords.size() - 1;
-
         StringBuilder urlString = buildUrl(parameters, formatParams, formatParameters, originalWords, extraUrl);
-
         return process(executableElement, parameters, returnType, generateType, urlString, formatParams);
     }
 

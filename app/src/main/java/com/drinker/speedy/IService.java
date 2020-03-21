@@ -38,7 +38,7 @@ public interface IService {
 
     @FormMap
     @Post("/user/sign_up")
-    LiveResult<Home> getSign1(@ParamMap Map<String,String> map);
+    LiveResult<Home> getSign1(@ParamMap Map<String, String> map);
 
     @Form
     @Post("/user/sign_up/{key}/let")

@@ -4,6 +4,7 @@ dependencies {
     implementation project(":annotation")
     implementation 'com.squareup:javapoet:1.11.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation "junit:junit:$JUNIT"
 }
 
 sourceCompatibility = "7"

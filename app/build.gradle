@@ -42,7 +42,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$CORE_KT_X"
     implementation "androidx.constraintlayout:constraintlayout:$CONSTRAINT_LAYOUT"
     testImplementation "junit:junit:$JUNIT"
-    androidTestImplementation "androidx.test:runner:$TEST_RUNNER"
+    androidTestImplementation "androidx.test.ext:junit:$TEST_RUNNER"
     androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_CORE"
     annotationProcessor project(':processor')
     implementation project(':lib')
