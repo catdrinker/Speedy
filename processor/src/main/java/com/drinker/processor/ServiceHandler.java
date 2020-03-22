@@ -3,6 +3,7 @@ package com.drinker.processor;
 import com.drinker.processor.method.DeleteMethodHandler;
 import com.drinker.processor.method.GetMethodHandler;
 import com.drinker.processor.method.IHttpMethodHandler;
+import com.drinker.processor.method.PostBodyMethodHandler;
 import com.drinker.processor.method.PostFormMapMethodHandler;
 import com.drinker.processor.method.PostFormMethodHandler;
 import com.drinker.processor.method.PutMethodHandler;
@@ -125,6 +126,7 @@ class ServiceHandler implements ProcessHandler {
         handlers.add(new GetMethodHandler());
         handlers.add(new PostFormMethodHandler());
         handlers.add(new PostFormMapMethodHandler());
+        handlers.add(new PostBodyMethodHandler());
         handlers.add(new PutMethodHandler());
         handlers.add(new DeleteMethodHandler());
 
@@ -134,7 +136,7 @@ class ServiceHandler implements ProcessHandler {
                 return methodSpec;
             }
         }
-        throw new NullPointerException("no method handler handle it ,please check you'r service config");
+        throw new NullPointerException("no method handler handle it ,please check your service config");
     }
 
     private MethodSpec checkReturnType(ExecutableElement element) {

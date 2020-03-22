@@ -15,7 +15,7 @@ import javax.lang.model.type.TypeMirror;
 public class PostMultiPartMethodHandler extends HttpPostHandler {
 
     @Override
-    protected boolean handle(ExecutableElement executableElement) {
+    protected boolean handle(ExecutableElement executableElement, List<? extends VariableElement> parameters) {
         MultiPart multiPart = executableElement.getAnnotation(MultiPart.class);
         Post post = executableElement.getAnnotation(Post.class);
         return multiPart != null && post != null;
@@ -23,6 +23,7 @@ public class PostMultiPartMethodHandler extends HttpPostHandler {
 
     @Override
     protected MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
+
         return null;
     }
 

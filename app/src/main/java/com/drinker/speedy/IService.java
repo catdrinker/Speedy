@@ -14,7 +14,6 @@ import com.drinker.annotation.Service;
 
 import java.util.Map;
 
-import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
 @Service
@@ -29,7 +28,7 @@ public interface IService {
     @Get("node/pl.json/{map}/rand=635840524184357321")
     LiveResult<Value> getLoginVi(@Param("map") String map, @Param("rand") String rand);
 
-    @Get("node/pl.json/{map}/let")
+    @Get("node/pl.json/let/{map}")
     LiveResult<Value> getLoginVie(@Param("map") String map, @Param("rand") String rand);
 
     @Form
@@ -37,8 +36,12 @@ public interface IService {
     LiveResult<Home> getSign(@Param("key") String keyParam, @Param("value") String valueParam);
 
     @FormMap
+    @Post("/user/sign_up/{name}/")
+    LiveResult<Home> getSign1(@Param("name") String name, @ParamMap Map<String, String> map);
+
+
     @Post("/user/sign_up")
-    LiveResult<Home> getSign1(@ParamMap Map<String, String> map);
+    LiveResult<Home> getSign2(@Body RequestBody body);
 
     @Form
     @Post("/user/sign_up/{key}/let")

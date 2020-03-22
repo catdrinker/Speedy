@@ -1,5 +1,6 @@
 package com.drinker.processor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -36,7 +37,7 @@ public class RegexUtil {
 
     public static List<String> getOriginalWords(String url) {
         String[] strings = url.split(WRAP_PARAM);
-        return Arrays.asList(strings);
+        return new ArrayList<>(Arrays.asList(strings));
     }
 
     public static boolean pattern(String value) {

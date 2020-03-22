@@ -22,7 +22,7 @@ import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 public class GetMethodHandler extends HttpMethodHandler {
 
     @Override
-    protected boolean handle(ExecutableElement executableElement) {
+    protected boolean handle(ExecutableElement executableElement, List<? extends VariableElement> parameters) {
         return executableElement.getAnnotation(Get.class) != null;
     }
 

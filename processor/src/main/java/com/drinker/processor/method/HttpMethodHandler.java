@@ -24,7 +24,7 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
         if (isForm && isMultiPart) {
             throw new IllegalStateException("can't use Form and MultiPart at the same method");
         }
-        boolean handle = handle(executableElement);
+        boolean handle = handle(executableElement, parameters);
         if (handle) {
             return methodProcess(executableElement, parameters, returnType, generateType);
         }
@@ -35,9 +35,14 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
         String extraUrl = getExtraUrl(executableElement);
         Set<String> formats = RegexUtil.generateUrl(extraUrl);
         List<String> originalWords = RegexUtil.getOriginalWords(extraUrl);
-        if (originalWords.size() <= formats.size()) {
-            throw new IllegalStateException("original word size must > format size");
+        if (originalWords.size() < formats.size()) {
+            throw new IllegalStateException("original word size must >= format size");
         }
+
+        if (originalWords.size() == formats.size()) {
+            originalWords.add("");
+        }
+
         List<String> formatParameters = getFormatParameters(parameters, formats);
         List<Param> formatParams = getFormatParams(parameters, formats);
         assert formatParameters.size() == originalWords.size() - 1;
@@ -109,7 +114,7 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
         return params;
     }
 
-    protected abstract boolean handle(ExecutableElement executableElement);
+    protected abstract boolean handle(ExecutableElement executableElement, List<? extends VariableElement> parameters);
 
     protected abstract String getExtraUrl(ExecutableElement executableElement);
 

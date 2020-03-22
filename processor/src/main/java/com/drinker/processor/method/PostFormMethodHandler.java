@@ -2,6 +2,7 @@ package com.drinker.processor.method;
 
 import com.drinker.annotation.Form;
 import com.drinker.annotation.Param;
+import com.drinker.annotation.ParamMap;
 import com.drinker.annotation.Post;
 import com.drinker.processor.Log;
 import com.squareup.javapoet.MethodSpec;
@@ -24,7 +25,7 @@ import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 public class PostFormMethodHandler extends HttpPostHandler {
 
     @Override
-    protected boolean handle(ExecutableElement executableElement) {
+    protected boolean handle(ExecutableElement executableElement, List<? extends VariableElement> parameters) {
         Post post = executableElement.getAnnotation(Post.class);
         Form form = executableElement.getAnnotation(Form.class);
         return post != null && form != null;
