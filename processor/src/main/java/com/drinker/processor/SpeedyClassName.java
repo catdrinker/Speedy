@@ -39,6 +39,11 @@ public class SpeedyClassName {
     public static ClassName REQUEST_BODY_BUILDER = ClassName.get(OK_HTTP_PACKAGE, "Request")
             .nestedClass("Builder");
 
+    public static ClassName MEDIA_TYPE = ClassName.get(OK_HTTP_PACKAGE,"MediaType");
+    public static ClassName MULTIPART_BODY = ClassName.get(OK_HTTP_PACKAGE,"MultipartBody");
+    public static ClassName MULTIPART_PART = MULTIPART_BODY.nestedClass("Part");
+    public static ClassName MULTIPART_BODY_BUILDER = MULTIPART_BODY.nestedClass("Builder");
+
     /**
      * about speedy class name
      */

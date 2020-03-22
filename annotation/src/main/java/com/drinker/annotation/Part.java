@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.SOURCE)
-@Target(ElementType.METHOD)
-public @interface MultiType {
+@Target(ElementType.PARAMETER)
+public @interface Part {
+    String value();
 }

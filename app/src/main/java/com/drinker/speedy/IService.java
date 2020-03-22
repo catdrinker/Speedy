@@ -6,14 +6,17 @@ import com.drinker.annotation.Delete;
 import com.drinker.annotation.Form;
 import com.drinker.annotation.FormMap;
 import com.drinker.annotation.Get;
+import com.drinker.annotation.MultiPart;
 import com.drinker.annotation.Param;
 import com.drinker.annotation.ParamMap;
+import com.drinker.annotation.Part;
 import com.drinker.annotation.Post;
 import com.drinker.annotation.Put;
 import com.drinker.annotation.Service;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 @Service
@@ -42,6 +45,10 @@ public interface IService {
 
     @Post("/user/sign_up")
     LiveResult<Home> getSign2(@Body RequestBody body);
+
+    @MultiPart("multipart/form-data; charset=utf-8")
+    @Post("/user/sign_up/{name}")
+    LiveResult<Home> getSign3(@Param("name") String name, @Part("image/png") MultipartBody.Part body);
 
     @Form
     @Post("/user/sign_up/{key}/let")
