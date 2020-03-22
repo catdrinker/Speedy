@@ -45,7 +45,6 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
 
         List<String> formatParameters = getFormatParameters(parameters, formats);
         List<Param> formatParams = getFormatParams(parameters, formats);
-        assert formatParameters.size() == originalWords.size() - 1;
         StringBuilder urlString = buildUrl(parameters, formatParams, formatParameters, originalWords, extraUrl);
         return process(executableElement, parameters, returnType, generateType, urlString, formatParams);
     }
