@@ -1,7 +1,6 @@
 package com.drinker.processor.handler;
 
 import com.drinker.annotation.Form;
-import com.drinker.processor.IHandler;
 
 import java.util.List;
 

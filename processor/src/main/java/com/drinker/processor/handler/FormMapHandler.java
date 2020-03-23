@@ -2,7 +2,6 @@ package com.drinker.processor.handler;
 
 import com.drinker.annotation.FormMap;
 import com.drinker.annotation.ParamMap;
-import com.drinker.processor.IHandler;
 
 import java.util.List;
 

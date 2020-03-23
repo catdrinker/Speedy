@@ -3,7 +3,7 @@ package com.drinker.processor.method;
 import com.drinker.annotation.Get;
 import com.drinker.annotation.Param;
 import com.drinker.processor.CheckUtils;
-import com.drinker.processor.IHandler;
+import com.drinker.processor.handler.IHandler;
 import com.drinker.processor.Log;
 import com.drinker.processor.handler.TrueHandler;
 import com.drinker.processor.writter.MethodWriter;

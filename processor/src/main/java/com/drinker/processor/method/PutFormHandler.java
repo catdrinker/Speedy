@@ -1,6 +1,6 @@
 package com.drinker.processor.method;
 
-import com.drinker.processor.IHandler;
+import com.drinker.processor.handler.IHandler;
 import com.drinker.processor.handler.FormHandler;
 import com.drinker.processor.writter.FormBodyWriter;
 import com.drinker.processor.writter.MethodWriter;

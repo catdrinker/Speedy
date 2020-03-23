@@ -1,4 +1,4 @@
-package com.drinker.processor;
+package com.drinker.processor.handler;
 
 import java.util.List;
 

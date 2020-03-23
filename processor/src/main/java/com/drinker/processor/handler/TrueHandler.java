@@ -1,7 +1,5 @@
 package com.drinker.processor.handler;
 
-import com.drinker.processor.IHandler;
-
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
