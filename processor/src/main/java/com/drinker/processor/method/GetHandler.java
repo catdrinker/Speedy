@@ -1,10 +1,11 @@
-package com.drinker.processor.handler;
+package com.drinker.processor.method;
 
 import com.drinker.annotation.Get;
 import com.drinker.annotation.Param;
 import com.drinker.processor.CheckUtils;
 import com.drinker.processor.IHandler;
 import com.drinker.processor.Log;
+import com.drinker.processor.handler.TrueHandler;
 import com.drinker.processor.writter.MethodWriter;
 import com.drinker.processor.writter.NoBodyMethodWriter;
 import com.squareup.javapoet.ClassName;
@@ -14,7 +15,12 @@ import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-public class GetHandler extends HttpHandler {
+public final class GetHandler extends HttpHandler<Get> {
+
+    @Override
+    protected Get getAnnotations(ExecutableElement executableElement) {
+        return executableElement.getAnnotation(Get.class);
+    }
 
     @Override
     protected MethodWriter getWriter() {
@@ -34,12 +40,7 @@ public class GetHandler extends HttpHandler {
 
     @Override
     protected IHandler getHandler() {
-        return new IHandler() {
-            @Override
-            public boolean handle(ExecutableElement executableElement, List<? extends VariableElement> parameters) {
-                return executableElement.getAnnotation(Get.class) != null;
-            }
-        };
+        return new TrueHandler();
     }
 
     @Override

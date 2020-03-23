@@ -1,24 +1,29 @@
 package com.drinker.processor.method;
 
+import com.drinker.annotation.Delete;
 import com.drinker.annotation.Param;
-import com.drinker.annotation.Post;
 
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-public abstract class HttpPostHandler extends HttpHandler<Post> {
+public abstract class DeleteHandler extends HttpHandler<Delete> {
 
     @Override
-    protected Post getAnnotations(ExecutableElement executableElement) {
-        return executableElement.getAnnotation(Post.class);
+    protected Delete getAnnotations(ExecutableElement executableElement) {
+        return executableElement.getAnnotation(Delete.class);
+    }
+
+
+    @Override
+    protected String getMethod() {
+        return DELETE;
     }
 
     @Override
     protected String getExtraUrl(ExecutableElement executableElement) {
-        Post post = executableElement.getAnnotation(Post.class);
-        return post.value();
+        return executableElement.getAnnotation(Delete.class).value();
     }
 
     @Override
@@ -27,10 +32,5 @@ public abstract class HttpPostHandler extends HttpHandler<Post> {
             throw new IllegalStateException("post method url mus't has ?");
         }
         urlString.append(")\n");
-    }
-
-    @Override
-    protected String getMethod() {
-        return POST;
     }
 }

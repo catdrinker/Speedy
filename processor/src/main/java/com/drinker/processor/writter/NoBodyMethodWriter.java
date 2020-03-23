@@ -16,7 +16,7 @@ import static com.drinker.processor.SpeedyClassName.REQUEST_BODY_BUILDER;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_CALL;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 
-public class NoBodyMethodWriter extends MethodWriter {
+public final class NoBodyMethodWriter extends MethodWriter {
 
     @Override
     public MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {

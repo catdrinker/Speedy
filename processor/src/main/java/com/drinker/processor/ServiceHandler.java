@@ -1,15 +1,19 @@
 package com.drinker.processor;
 
-import com.drinker.processor.handler.GetHandler;
-import com.drinker.processor.method.DeleteMethodHandler;
-import com.drinker.processor.method.GetMethodHandler;
+import com.drinker.processor.method.DeleteBodyHandler;
+import com.drinker.processor.method.DeleteNoBodyHandler;
+import com.drinker.processor.method.GetHandler;
+import com.drinker.processor.method.PostBodyHandler;
+import com.drinker.processor.method.PostFormHandler;
+import com.drinker.processor.method.PostFormMapHandler;
+import com.drinker.processor.method.PostMultipartHandler;
+import com.drinker.processor.method.PostMultipartMapHandler;
+import com.drinker.processor.method.PutBodyHandler;
+import com.drinker.processor.method.PutFormHandler;
+import com.drinker.processor.method.PutFormMapHandler;
+import com.drinker.processor.method.PutMultipartHandler;
+import com.drinker.processor.method.PutMultipartMapHandler;
 import com.drinker.processor.method.IHttpMethodHandler;
-import com.drinker.processor.method.PostBodyMethodHandler;
-import com.drinker.processor.method.PostFormMapMethodHandler;
-import com.drinker.processor.method.PostFormMethodHandler;
-import com.drinker.processor.method.PostMultiPartMapMethodHandler;
-import com.drinker.processor.method.PostMultiPartMethodHandler;
-import com.drinker.processor.method.PutMethodHandler;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -126,15 +130,20 @@ class ServiceHandler implements ProcessHandler {
 
     private MethodSpec getMethodSpec(ExecutableElement element, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
         List<IHttpMethodHandler> handlers = new ArrayList<>();
-        handlers.add(new GetMethodHandler());
-        handlers.add(new PostFormMapMethodHandler());
-        handlers.add(new PostFormMethodHandler());
-        handlers.add(new PostMultiPartMapMethodHandler());
-        handlers.add(new PostMultiPartMethodHandler());
-        handlers.add(new PostBodyMethodHandler());
-        handlers.add(new PutMethodHandler());
-        handlers.add(new DeleteMethodHandler());
-//        handlers.add(new GetHandler());
+        handlers.add(new GetHandler());
+        handlers.add(new PostFormMapHandler());
+        handlers.add(new PostFormHandler());
+        handlers.add(new PostMultipartMapHandler());
+        handlers.add(new PostMultipartHandler());
+        handlers.add(new PostBodyHandler());
+        handlers.add(new PutFormHandler());
+        handlers.add(new PutFormMapHandler());
+        handlers.add(new PutFormHandler());
+        handlers.add(new PutMultipartMapHandler());
+        handlers.add(new PutMultipartHandler());
+        handlers.add(new PutBodyHandler());
+        handlers.add(new DeleteBodyHandler());
+        handlers.add(new DeleteNoBodyHandler());
 
         for (IHttpMethodHandler handler : handlers) {
             MethodSpec methodSpec = handler.process(element, parameters, returnType, generateType);

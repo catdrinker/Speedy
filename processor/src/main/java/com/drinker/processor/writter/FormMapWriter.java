@@ -24,7 +24,7 @@ import static com.drinker.processor.SpeedyClassName.SPEEDY_CALL;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 import static com.drinker.processor.SpeedyClassName.STRING;
 
-public class FormMapWriter extends MethodWriter {
+public final class FormMapWriter extends MethodWriter {
     @Override
     public MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
         VariableElement mapParameter = getParamMapParameter(parameters);

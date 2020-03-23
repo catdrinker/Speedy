@@ -5,7 +5,6 @@ import com.squareup.javapoet.TypeName;
 
 import java.util.List;
 
-import javax.annotation.processing.Messager;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;

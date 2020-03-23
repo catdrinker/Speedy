@@ -5,8 +5,8 @@ import com.drinker.annotation.MultiPart;
 import com.drinker.annotation.Param;
 import com.drinker.processor.IHandler;
 import com.drinker.processor.Log;
-import com.drinker.processor.writter.MethodWriter;
 import com.drinker.processor.RegexUtil;
+import com.drinker.processor.writter.MethodWriter;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 
@@ -18,11 +18,16 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-public abstract class HttpMethodHandler implements IHttpMethodHandler {
+public abstract class HttpHandler<T> implements IHttpMethodHandler {
 
-    protected IHandler handler;
+    static final String GET = "get";
+    static final String POST = "post";
+    static final String PUT = "put";
+    static final String DELETE = "delete";
 
-    protected MethodWriter processor;
+    private IHandler handler = getHandler();
+
+    private MethodWriter processor = getWriter();
 
 
     @Override
@@ -32,16 +37,15 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
         if (isForm && isMultiPart) {
             throw new IllegalStateException("can't use Form and MultiPart at the same method");
         }
-        boolean handle = handle(executableElement, parameters);
-        // TODO 组合
-//        boolean handle = handler.handle(executableElement, parameters);
-        if (handle) {
-            return methodProcess(executableElement, parameters, returnType, generateType);
+        T annotation = getAnnotations(executableElement);
+        boolean handle = handler.handle(executableElement, parameters);
+        if (annotation != null && handle) {
+            return processUrl(executableElement, parameters, returnType, generateType);
         }
         return null;
     }
 
-    private MethodSpec methodProcess(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
+    private MethodSpec processUrl(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
         String extraUrl = getExtraUrl(executableElement);
         Set<String> formats = RegexUtil.generateUrl(extraUrl);
         List<String> originalWords = RegexUtil.getOriginalWords(extraUrl);
@@ -56,9 +60,7 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
         List<String> formatParameters = getFormatParameters(parameters, formats);
         List<Param> formatParams = getFormatParams(parameters, formats);
         StringBuilder urlString = buildUrl(parameters, formatParams, formatParameters, originalWords, extraUrl);
-        return process(executableElement, parameters, returnType, generateType, urlString, formatParams);
-        // TODO 组合
-//        return processor.write(executableElement,parameters,getMethod(),returnType,generateType,urlString,formatParams);
+        return processor.write(executableElement, parameters, getMethod(), returnType, generateType, urlString, formatParams);
     }
 
     private StringBuilder buildUrl(List<? extends VariableElement> parameters, List<Param> formatParams, List<String> formatParameters, List<String> originalWords, String extraUrl) {
@@ -125,16 +127,18 @@ public abstract class HttpMethodHandler implements IHttpMethodHandler {
         return params;
     }
 
-    // TODO 组合
-//    protected abstract String getMethod();
+    protected abstract T getAnnotations(ExecutableElement executableElement);
 
-    protected abstract boolean handle(ExecutableElement executableElement, List<? extends VariableElement> parameters);
+    protected abstract MethodWriter getWriter();
+
+    protected abstract IHandler getHandler();
+
+    protected abstract String getMethod();
 
     protected abstract String getExtraUrl(ExecutableElement executableElement);
-
-    protected abstract MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams);
 
     protected void appendUrl(List<? extends VariableElement> parameters, List<Param> formatParams, StringBuilder urlString) {
 
     }
+
 }

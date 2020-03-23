@@ -12,7 +12,6 @@ import javax.lang.model.type.TypeMirror;
 
 public abstract class MethodWriter {
 
-
-     public abstract MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams);
+    public abstract MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams);
 
 }
