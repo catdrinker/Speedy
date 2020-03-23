@@ -15,6 +15,7 @@ public class SpeedyClassName {
     public static String JAVA_LANG_PACKAGE = "java.lang";
 
     public static ClassName MAP = ClassName.get(JAVA_UTIL_PACKAGE,"Map");
+    public static ClassName LIST = ClassName.get(JAVA_UTIL_PACKAGE,"List");
     public static ClassName MAP_ENTRY = MAP.nestedClass("Entry");
 
     public static ClassName STRING = ClassName.get(JAVA_LANG_PACKAGE,"String");

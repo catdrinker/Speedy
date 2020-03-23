@@ -23,6 +23,7 @@ public class Speedy {
     }
 
     public <T> T getService(Class<T> clazz) {
+        // TODO 不采用反射的方式而直接替换成asm 字节码插桩方式来，消除性能损耗
         if (!clazz.isInterface()) {
             throw new IllegalArgumentException("service must be an interface");
         }

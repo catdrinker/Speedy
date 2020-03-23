@@ -1,11 +1,9 @@
 package com.drinker.processor.method;
 
-import com.drinker.annotation.FormMap;
+import com.drinker.annotation.MultiPart;
 import com.drinker.annotation.Param;
-import com.drinker.annotation.ParamMap;
+import com.drinker.annotation.PartMap;
 import com.drinker.annotation.Post;
-import com.drinker.processor.Log;
-import com.drinker.processor.SpeedyClassName;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
@@ -17,28 +15,26 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-import static com.drinker.processor.SpeedyClassName.FORM_BODY;
-import static com.drinker.processor.SpeedyClassName.FORM_BODY_BUILDER;
-import static com.drinker.processor.SpeedyClassName.ITERATOR;
-import static com.drinker.processor.SpeedyClassName.MAP_ENTRY;
+import static com.drinker.processor.SpeedyClassName.LIST;
+import static com.drinker.processor.SpeedyClassName.MEDIA_TYPE;
+import static com.drinker.processor.SpeedyClassName.MULTIPART_BODY;
+import static com.drinker.processor.SpeedyClassName.MULTIPART_BODY_BUILDER;
+import static com.drinker.processor.SpeedyClassName.MULTIPART_PART;
 import static com.drinker.processor.SpeedyClassName.OK_HTTP_CALL;
 import static com.drinker.processor.SpeedyClassName.REQUEST;
 import static com.drinker.processor.SpeedyClassName.REQUEST_BODY_BUILDER;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_CALL;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
-import static com.drinker.processor.SpeedyClassName.STRING;
 
-public class PostFormMapMethodHandler extends HttpPostHandler {
-
+public class PostMultiPartMapMethodHandler extends HttpPostHandler {
     @Override
     protected boolean handle(ExecutableElement executableElement, List<? extends VariableElement> parameters) {
         Post post = executableElement.getAnnotation(Post.class);
-        FormMap formMap = executableElement.getAnnotation(FormMap.class);
-        Log.w("post is " + post + formMap);
-        if (post != null && formMap != null) {
+        MultiPart multiPart = executableElement.getAnnotation(MultiPart.class);
+        if (post != null && multiPart != null) {
             for (VariableElement parameter : parameters) {
-                ParamMap paramMap = parameter.getAnnotation(ParamMap.class);
-                if (paramMap != null) {
+                PartMap partMap = parameter.getAnnotation(PartMap.class);
+                if (partMap != null) {
                     return true;
                 }
             }
@@ -48,20 +44,20 @@ public class PostFormMapMethodHandler extends HttpPostHandler {
 
     @Override
     protected MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
-        VariableElement mapParameter = getParamMapParameter(parameters);
-        return MethodSpec.overriding(executableElement)
-                .addStatement("$T bodyBuilder = new $T()", FORM_BODY_BUILDER, FORM_BODY_BUILDER)
-                .addStatement("$T<$T<$T,$T>> iterator = " + mapParameter.getSimpleName() + ".entrySet().iterator()", ITERATOR, MAP_ENTRY, STRING, STRING)
-                .addCode("while (iterator.hasNext()) {\n")
-                .addStatement("$T<$T,$T> entry = iterator.next()", MAP_ENTRY, STRING, STRING)
-                .addStatement("bodyBuilder.add(entry.getKey(), entry.getValue())")
-                .addCode("}\n")
+        VariableElement partMap = getPartMap(parameters);
+        MultiPart multiPart = executableElement.getAnnotation(MultiPart.class);
 
-                .addStatement("$T formBody = bodyBuilder.build()", FORM_BODY)
+        return MethodSpec.overriding(executableElement)
+                .addCode("$T builder = new $T()\n", MULTIPART_BODY_BUILDER, MULTIPART_BODY_BUILDER)
+                .addStatement(".setType($T.get($S))", MEDIA_TYPE, multiPart.value())
+                .addCode("for ($T part : " + partMap.getSimpleName() + ") {", MULTIPART_PART)
+                .addStatement("builder.addPart(part)")
+                .addCode("}")
+                .addStatement("$T multipartBody = builder.build()", MULTIPART_BODY)
 
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
                 .addCode(urlString.toString())
-                .addCode(".post(formBody)\n")
+                .addCode(".post(multipartBody)\n")
                 .addCode(".build();\n")
                 .addCode("")
                 .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
@@ -71,37 +67,37 @@ public class PostFormMapMethodHandler extends HttpPostHandler {
                 .build();
     }
 
-    private VariableElement getParamMapParameter(List<? extends VariableElement> parameters) {
+    private VariableElement getPartMap(List<? extends VariableElement> parameters) {
         for (VariableElement parameter : parameters) {
-            ParamMap annotation = parameter.getAnnotation(ParamMap.class);
-            if (annotation != null) {
+            PartMap partMap = parameter.getAnnotation(PartMap.class);
+            if (partMap != null) {
                 // 参数校验
                 checkParams(ClassName.get(parameter.asType()));
                 return parameter;
             }
         }
-        throw new NullPointerException("PostFormMapMethodHandler handle ParamMap parameter mus't be null");
+        throw new NullPointerException("PostMultiPartMapMethodHandler handle partMap parameter mus't be null");
     }
 
     private void checkParams(TypeName typeName) {
         if (!(typeName instanceof ParameterizedTypeName)) {
-            throw new IllegalStateException("PartMap type must be ParameterizedTypeName with Map<String,String>");
+            throw new IllegalStateException("PartMap type must be ParameterizedTypeName with List<Multipart.Part>");
         }
         ClassName rawType = ((ParameterizedTypeName) typeName).rawType;
         List<TypeName> typeArguments = ((ParameterizedTypeName) typeName).typeArguments;
-        if (!rawType.equals(SpeedyClassName.MAP)) {
-            throw new IllegalStateException("@ParamMap annotation must use parameter with java.util.Map");
+        if (!LIST.equals(rawType)) {
+            throw new IllegalStateException("@ParamMap annotation must use parameter with okhttp3.RequestBody");
         }
 
-        if (typeArguments.size() != 2) {
-            throw new IllegalStateException("Map ParameterizedType size must as 2");
+        if (typeArguments.size() != 1) {
+            throw new IllegalStateException("List typeArguments size only can have 1");
         }
 
-        TypeName t1 = typeArguments.get(0);
-        TypeName t2 = typeArguments.get(1);
-
-        if (!STRING.equals(t1) || !STRING.equals(t2)) {
-            throw new IllegalStateException("Map ParameterizedType must be String type 1 " + t1 + " type2 " + t2);
+        TypeName wrapperName = typeArguments.get(0);
+        if (!(wrapperName instanceof ClassName) || !MULTIPART_PART.equals(wrapperName)) {
+            throw new IllegalStateException("List ParameterizedType must be MultipartBody.Part");
         }
     }
+
+
 }

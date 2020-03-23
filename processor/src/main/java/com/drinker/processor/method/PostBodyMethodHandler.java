@@ -41,21 +41,17 @@ public class PostBodyMethodHandler extends HttpPostHandler {
     @Override
     protected MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
         VariableElement bodyParam = getBodyParam(parameters);
-        if (bodyParam != null) {
-            return MethodSpec.overriding(executableElement)
-                    .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
-                    .addCode(urlString.toString())
-                    .addCode(".post(" + bodyParam.getSimpleName() + ")\n")
-                    .addCode(".build();\n")
-                    .addCode("")
-                    .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-                    .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter($T.class), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType)
-                    .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
-                    .returns(TypeName.get(returnType))
-                    .build();
-        }
-        Log.w("return null");
-        return null;
+        return MethodSpec.overriding(executableElement)
+                .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
+                .addCode(urlString.toString())
+                .addCode(".post(" + bodyParam.getSimpleName() + ")\n")
+                .addCode(".build();\n")
+                .addCode("")
+                .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
+                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter($T.class), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType)
+                .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
+                .returns(TypeName.get(returnType))
+                .build();
     }
 
     private VariableElement getBodyParam(List<? extends VariableElement> parameters) {
@@ -71,6 +67,6 @@ public class PostBodyMethodHandler extends HttpPostHandler {
                 }
             }
         }
-        return null;
+        throw new NullPointerException("do not find Body annotation");
     }
 }

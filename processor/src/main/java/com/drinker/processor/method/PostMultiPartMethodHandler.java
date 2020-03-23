@@ -9,6 +9,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
@@ -37,23 +38,13 @@ public class PostMultiPartMethodHandler extends HttpPostHandler {
     @Override
     protected MethodSpec process(ExecutableElement executableElement, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
         MultiPart multiPart = executableElement.getAnnotation(MultiPart.class);
-
         MethodSpec.Builder methodSpec = MethodSpec.overriding(executableElement)
                 .addCode("$T multipartBody = new $T()\n", MULTIPART_BODY, MULTIPART_BODY_BUILDER)
                 .addCode(".setType($T.get($S))\n", MEDIA_TYPE, multiPart.value());
 
-        for (VariableElement parameter : parameters) {
-            Part part = parameter.getAnnotation(Part.class);
-            if (part != null) {
-                TypeName typeName = ClassName.get(parameter.asType());
-                if (typeName instanceof ClassName) {
-                    Log.w("multipart type is " + typeName.getClass());
-                    if (!MULTIPART_PART.equals(typeName)) {
-                        throw new IllegalStateException("@ParamMap annotation must use parameter with okhttp3.RequestBody");
-                    }
-                    methodSpec.addCode(".addPart(" + parameter.getSimpleName() + ")\n");
-                }
-            }
+        List<VariableElement> parts = getParts(parameters);
+        for (VariableElement part : parts) {
+            methodSpec.addCode(".addPart(" + part.getSimpleName() + ")\n");
         }
 
         return methodSpec
@@ -69,6 +60,24 @@ public class PostMultiPartMethodHandler extends HttpPostHandler {
                 .returns(TypeName.get(returnType))
                 .build();
 
+    }
+
+    private List<VariableElement> getParts(List<? extends VariableElement> parameters) {
+        List<VariableElement> list = new ArrayList<>();
+        for (VariableElement parameter : parameters) {
+            Part part = parameter.getAnnotation(Part.class);
+            if (part != null) {
+                TypeName typeName = ClassName.get(parameter.asType());
+                if (typeName instanceof ClassName) {
+                    Log.w("multipart type is " + typeName.getClass());
+                    if (!MULTIPART_PART.equals(typeName)) {
+                        throw new IllegalStateException("@ParamMap annotation must use parameter with okhttp3.RequestBody");
+                    }
+                    list.add(parameter);
+                }
+            }
+        }
+        return list;
     }
 
 

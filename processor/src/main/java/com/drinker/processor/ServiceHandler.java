@@ -6,6 +6,7 @@ import com.drinker.processor.method.IHttpMethodHandler;
 import com.drinker.processor.method.PostBodyMethodHandler;
 import com.drinker.processor.method.PostFormMapMethodHandler;
 import com.drinker.processor.method.PostFormMethodHandler;
+import com.drinker.processor.method.PostMultiPartMapMethodHandler;
 import com.drinker.processor.method.PostMultiPartMethodHandler;
 import com.drinker.processor.method.PutMethodHandler;
 import com.squareup.javapoet.ClassName;
@@ -125,8 +126,9 @@ class ServiceHandler implements ProcessHandler {
     private MethodSpec getMethodSpec(ExecutableElement element, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
         List<IHttpMethodHandler> handlers = new ArrayList<>();
         handlers.add(new GetMethodHandler());
-        handlers.add(new PostFormMethodHandler());
         handlers.add(new PostFormMapMethodHandler());
+        handlers.add(new PostFormMethodHandler());
+        handlers.add(new PostMultiPartMapMethodHandler());
         handlers.add(new PostMultiPartMethodHandler());
         handlers.add(new PostBodyMethodHandler());
         handlers.add(new PutMethodHandler());
