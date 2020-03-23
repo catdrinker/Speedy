@@ -4,7 +4,7 @@ import com.drinker.annotation.MultiPart;
 import com.drinker.annotation.Param;
 import com.drinker.annotation.Part;
 import com.drinker.annotation.Post;
-import com.drinker.processor.Log;
+import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -19,7 +19,6 @@ import javax.lang.model.type.TypeMirror;
 import static com.drinker.processor.SpeedyClassName.MEDIA_TYPE;
 import static com.drinker.processor.SpeedyClassName.MULTIPART_BODY;
 import static com.drinker.processor.SpeedyClassName.MULTIPART_BODY_BUILDER;
-import static com.drinker.processor.SpeedyClassName.MULTIPART_PART;
 import static com.drinker.processor.SpeedyClassName.OK_HTTP_CALL;
 import static com.drinker.processor.SpeedyClassName.REQUEST;
 import static com.drinker.processor.SpeedyClassName.REQUEST_BODY_BUILDER;
@@ -67,14 +66,8 @@ public class PostMultiPartMethodHandler extends HttpPostHandler {
         for (VariableElement parameter : parameters) {
             Part part = parameter.getAnnotation(Part.class);
             if (part != null) {
-                TypeName typeName = ClassName.get(parameter.asType());
-                if (typeName instanceof ClassName) {
-                    Log.w("multipart type is " + typeName.getClass());
-                    if (!MULTIPART_PART.equals(typeName)) {
-                        throw new IllegalStateException("@ParamMap annotation must use parameter with okhttp3.RequestBody");
-                    }
-                    list.add(parameter);
-                }
+                CheckUtils.checkMultipart(ClassName.get(parameter.asType()));
+                list.add(parameter);
             }
         }
         return list;

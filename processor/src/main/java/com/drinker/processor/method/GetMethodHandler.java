@@ -2,7 +2,9 @@ package com.drinker.processor.method;
 
 import com.drinker.annotation.Get;
 import com.drinker.annotation.Param;
+import com.drinker.processor.CheckUtils;
 import com.drinker.processor.Log;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 
@@ -35,6 +37,7 @@ public class GetMethodHandler extends HttpMethodHandler {
     protected void appendUrl(List<? extends VariableElement> parameters, List<Param> formatParams, StringBuilder urlString) {
         for (VariableElement parameter : parameters) {
             Param param = parameter.getAnnotation(Param.class);
+            CheckUtils.checkParam(ClassName.get(parameter.asType()));
             if (param == null || formatParams.contains(param)) {
                 Log.w("find format param just skip it " + param);
                 continue;

@@ -2,9 +2,10 @@ package com.drinker.processor.method;
 
 import com.drinker.annotation.Form;
 import com.drinker.annotation.Param;
-import com.drinker.annotation.ParamMap;
 import com.drinker.annotation.Post;
+import com.drinker.processor.CheckUtils;
 import com.drinker.processor.Log;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 
@@ -39,6 +40,7 @@ public class PostFormMethodHandler extends HttpPostHandler {
         for (VariableElement parameter : parameters) {
             // we just add parameter to formBody that not match with ${xxx} format, if find, just skip it
             Param param = parameter.getAnnotation(Param.class);
+            CheckUtils.checkParam(ClassName.get(parameter.asType()));
             if (formatParams.contains(param) || param == null) {
                 continue;
             }

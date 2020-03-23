@@ -4,9 +4,9 @@ import com.drinker.annotation.MultiPart;
 import com.drinker.annotation.Param;
 import com.drinker.annotation.PartMap;
 import com.drinker.annotation.Post;
+import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 import java.util.List;
@@ -15,7 +15,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-import static com.drinker.processor.SpeedyClassName.LIST;
 import static com.drinker.processor.SpeedyClassName.MEDIA_TYPE;
 import static com.drinker.processor.SpeedyClassName.MULTIPART_BODY;
 import static com.drinker.processor.SpeedyClassName.MULTIPART_BODY_BUILDER;
@@ -72,32 +71,11 @@ public class PostMultiPartMapMethodHandler extends HttpPostHandler {
             PartMap partMap = parameter.getAnnotation(PartMap.class);
             if (partMap != null) {
                 // 参数校验
-                checkParams(ClassName.get(parameter.asType()));
+                CheckUtils.checkMultipartMap(ClassName.get(parameter.asType()));
                 return parameter;
             }
         }
         throw new NullPointerException("PostMultiPartMapMethodHandler handle partMap parameter mus't be null");
     }
-
-    private void checkParams(TypeName typeName) {
-        if (!(typeName instanceof ParameterizedTypeName)) {
-            throw new IllegalStateException("PartMap type must be ParameterizedTypeName with List<Multipart.Part>");
-        }
-        ClassName rawType = ((ParameterizedTypeName) typeName).rawType;
-        List<TypeName> typeArguments = ((ParameterizedTypeName) typeName).typeArguments;
-        if (!LIST.equals(rawType)) {
-            throw new IllegalStateException("@ParamMap annotation must use parameter with okhttp3.RequestBody");
-        }
-
-        if (typeArguments.size() != 1) {
-            throw new IllegalStateException("List typeArguments size only can have 1");
-        }
-
-        TypeName wrapperName = typeArguments.get(0);
-        if (!(wrapperName instanceof ClassName) || !MULTIPART_PART.equals(wrapperName)) {
-            throw new IllegalStateException("List ParameterizedType must be MultipartBody.Part");
-        }
-    }
-
 
 }

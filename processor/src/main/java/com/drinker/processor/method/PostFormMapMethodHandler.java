@@ -4,11 +4,10 @@ import com.drinker.annotation.FormMap;
 import com.drinker.annotation.Param;
 import com.drinker.annotation.ParamMap;
 import com.drinker.annotation.Post;
+import com.drinker.processor.CheckUtils;
 import com.drinker.processor.Log;
-import com.drinker.processor.SpeedyClassName;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 import java.util.List;
@@ -76,32 +75,11 @@ public class PostFormMapMethodHandler extends HttpPostHandler {
             ParamMap annotation = parameter.getAnnotation(ParamMap.class);
             if (annotation != null) {
                 // 参数校验
-                checkParams(ClassName.get(parameter.asType()));
+                CheckUtils.checkParamMap(ClassName.get(parameter.asType()));
                 return parameter;
             }
         }
         throw new NullPointerException("PostFormMapMethodHandler handle ParamMap parameter mus't be null");
     }
 
-    private void checkParams(TypeName typeName) {
-        if (!(typeName instanceof ParameterizedTypeName)) {
-            throw new IllegalStateException("PartMap type must be ParameterizedTypeName with Map<String,String>");
-        }
-        ClassName rawType = ((ParameterizedTypeName) typeName).rawType;
-        List<TypeName> typeArguments = ((ParameterizedTypeName) typeName).typeArguments;
-        if (!rawType.equals(SpeedyClassName.MAP)) {
-            throw new IllegalStateException("@ParamMap annotation must use parameter with java.util.Map");
-        }
-
-        if (typeArguments.size() != 2) {
-            throw new IllegalStateException("Map ParameterizedType size must as 2");
-        }
-
-        TypeName t1 = typeArguments.get(0);
-        TypeName t2 = typeArguments.get(1);
-
-        if (!STRING.equals(t1) || !STRING.equals(t2)) {
-            throw new IllegalStateException("Map ParameterizedType must be String type 1 " + t1 + " type2 " + t2);
-        }
-    }
 }

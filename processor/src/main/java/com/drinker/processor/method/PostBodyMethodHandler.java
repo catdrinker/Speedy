@@ -3,8 +3,8 @@ package com.drinker.processor.method;
 import com.drinker.annotation.Body;
 import com.drinker.annotation.Param;
 import com.drinker.annotation.Post;
+import com.drinker.processor.CheckUtils;
 import com.drinker.processor.Log;
-import com.drinker.processor.SpeedyClassName;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -58,13 +58,8 @@ public class PostBodyMethodHandler extends HttpPostHandler {
         for (VariableElement parameter : parameters) {
             Body body = parameter.getAnnotation(Body.class);
             if (body != null) {
-                TypeName typeName = ClassName.get(parameter.asType());
-                if (typeName instanceof ClassName) {
-                    if (!typeName.equals(SpeedyClassName.REQ_BODY)) {
-                        throw new IllegalStateException("@ParamMap annotation must use parameter with okhttp3.RequestBody");
-                    }
-                    return parameter;
-                }
+                CheckUtils.checkBody(ClassName.get(parameter.asType()));
+                return parameter;
             }
         }
         throw new NullPointerException("do not find Body annotation");
