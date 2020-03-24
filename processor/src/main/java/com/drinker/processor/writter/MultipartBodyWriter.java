@@ -1,7 +1,6 @@
 package com.drinker.processor.writter;
 
 import com.drinker.annotation.MultiPart;
-import com.drinker.annotation.Param;
 import com.drinker.annotation.Part;
 import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
@@ -27,7 +26,7 @@ import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 public final class MultipartBodyWriter extends MethodWriter {
 
     @Override
-    public MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
+    public MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString) {
         MultiPart multiPart = executableElement.getAnnotation(MultiPart.class);
         if (multiPart == null) {
             throw new NullPointerException("MultipartBodyWriter annotation with MultiPart must not be null");

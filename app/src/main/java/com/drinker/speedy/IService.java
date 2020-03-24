@@ -11,6 +11,7 @@ import com.drinker.annotation.Param;
 import com.drinker.annotation.ParamMap;
 import com.drinker.annotation.Part;
 import com.drinker.annotation.PartMap;
+import com.drinker.annotation.Path;
 import com.drinker.annotation.Post;
 import com.drinker.annotation.Put;
 import com.drinker.annotation.Service;
@@ -27,19 +28,17 @@ public interface IService {
     @Get("pl.json?rand=635840524184357321")
     LiveResult<Value> getLogin();
 
-
     @Get("{node}/pl.json/{rand}?rand=635840524184357321")
-    LiveResult<Value> getLoginView(@Param("node") String node, @Param("rand") String rand);
+    LiveResult<Value> getLoginView(@Path("node") String node, @Param("rand") String rand);
 
     @Get("node/pl.json/{map}/rand=635840524184357321")
-    LiveResult<Value> getLoginVi(@Param("map") String map, @Param("rand") String rand);
+    LiveResult<Value> getLoginVi(@Path("map") String map, @Param("rands") String rand);
 
     @Get("node/pl.json/let/{map}")
-    LiveResult<Value> getLoginVie(@Param("map") String map, @Param("rand") String rand);
-
+    LiveResult<Value> getLoginVie(@Path("map") String map, @Param("rand") String rand);
 
     @Get("node/pl.json/let/{map}")
-    LiveResult<Value> getLoginVie(@Param("map") String map, @ParamMap Map<String, String> maps);
+    LiveResult<Value> getLoginVie(@Path("map") String map, @ParamMap Map<String, String> maps);
 
     @Form
     @Post("/user/sign_up")
@@ -47,23 +46,22 @@ public interface IService {
 
     @FormMap
     @Post("/user/sign_up/{name}/")
-    LiveResult<Home> getSign1(@Param("name") String name, @ParamMap Map<String, String> map);
-
+    LiveResult<Home> getSign1(@Path("name") String name, @ParamMap Map<String, String> map);
 
     @Post("/user/sign_up")
     LiveResult<Home> getSign2(@Body RequestBody body);
 
     @MultiPart("multipart/form-data; charset=utf-8")
     @Post("/user/sign_up/{name}")
-    LiveResult<Home> getSign3(@Param("name") String name, @Part MultipartBody.Part body);
+    LiveResult<Home> getSign3(@Path("name") String name, @Part MultipartBody.Part body);
 
     @MultiPart("multipart/form-data; charset=utf-8")
     @Post("/user/sign_up/{name}")
-    LiveResult<Home> getSign4(@Param("name") String name, @PartMap List<MultipartBody.Part> parts);
+    LiveResult<Home> getSign4(@Path("name") String name, @PartMap List<MultipartBody.Part> parts);
 
     @Form
     @Post("/user/sign_up/{key}/let")
-    LiveResult<Home> getSigns(@Param("key") String keyParam, @Param("value") String valueParam);
+    LiveResult<Home> getSigns(@Path("key") String keyParam, @Param("value") String valueParam);
 
     @Put("/user/sign")
     LiveResult<Home> get(@Body RequestBody body);

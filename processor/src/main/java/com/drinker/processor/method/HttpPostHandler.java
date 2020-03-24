@@ -1,6 +1,5 @@
 package com.drinker.processor.method;
 
-import com.drinker.annotation.Param;
 import com.drinker.annotation.Post;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public abstract class HttpPostHandler extends HttpHandler<Post> {
     }
 
     @Override
-    protected void appendUrl(List<? extends VariableElement> parameters, List<Param> formatParams, StringBuilder urlString) {
+    protected void appendUrl(List<? extends VariableElement> parameters, StringBuilder urlString) {
         if (urlString.toString().contains("?")) {
             throw new IllegalStateException("post method url mus't has ?");
         }

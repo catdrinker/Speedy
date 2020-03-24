@@ -26,7 +26,7 @@ public abstract class DeleteHandler extends HttpHandler<Delete> {
     }
 
     @Override
-    protected void appendUrl(List<? extends VariableElement> parameters, List<Param> formatParams, StringBuilder urlString) {
+    protected void appendUrl(List<? extends VariableElement> parameters, StringBuilder urlString) {
         if (urlString.toString().contains("?")) {
             throw new IllegalStateException("post method url mus't has ?");
         }

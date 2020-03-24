@@ -2,10 +2,10 @@ package com.drinker.processor.method;
 
 import com.drinker.annotation.Form;
 import com.drinker.annotation.MultiPart;
-import com.drinker.annotation.Param;
-import com.drinker.processor.handler.IHandler;
+import com.drinker.annotation.Path;
 import com.drinker.processor.Log;
 import com.drinker.processor.RegexUtil;
+import com.drinker.processor.handler.IHandler;
 import com.drinker.processor.writter.MethodWriter;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -56,12 +56,11 @@ public abstract class HttpHandler<T> implements IHttpMethodHandler {
             originalWords.add("");
         }
         List<String> formatParameters = getFormatParameters(parameters, formats);
-        List<Param> formatParams = getFormatParams(parameters, formats);
-        StringBuilder urlString = buildUrl(parameters, formatParams, formatParameters, originalWords, extraUrl);
-        return processor.write(executableElement, parameters, getMethod(), returnType, generateType, urlString, formatParams);
+        StringBuilder urlString = buildUrl(parameters, formatParameters, originalWords, extraUrl);
+        return processor.write(executableElement, parameters, getMethod(), returnType, generateType, urlString);
     }
 
-    private StringBuilder buildUrl(List<? extends VariableElement> parameters, List<Param> formatParams, List<String> formatParameters, List<String> originalWords, String extraUrl) {
+    private StringBuilder buildUrl(List<? extends VariableElement> parameters, List<String> formatParameters, List<String> originalWords, String extraUrl) {
         StringBuilder urlString = new StringBuilder("baseHttpUrl+");
         if (formatParameters.size() == 0) {
             urlString.append("\"").append(extraUrl).append("\"");
@@ -82,7 +81,7 @@ public abstract class HttpHandler<T> implements IHttpMethodHandler {
             }
         }
         // append url if necessary
-        appendUrl(parameters, formatParams, urlString);
+        appendUrl(parameters, urlString);
         return urlString;
     }
 
@@ -93,9 +92,9 @@ public abstract class HttpHandler<T> implements IHttpMethodHandler {
             Log.w("next format " + format);
             String usingFormat = null;
             for (VariableElement parameter : parameters) {
-                Param param = parameter.getAnnotation(Param.class);
-                // find {xxx} match with param's value, so just replace format {xxx} with it parameter's real value
-                if (param != null && format.equals(param.value())) {
+                Path path = parameter.getAnnotation(Path.class);
+                // find {xxx} match with path's value, so just replace format {xxx} with it parameter's real value
+                if (path != null && format.equals(path.value())) {
                     Log.i("format has " + format);
                     usingFormat = parameter.getSimpleName().toString();
                     break;
@@ -110,21 +109,6 @@ public abstract class HttpHandler<T> implements IHttpMethodHandler {
         return formatParameters;
     }
 
-    private List<Param> getFormatParams(List<? extends VariableElement> parameters, Set<String> formats) {
-        List<Param> params = new ArrayList<>();
-        for (String format : formats) {
-            for (VariableElement parameter : parameters) {
-                Param param = parameter.getAnnotation(Param.class);
-                // find {xxx} match with param's value, so just replace format {xxx} with it parameter's real value
-                if (param != null && format.equals(param.value())) {
-                    params.add(param);
-                    break;
-                }
-            }
-        }
-        return params;
-    }
-
     protected abstract T getAnnotations(ExecutableElement executableElement);
 
     protected abstract MethodWriter getWriter();
@@ -135,7 +119,7 @@ public abstract class HttpHandler<T> implements IHttpMethodHandler {
 
     protected abstract String getExtraUrl(ExecutableElement executableElement);
 
-    protected void appendUrl(List<? extends VariableElement> parameters, List<Param> formatParams, StringBuilder urlString) {
+    protected void appendUrl(List<? extends VariableElement> parameters, StringBuilder urlString) {
 
     }
 

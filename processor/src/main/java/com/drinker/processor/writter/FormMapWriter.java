@@ -1,6 +1,5 @@
 package com.drinker.processor.writter;
 
-import com.drinker.annotation.Param;
 import com.drinker.annotation.ParamMap;
 import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
@@ -26,7 +25,7 @@ import static com.drinker.processor.SpeedyClassName.STRING;
 
 public final class FormMapWriter extends MethodWriter {
     @Override
-    public MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
+    public MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString) {
         VariableElement mapParameter = getParamMapParameter(parameters);
         return MethodSpec.overriding(executableElement)
                 .addStatement("$T bodyBuilder = new $T()", FORM_BODY_BUILDER, FORM_BODY_BUILDER)
@@ -39,7 +38,7 @@ public final class FormMapWriter extends MethodWriter {
                 .addStatement("$T formBody = bodyBuilder.build()", FORM_BODY)
 
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
-                .addCode(".url("+urlString.toString()+")\n")
+                .addCode(".url(" + urlString.toString() + ")\n")
                 .addCode("." + method + "(formBody)\n")
                 .addCode(".build();\n")
                 .addCode("")

@@ -1,7 +1,6 @@
 package com.drinker.processor.writter;
 
 import com.drinker.annotation.MultiPart;
-import com.drinker.annotation.Param;
 import com.drinker.annotation.PartMap;
 import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
@@ -26,7 +25,7 @@ import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 
 public final class MultipartMapWriter extends MethodWriter {
     @Override
-    public MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
+    public MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString) {
         VariableElement partMap = getPartMap(parameters);
         MultiPart multiPart = executableElement.getAnnotation(MultiPart.class);
         if (multiPart == null) {
@@ -42,7 +41,7 @@ public final class MultipartMapWriter extends MethodWriter {
                 .addStatement("$T multipartBody = builder.build()", MULTIPART_BODY)
 
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
-                .addCode(".url("+urlString.toString()+")\n")
+                .addCode(".url(" + urlString.toString() + ")\n")
                 .addCode("." + method + "(multipartBody)\n")
                 .addCode(".build();\n")
                 .addCode("")

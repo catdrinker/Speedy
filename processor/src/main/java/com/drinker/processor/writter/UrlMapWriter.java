@@ -29,7 +29,7 @@ public class UrlMapWriter extends MethodWriter {
 
     @Override
     public @Nonnull
-    MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString, List<Param> formatParams) {
+    MethodSpec write(ExecutableElement executableElement, List<? extends VariableElement> parameters, String method, TypeMirror returnType, TypeName generateType, StringBuilder urlString) {
         String s = urlString.toString();
         VariableElement parameter = getParamMapParameter(parameters);
         MethodSpec.Builder builder = MethodSpec.overriding(executableElement)

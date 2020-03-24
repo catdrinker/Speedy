@@ -29,16 +29,14 @@ public abstract class GetHandler extends HttpHandler<Get> {
     }
 
     @Override
-    protected void appendUrl(List<? extends VariableElement> parameters, List<Param> formatParams, StringBuilder urlString) {
+    protected void appendUrl(List<? extends VariableElement> parameters, StringBuilder urlString) {
         for (VariableElement parameter : parameters) {
             Param param = parameter.getAnnotation(Param.class);
-            if (param != null) {
-                CheckUtils.checkParam(ClassName.get(parameter.asType()));
-            }
-            if (param == null || formatParams.contains(param)) {
-                Log.w("find format param just skip it " + param);
+            if (param == null) {
+                Log.w("find format param just skip it ");
                 continue;
             }
+            CheckUtils.checkParam(ClassName.get(parameter.asType()));
             String str = urlString.toString();
             int index = str.indexOf("?");
             if (index != -1) {
