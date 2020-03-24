@@ -21,7 +21,7 @@ public class CheckUtils {
      */
     public static void checkParam(TypeName typeName) {
         if (!typeName.equals(STRING)) {
-            Log.w("check param "+typeName +typeName.getClass());
+            Log.w("check param " + typeName + typeName.getClass());
             throw new IllegalStateException("Param parameter must use String");
         }
     }
@@ -60,9 +60,43 @@ public class CheckUtils {
      * @param typeName the parameter of typeName
      */
     public static void checkBody(TypeName typeName) {
+        Log.w("TYPE NAME IS " + typeName + typeName.getClass());
+
+        Log.w("isbasic " + checkIsBasicType(typeName));
         if (!typeName.equals(REQ_BODY)) {
-            throw new IllegalStateException("@ParamMap annotation must use parameter with okhttp3.RequestBody");
+            throw new IllegalStateException("Body annotation must use parameter with okhttp3.RequestBody with common body handler");
         }
+    }
+
+    public static void checkConverterBody(TypeName typeName) {
+        if (checkIsBasicType(typeName)) {
+            throw new IllegalStateException("Body annotation must use parameter without basic type like int short ...");
+        }
+        // 参数类型
+        if (typeName instanceof ParameterizedTypeName) {
+            ClassName rawType = ((ParameterizedTypeName) typeName).rawType;
+            List<TypeName> typeArguments = ((ParameterizedTypeName) typeName).typeArguments;
+
+
+
+            Log.w("ParameterizedTypeName");
+        } else if (typeName instanceof ClassName) {
+
+        }
+    }
+
+    private static boolean checkIsBasicType(TypeName typeName) {
+        return (typeName.equals(TypeName.BOOLEAN))
+                || (typeName.equals(TypeName.BYTE))
+                || (typeName.equals(TypeName.SHORT))
+                || (typeName.equals(TypeName.INT))
+                || (typeName.equals(TypeName.LONG))
+                || (typeName.equals(TypeName.CHAR))
+                || (typeName.equals(TypeName.FLOAT))
+                || (typeName.equals(TypeName.DOUBLE))
+                || (typeName.equals(TypeName.OBJECT))
+                || (typeName.equals(STRING));
+
     }
 
     /**
