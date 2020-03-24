@@ -2,14 +2,12 @@ package com.drinker.processor.writter;
 
 import com.drinker.annotation.MultiPart;
 import com.drinker.annotation.Param;
-import com.drinker.annotation.Part;
 import com.drinker.annotation.PartMap;
 import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
@@ -44,7 +42,7 @@ public final class MultipartMapWriter extends MethodWriter {
                 .addStatement("$T multipartBody = builder.build()", MULTIPART_BODY)
 
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
-                .addCode(urlString.toString())
+                .addCode(".url("+urlString.toString()+")\n")
                 .addCode("." + method + "(multipartBody)\n")
                 .addCode(".build();\n")
                 .addCode("")

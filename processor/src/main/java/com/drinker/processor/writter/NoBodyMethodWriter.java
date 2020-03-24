@@ -23,7 +23,7 @@ public final class NoBodyMethodWriter extends MethodWriter {
         return MethodSpec.overriding(executableElement)
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
                 .addCode("." + method + "()\n")
-                .addCode(urlString.toString())
+                .addCode(".url("+urlString.toString()+")\n")
                 .addStatement(".build()")
                 .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
                 .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter($T.class), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType)

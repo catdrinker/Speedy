@@ -15,7 +15,6 @@ public abstract class DeleteHandler extends HttpHandler<Delete> {
         return executableElement.getAnnotation(Delete.class);
     }
 
-
     @Override
     protected String getMethod() {
         return DELETE;
@@ -31,6 +30,5 @@ public abstract class DeleteHandler extends HttpHandler<Delete> {
         if (urlString.toString().contains("?")) {
             throw new IllegalStateException("post method url mus't has ?");
         }
-        urlString.append(")\n");
     }
 }

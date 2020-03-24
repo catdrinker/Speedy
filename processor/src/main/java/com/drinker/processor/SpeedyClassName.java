@@ -19,7 +19,10 @@ public class SpeedyClassName {
     public static ClassName MAP_ENTRY = MAP.nestedClass("Entry");
 
     public static ClassName STRING = ClassName.get(JAVA_LANG_PACKAGE,"String");
+    public static ClassName STRING_BUILDER = ClassName.get(JAVA_LANG_PACKAGE,"StringBuilder");
     public static ClassName ITERATOR = ClassName.get(JAVA_UTIL_PACKAGE,"Iterator");
+
+    public static ClassName ILLEGAL_STATE_EXCEPTION = ClassName.get(JAVA_LANG_PACKAGE, "IllegalStateException");
 
     /**
      * about okhttp class name
@@ -48,6 +51,7 @@ public class SpeedyClassName {
     /**
      * about speedy class name
      */
+    public static ClassName SPEEDY_TEXT_UTIL = ClassName.get(SPEEDY_PACKAGE, "TextUtil");
     public static ClassName SPEEDY_CALL = ClassName.get(SPEEDY_PACKAGE, "Call");
     public static ClassName SPEEDY_WRAPPER_CALL = ClassName.get(SPEEDY_PACKAGE, "WrapperCall");
     public static ClassName CONVERTER = ClassName.get(SPEEDY_PACKAGE, "Converter");

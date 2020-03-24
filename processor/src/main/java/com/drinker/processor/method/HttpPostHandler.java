@@ -26,7 +26,6 @@ public abstract class HttpPostHandler extends HttpHandler<Post> {
         if (urlString.toString().contains("?")) {
             throw new IllegalStateException("post method url mus't has ?");
         }
-        urlString.append(")\n");
     }
 
     @Override

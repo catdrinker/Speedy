@@ -25,7 +25,6 @@ public abstract class HttpPutHandler extends HttpHandler<Put> {
         if (urlString.toString().contains("?")) {
             throw new IllegalStateException("put method url mus't has ?");
         }
-        urlString.append(")\n");
     }
 
     @Override

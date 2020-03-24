@@ -52,11 +52,9 @@ public abstract class HttpHandler<T> implements IHttpMethodHandler {
         if (originalWords.size() < formats.size()) {
             throw new IllegalStateException("original word size must >= format size");
         }
-
         if (originalWords.size() == formats.size()) {
             originalWords.add("");
         }
-
         List<String> formatParameters = getFormatParameters(parameters, formats);
         List<Param> formatParams = getFormatParams(parameters, formats);
         StringBuilder urlString = buildUrl(parameters, formatParams, formatParameters, originalWords, extraUrl);
@@ -64,7 +62,7 @@ public abstract class HttpHandler<T> implements IHttpMethodHandler {
     }
 
     private StringBuilder buildUrl(List<? extends VariableElement> parameters, List<Param> formatParams, List<String> formatParameters, List<String> originalWords, String extraUrl) {
-        StringBuilder urlString = new StringBuilder(".url(baseHttpUrl+");
+        StringBuilder urlString = new StringBuilder("baseHttpUrl+");
         if (formatParameters.size() == 0) {
             urlString.append("\"").append(extraUrl).append("\"");
         }

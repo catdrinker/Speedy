@@ -44,7 +44,7 @@ public final class MultipartBodyWriter extends MethodWriter {
         return methodSpec
                 .addStatement(".build()")
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
-                .addCode(urlString.toString())
+                .addCode(".url("+urlString.toString()+")\n")
                 .addCode("." + method + "(multipartBody)\n")
                 .addCode(".build();\n")
                 .addCode("")

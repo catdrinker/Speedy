@@ -27,14 +27,19 @@ public interface IService {
     @Get("pl.json?rand=635840524184357321")
     LiveResult<Value> getLogin();
 
+
     @Get("{node}/pl.json/{rand}?rand=635840524184357321")
-    LiveResult<Value> getLoginView(@Param("node") String node, @Param("rands") String rand);
+    LiveResult<Value> getLoginView(@Param("node") String node, @Param("rand") String rand);
 
     @Get("node/pl.json/{map}/rand=635840524184357321")
     LiveResult<Value> getLoginVi(@Param("map") String map, @Param("rand") String rand);
 
     @Get("node/pl.json/let/{map}")
     LiveResult<Value> getLoginVie(@Param("map") String map, @Param("rand") String rand);
+
+
+    @Get("node/pl.json/let/{map}")
+    LiveResult<Value> getLoginVie(@Param("map") String map, @ParamMap Map<String, String> maps);
 
     @Form
     @Post("/user/sign_up")

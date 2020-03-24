@@ -21,6 +21,7 @@ public class CheckUtils {
      */
     public static void checkParam(TypeName typeName) {
         if (!typeName.equals(STRING)) {
+            Log.w("check param "+typeName +typeName.getClass());
             throw new IllegalStateException("Param parameter must use String");
         }
     }

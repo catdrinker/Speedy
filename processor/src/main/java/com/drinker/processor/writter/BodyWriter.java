@@ -25,7 +25,7 @@ public final class BodyWriter extends MethodWriter {
         VariableElement bodyParam = getBodyParam(parameters);
         return MethodSpec.overriding(executableElement)
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
-                .addCode(urlString.toString())
+                .addCode(".url("+urlString.toString()+")\n")
                 .addCode("." + method + "(" + bodyParam.getSimpleName() + ")\n")
                 .addCode(".build();\n")
                 .addCode("")

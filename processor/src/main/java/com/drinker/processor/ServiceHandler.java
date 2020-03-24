@@ -3,6 +3,8 @@ package com.drinker.processor;
 import com.drinker.processor.method.DeleteBodyHandler;
 import com.drinker.processor.method.DeleteNoBodyHandler;
 import com.drinker.processor.method.GetHandler;
+import com.drinker.processor.method.GetParamHandler;
+import com.drinker.processor.method.GetParamMapHandler;
 import com.drinker.processor.method.PostBodyHandler;
 import com.drinker.processor.method.PostFormHandler;
 import com.drinker.processor.method.PostFormMapHandler;
@@ -130,7 +132,8 @@ class ServiceHandler implements ProcessHandler {
 
     private MethodSpec getMethodSpec(ExecutableElement element, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
         List<IHttpMethodHandler> handlers = new ArrayList<>();
-        handlers.add(new GetHandler());
+        handlers.add(new GetParamMapHandler());
+        handlers.add(new GetParamHandler());
         handlers.add(new PostFormMapHandler());
         handlers.add(new PostFormHandler());
         handlers.add(new PostMultipartMapHandler());
