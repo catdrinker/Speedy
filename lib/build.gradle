@@ -5,6 +5,7 @@ dependencies {
     api("com.squareup.okhttp3:okhttp:3.12.2")
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
     implementation project(':annotation')
+    testImplementation "junit:junit:$JUNIT"
 }
 
 sourceCompatibility = "7"
