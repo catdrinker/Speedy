@@ -2,10 +2,11 @@ package com.drinker.processor;
 
 import com.drinker.processor.method.DeleteBodyHandler;
 import com.drinker.processor.method.DeleteNoBodyHandler;
-import com.drinker.processor.method.GetHandler;
 import com.drinker.processor.method.GetParamHandler;
 import com.drinker.processor.method.GetParamMapHandler;
+import com.drinker.processor.method.IHttpMethodHandler;
 import com.drinker.processor.method.PostBodyHandler;
+import com.drinker.processor.method.PostConverterBodyHandler;
 import com.drinker.processor.method.PostFormHandler;
 import com.drinker.processor.method.PostFormMapHandler;
 import com.drinker.processor.method.PostMultipartHandler;
@@ -15,7 +16,6 @@ import com.drinker.processor.method.PutFormHandler;
 import com.drinker.processor.method.PutFormMapHandler;
 import com.drinker.processor.method.PutMultipartHandler;
 import com.drinker.processor.method.PutMultipartMapHandler;
-import com.drinker.processor.method.IHttpMethodHandler;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -139,6 +139,7 @@ class ServiceHandler implements ProcessHandler {
         handlers.add(new PostMultipartMapHandler());
         handlers.add(new PostMultipartHandler());
         handlers.add(new PostBodyHandler());
+        handlers.add(new PostConverterBodyHandler());
         handlers.add(new PutFormHandler());
         handlers.add(new PutFormMapHandler());
         handlers.add(new PutFormHandler());

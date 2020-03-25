@@ -26,7 +26,7 @@ import okhttp3.RequestBody;
 public interface IService {
 
     @Get("pl.json?rand=635840524184357321")
-    LiveResult<Value> getLogin();
+    LiveResult<Show<Home>> getLogin();
 
     @Get("{node}/pl.json/{rand}?rand=635840524184357321")
     LiveResult<Value> getLoginView(@Path("node") String node, @Param("rand") String rand);
@@ -50,6 +50,12 @@ public interface IService {
 
     @Post("/user/sign_up")
     LiveResult<Home> getSign2(@Body RequestBody body);
+
+    @Post("/user/sign_up")
+    LiveResult<Home> getSign22(@Body Show<Home> body);
+
+    @Post("/user/sign_up")
+    LiveResult<Home> getSign222(@Body Home body);
 
     @MultiPart("multipart/form-data; charset=utf-8")
     @Post("/user/sign_up/{name}")

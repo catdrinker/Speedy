@@ -2,12 +2,12 @@ package com.drinker.speedy;
 
 import java.io.IOException;
 
-public class RequestBody<T> {
+public class CatchExceptionRequestBody<T> {
 
-    private RequestBodyConverter<T> requestBodyConverter;
+    private Converter<T, okhttp3.RequestBody> requestBodyConverter;
 
 
-    public RequestBody(RequestBodyConverter<T> requestBodyConverter) {
+    public CatchExceptionRequestBody(Converter<T, okhttp3.RequestBody> requestBodyConverter) {
         this.requestBodyConverter = requestBodyConverter;
     }
 

@@ -60,9 +60,7 @@ public class CheckUtils {
      * @param typeName the parameter of typeName
      */
     public static void checkBody(TypeName typeName) {
-        Log.w("TYPE NAME IS " + typeName + typeName.getClass());
-
-        Log.w("isbasic " + checkIsBasicType(typeName));
+        Log.w("checkBody typeName " + typeName + typeName.getClass());
         if (!typeName.equals(REQ_BODY)) {
             throw new IllegalStateException("Body annotation must use parameter with okhttp3.RequestBody with common body handler");
         }
@@ -70,18 +68,7 @@ public class CheckUtils {
 
     public static void checkConverterBody(TypeName typeName) {
         if (checkIsBasicType(typeName)) {
-            throw new IllegalStateException("Body annotation must use parameter without basic type like int short ...");
-        }
-        // 参数类型
-        if (typeName instanceof ParameterizedTypeName) {
-            ClassName rawType = ((ParameterizedTypeName) typeName).rawType;
-            List<TypeName> typeArguments = ((ParameterizedTypeName) typeName).typeArguments;
-
-
-
-            Log.w("ParameterizedTypeName");
-        } else if (typeName instanceof ClassName) {
-
+            throw new IllegalStateException("Body annotation must use parameter without basic type like int short String Object...");
         }
     }
 

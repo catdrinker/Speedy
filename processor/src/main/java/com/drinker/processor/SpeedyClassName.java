@@ -55,6 +55,7 @@ public class SpeedyClassName {
      */
     public static ClassName SPEEDY_TEXT_UTIL = ClassName.get(SPEEDY_PACKAGE, "TextUtil");
     public static ClassName SPEEDY_TYPE_TOKEN = ClassName.get(SPEEDY_PACKAGE,"TypeToken2");
+    public static ClassName SPEEDY_CATCH_REQ_BODY = ClassName.get(SPEEDY_PACKAGE,"CatchExceptionRequestBody");
     public static ClassName SPEEDY_CALL = ClassName.get(SPEEDY_PACKAGE, "Call");
     public static ClassName SPEEDY_WRAPPER_CALL = ClassName.get(SPEEDY_PACKAGE, "WrapperCall");
     public static ClassName CONVERTER = ClassName.get(SPEEDY_PACKAGE, "Converter");
