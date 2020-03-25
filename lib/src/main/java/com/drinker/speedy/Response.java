@@ -108,10 +108,8 @@ public class Response<T> {
 
 
     private okhttp3.Response rawResponse;
-    private @Nullable
-    T body;
-    private @Nullable
-    ResponseBody errorBody;
+    private @Nullable T body;
+    private @Nullable ResponseBody errorBody;
 
     private Response(okhttp3.Response rawResponse, T body, ResponseBody errorBody) {
         this.rawResponse = rawResponse;

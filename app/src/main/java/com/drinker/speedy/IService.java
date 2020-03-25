@@ -72,6 +72,10 @@ public interface IService {
     @Put("/user/sign")
     LiveResult<Home> get(@Body RequestBody body);
 
+    @FormMap
+    @Put("/user/sign")
+    LiveResult<Show> get1(@ParamMap Map<String,String> map);
+
     @Delete("/user/index.jsp")
     LiveResult<Home> deleteJsp();
 

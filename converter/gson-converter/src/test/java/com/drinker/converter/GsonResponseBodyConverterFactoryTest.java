@@ -57,9 +57,7 @@ public class GsonResponseBodyConverterFactoryTest {
 
     static class Home {
         int value;
-
         String h;
-
     }
 
     static class User<T> {
