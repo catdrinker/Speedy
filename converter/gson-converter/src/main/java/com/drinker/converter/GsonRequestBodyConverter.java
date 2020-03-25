@@ -24,7 +24,7 @@ public class GsonRequestBodyConverter<T> implements RequestBodyConverter<T> {
 
 
     // TODO 改成每个方法创建一个新的Converter，这里还是要传入factory
-    public static <T> GsonRequestBodyConverter<T> create(Gson gson, TypeAdapter<T> adapter) {
+    static <T> GsonRequestBodyConverter<T> create(Gson gson, TypeAdapter<T> adapter) {
         return new GsonRequestBodyConverter<>(gson, adapter);
     }
 

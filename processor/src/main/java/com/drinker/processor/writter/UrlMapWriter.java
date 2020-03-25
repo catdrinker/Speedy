@@ -1,6 +1,5 @@
 package com.drinker.processor.writter;
 
-import com.drinker.annotation.Param;
 import com.drinker.annotation.ParamMap;
 import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
@@ -21,6 +20,7 @@ import static com.drinker.processor.SpeedyClassName.REQUEST;
 import static com.drinker.processor.SpeedyClassName.REQUEST_BODY_BUILDER;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_CALL;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_TEXT_UTIL;
+import static com.drinker.processor.SpeedyClassName.SPEEDY_TYPE_TOKEN;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 import static com.drinker.processor.SpeedyClassName.STRING;
 import static com.drinker.processor.SpeedyClassName.STRING_BUILDER;
@@ -33,10 +33,11 @@ public class UrlMapWriter extends MethodWriter {
         String s = urlString.toString();
         VariableElement parameter = getParamMapParameter(parameters);
         MethodSpec.Builder builder = MethodSpec.overriding(executableElement)
-                .addStatement("$T sb = new $T(" + s + ")", STRING_BUILDER, STRING_BUILDER)
+
                 .addCode("if(" + parameter.getSimpleName() + ".isEmpty()) {\n")
                 .addStatement("throw new $T($S)", ILLEGAL_STATE_EXCEPTION, "param map should not be empty")
                 .addCode("}\n\n")
+                .addStatement("$T sb = new $T(" + s + ")", STRING_BUILDER, STRING_BUILDER)
                 .addCode("if(!$T.contains(sb, \"?\")) {\n", SPEEDY_TEXT_UTIL)
                 .addStatement("sb.append(\"?\")")
                 .addCode("}\n\n")
@@ -57,7 +58,7 @@ public class UrlMapWriter extends MethodWriter {
                 .addCode(".url(sb.toString())")
                 .addStatement(".build()")
                 .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter($T.class), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType)
+                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter(new $T<$T>(){}), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL,SPEEDY_TYPE_TOKEN,generateType)
                 .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
                 .returns(TypeName.get(returnType));
         return builder.build();

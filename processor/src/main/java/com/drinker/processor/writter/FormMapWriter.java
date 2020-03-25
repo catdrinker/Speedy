@@ -20,6 +20,7 @@ import static com.drinker.processor.SpeedyClassName.OK_HTTP_CALL;
 import static com.drinker.processor.SpeedyClassName.REQUEST;
 import static com.drinker.processor.SpeedyClassName.REQUEST_BODY_BUILDER;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_CALL;
+import static com.drinker.processor.SpeedyClassName.SPEEDY_TYPE_TOKEN;
 import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 import static com.drinker.processor.SpeedyClassName.STRING;
 
@@ -43,7 +44,7 @@ public final class FormMapWriter extends MethodWriter {
                 .addCode(".build();\n")
                 .addCode("")
                 .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter($T.class), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, generateType)
+                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter(new $T<$T>(){}), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL,SPEEDY_TYPE_TOKEN,generateType)
                 .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
                 .returns(TypeName.get(returnType))
                 .build();

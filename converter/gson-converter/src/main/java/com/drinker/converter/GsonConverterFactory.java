@@ -1,12 +1,13 @@
 package com.drinker.converter;
 
 import com.drinker.speedy.Converter;
-import com.drinker.speedy.RequestBodyConverter;
-import com.drinker.speedy.ResponseBodyConverter;
 import com.drinker.speedy.TypeToken2;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 public class GsonConverterFactory implements Converter.Factory {
 
@@ -24,23 +25,21 @@ public class GsonConverterFactory implements Converter.Factory {
         this.gson = new Gson();
     }
 
-    public GsonConverterFactory(Gson gson) {
+    private GsonConverterFactory(Gson gson) {
         this.gson = gson;
     }
 
-
     @Override
-    public <T> RequestBodyConverter<T> reqBodyConverter(TypeToken2<T> type) {
-        TypeAdapter<T> adapter = gson.getAdapter(new TypeToken<T>() {
-        });
-
+    public <T> Converter<T, RequestBody> reqBodyConverter(TypeToken2<T> token) {
+        TypeToken<?> typeToken = TypeToken.get(token.getType());
+        TypeAdapter<T> adapter = (TypeAdapter<T>) gson.getAdapter(typeToken);
         return GsonRequestBodyConverter.create(gson, adapter);
     }
 
     @Override
-    public <T> ResponseBodyConverter respBodyConverter(TypeToken2<T> token) {
-        TypeAdapter<T> adapter = gson.getAdapter(new TypeToken<T>() {
-        });
-        return GsonConverter.create(gson, adapter);
+    public <T> Converter<ResponseBody, T> respBodyConverter(TypeToken2<T> token) {
+        TypeToken<?> typeToken = TypeToken.get(token.getType());
+        TypeAdapter<T> adapter = (TypeAdapter<T>) gson.getAdapter(typeToken);
+        return GsonResponseBodyConverter.create(gson, adapter);
     }
 }
