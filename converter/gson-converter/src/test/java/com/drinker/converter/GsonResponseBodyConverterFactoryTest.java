@@ -2,7 +2,6 @@ package com.drinker.converter;
 
 import com.drinker.speedy.Converter;
 import com.drinker.speedy.TypeToken2;
-import com.google.gson.Gson;
 
 import org.junit.Before;
 import org.junit.Test;
