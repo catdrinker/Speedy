@@ -1,21 +1,21 @@
 package com.drinker.processor;
 
-import com.drinker.processor.method.DeleteBodyHandler;
-import com.drinker.processor.method.DeleteNoBodyHandler;
-import com.drinker.processor.method.GetParamHandler;
-import com.drinker.processor.method.GetParamMapHandler;
-import com.drinker.processor.method.IHttpMethodHandler;
-import com.drinker.processor.method.PostBodyHandler;
-import com.drinker.processor.method.PostConverterBodyHandler;
-import com.drinker.processor.method.PostFormHandler;
-import com.drinker.processor.method.PostFormMapHandler;
-import com.drinker.processor.method.PostMultipartHandler;
-import com.drinker.processor.method.PostMultipartMapHandler;
-import com.drinker.processor.method.PutBodyHandler;
-import com.drinker.processor.method.PutFormHandler;
-import com.drinker.processor.method.PutFormMapHandler;
-import com.drinker.processor.method.PutMultipartHandler;
-import com.drinker.processor.method.PutMultipartMapHandler;
+import com.drinker.processor.processor.DeleteBodyProcessor;
+import com.drinker.processor.processor.DeleteNoBodyProcessor;
+import com.drinker.processor.processor.GetParamProcessor;
+import com.drinker.processor.processor.GetParamMapProcessor;
+import com.drinker.processor.processor.IHttpMethodProcessor;
+import com.drinker.processor.processor.PostBodyProcessor;
+import com.drinker.processor.processor.PostConverterBodyProcessor;
+import com.drinker.processor.processor.PostFormProcessor;
+import com.drinker.processor.processor.PostFormMapProcessor;
+import com.drinker.processor.processor.PostMultipartProcessor;
+import com.drinker.processor.processor.PostMultipartMapProcessor;
+import com.drinker.processor.processor.PutBodyProcessor;
+import com.drinker.processor.processor.PutFormProcessor;
+import com.drinker.processor.processor.PutFormMapProcessor;
+import com.drinker.processor.processor.PutMultipartProcessor;
+import com.drinker.processor.processor.PutMultipartMapProcessor;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -131,25 +131,25 @@ class ServiceHandler implements ProcessHandler {
 
 
     private MethodSpec getMethodSpec(ExecutableElement element, List<? extends VariableElement> parameters, TypeMirror returnType, TypeName generateType) {
-        List<IHttpMethodHandler> handlers = new ArrayList<>();
-        handlers.add(new GetParamMapHandler());
-        handlers.add(new GetParamHandler());
-        handlers.add(new PostFormMapHandler());
-        handlers.add(new PostFormHandler());
-        handlers.add(new PostMultipartMapHandler());
-        handlers.add(new PostMultipartHandler());
-        handlers.add(new PostBodyHandler());
-        handlers.add(new PostConverterBodyHandler());
-        handlers.add(new PutFormHandler());
-        handlers.add(new PutFormMapHandler());
-        handlers.add(new PutFormHandler());
-        handlers.add(new PutMultipartMapHandler());
-        handlers.add(new PutMultipartHandler());
-        handlers.add(new PutBodyHandler());
-        handlers.add(new DeleteBodyHandler());
-        handlers.add(new DeleteNoBodyHandler());
+        List<IHttpMethodProcessor> processors = new ArrayList<>();
+        processors.add(new GetParamMapProcessor());
+        processors.add(new GetParamProcessor());
+        processors.add(new PostFormMapProcessor());
+        processors.add(new PostFormProcessor());
+        processors.add(new PostMultipartMapProcessor());
+        processors.add(new PostMultipartProcessor());
+        processors.add(new PostBodyProcessor());
+        processors.add(new PostConverterBodyProcessor());
+        processors.add(new PutFormProcessor());
+        processors.add(new PutFormMapProcessor());
+        processors.add(new PutFormProcessor());
+        processors.add(new PutMultipartMapProcessor());
+        processors.add(new PutMultipartProcessor());
+        processors.add(new PutBodyProcessor());
+        processors.add(new DeleteBodyProcessor());
+        processors.add(new DeleteNoBodyProcessor());
 
-        for (IHttpMethodHandler handler : handlers) {
+        for (IHttpMethodProcessor handler : processors) {
             MethodSpec methodSpec = handler.process(element, parameters, returnType, generateType);
             if (methodSpec != null) {
                 return methodSpec;

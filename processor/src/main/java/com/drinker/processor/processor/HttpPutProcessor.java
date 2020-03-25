@@ -1,4 +1,4 @@
-package com.drinker.processor.method;
+package com.drinker.processor.processor;
 
 import com.drinker.annotation.Put;
 
@@ -7,7 +7,7 @@ import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-public abstract class HttpPutHandler extends HttpHandler<Put> {
+public abstract class HttpPutProcessor extends HttpProcessor<Put> {
 
     @Override
     protected Put getAnnotations(ExecutableElement executableElement) {

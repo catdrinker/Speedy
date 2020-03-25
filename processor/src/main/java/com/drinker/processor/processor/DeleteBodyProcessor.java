@@ -1,11 +1,11 @@
-package com.drinker.processor.method;
+package com.drinker.processor.processor;
 
 import com.drinker.processor.handler.IHandler;
 import com.drinker.processor.handler.BodyHandler;
 import com.drinker.processor.writter.BodyWriter;
 import com.drinker.processor.writter.MethodWriter;
 
-public final class DeleteBodyHandler extends DeleteHandler {
+public final class DeleteBodyProcessor extends DeleteProcessor {
 
     @Override
     protected MethodWriter getWriter() {

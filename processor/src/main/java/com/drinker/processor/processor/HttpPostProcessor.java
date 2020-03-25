@@ -1,4 +1,4 @@
-package com.drinker.processor.method;
+package com.drinker.processor.processor;
 
 import com.drinker.annotation.Post;
 
@@ -7,7 +7,7 @@ import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-public abstract class HttpPostHandler extends HttpHandler<Post> {
+public abstract class HttpPostProcessor extends HttpProcessor<Post> {
 
     @Override
     protected Post getAnnotations(ExecutableElement executableElement) {

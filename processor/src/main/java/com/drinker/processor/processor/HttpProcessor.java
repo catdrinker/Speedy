@@ -1,4 +1,4 @@
-package com.drinker.processor.method;
+package com.drinker.processor.processor;
 
 import com.drinker.annotation.Form;
 import com.drinker.annotation.MultiPart;
@@ -18,7 +18,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-public abstract class HttpHandler<T> implements IHttpMethodHandler {
+public abstract class HttpProcessor<T> implements IHttpMethodProcessor {
 
     static final String GET = "get";
     static final String POST = "post";

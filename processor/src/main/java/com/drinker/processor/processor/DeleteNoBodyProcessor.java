@@ -1,11 +1,11 @@
-package com.drinker.processor.method;
+package com.drinker.processor.processor;
 
 import com.drinker.processor.handler.IHandler;
 import com.drinker.processor.handler.TrueHandler;
 import com.drinker.processor.writter.MethodWriter;
 import com.drinker.processor.writter.NoBodyMethodWriter;
 
-public class GetParamHandler extends GetHandler {
+public final class DeleteNoBodyProcessor extends DeleteProcessor {
     @Override
     protected MethodWriter getWriter() {
         return new NoBodyMethodWriter();

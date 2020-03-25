@@ -1,4 +1,4 @@
-package com.drinker.processor.method;
+package com.drinker.processor.processor;
 
 import com.drinker.annotation.Get;
 import com.drinker.annotation.Param;
@@ -11,7 +11,7 @@ import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-public abstract class GetHandler extends HttpHandler<Get> {
+public abstract class GetProcessor extends HttpProcessor<Get> {
 
     @Override
     protected Get getAnnotations(ExecutableElement executableElement) {

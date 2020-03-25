@@ -1,14 +1,13 @@
-package com.drinker.processor.method;
+package com.drinker.processor.processor;
 
 import com.drinker.annotation.Delete;
-import com.drinker.annotation.Param;
 
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-public abstract class DeleteHandler extends HttpHandler<Delete> {
+public abstract class DeleteProcessor extends HttpProcessor<Delete> {
 
     @Override
     protected Delete getAnnotations(ExecutableElement executableElement) {

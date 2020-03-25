@@ -1,11 +1,11 @@
-package com.drinker.processor.method;
+package com.drinker.processor.processor;
 
 import com.drinker.processor.handler.IHandler;
 import com.drinker.processor.handler.ParamMapHandler;
 import com.drinker.processor.writter.MethodWriter;
 import com.drinker.processor.writter.UrlMapWriter;
 
-public class GetParamMapHandler extends GetHandler {
+public class GetParamMapProcessor extends GetProcessor {
     @Override
     protected MethodWriter getWriter() {
         return new UrlMapWriter();
