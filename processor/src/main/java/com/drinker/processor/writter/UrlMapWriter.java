@@ -44,7 +44,7 @@ public class UrlMapWriter extends MethodWriter {
 
                 .addStatement("$T paramBuilder = new $T()", STRING_BUILDER, STRING_BUILDER)
                 .addCode("for($T<$T,$T> entry : " + parameter.getSimpleName() + ".entrySet()) {\n", MAP_ENTRY, STRING, STRING)
-                .addCode("if(!$T.isEmpty(paramBuilder)) {\n", SPEEDY_TEXT_UTIL)
+                .addCode("if($T.isNotEmpty(paramBuilder)) {\n", SPEEDY_TEXT_UTIL)
                 .addStatement("paramBuilder.append(\"&\")")
                 .addCode("}\n")
                 .addCode("paramBuilder.append(entry.getKey())")

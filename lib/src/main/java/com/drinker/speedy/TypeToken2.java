@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
  *
  * @param <T>
  */
-public final class TypeToken2<T> {
+public class TypeToken2<T> {
     private final Class<? super T> rawType;
     final Type type;
     private final int hashCode;
