@@ -35,6 +35,8 @@ dependencies {
     //    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
 
+    implementation project(':lib')
+
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -42,10 +44,13 @@ dependencies {
     implementation "androidx.core:core-ktx:$CORE_KT_X"
     implementation "androidx.constraintlayout:constraintlayout:$CONSTRAINT_LAYOUT"
     testImplementation "junit:junit:$JUNIT"
+    testImplementation("com.squareup.okhttp3:mockwebserver:$OK_HTTP")
     androidTestImplementation "androidx.test.ext:junit:$TEST_RUNNER"
     androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_CORE"
     annotationProcessor project(':processor')
-    implementation project(':lib')
+
+    testAnnotationProcessor project(':processor')
+
 
 
     // ViewModel and LiveData
