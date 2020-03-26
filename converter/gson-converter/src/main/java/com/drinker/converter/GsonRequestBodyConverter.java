@@ -11,6 +11,8 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import javax.annotation.Nonnull;
+
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.Buffer;
@@ -33,8 +35,9 @@ public class GsonRequestBodyConverter<T> implements RequestBodyConverter<T> {
         this.adapter = adapter;
     }
 
+    @Nonnull
     @Override
-    public RequestBody transform(T value) throws IOException {
+    public RequestBody transform(@Nonnull T value) throws IOException {
         Buffer buffer = new Buffer();
         Writer writer = new OutputStreamWriter(buffer.outputStream(), UTF_8);
         JsonWriter jsonWriter = gson.newJsonWriter(writer);

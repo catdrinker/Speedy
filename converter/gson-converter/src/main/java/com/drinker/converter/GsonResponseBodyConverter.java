@@ -9,6 +9,8 @@ import com.google.gson.stream.JsonToken;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 import okhttp3.ResponseBody;
 
 public class GsonResponseBodyConverter<T> implements ResponseBodyConverter<T> {
@@ -28,7 +30,7 @@ public class GsonResponseBodyConverter<T> implements ResponseBodyConverter<T> {
     }
 
     @Override
-    public T transform(ResponseBody body) throws IOException {
+    public T transform(@Nonnull ResponseBody body) throws IOException {
         JsonReader jsonReader = gson.newJsonReader(body.charStream());
         try {
             T result = adapter.read(jsonReader);

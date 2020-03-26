@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val create = retrofit.create(RetrofitService::class.java)*/
 
         val speedy = Speedy.Builder()
-            .baseUrl(BaseHttpUrl.get("https://ditu.amap.com/service/pl/"))
+            .baseUrl("https://ditu.amap.com/service/pl/")
             .callFactory(client)
             .converterFactory(GsonConverterFactory.create())
             .callAdapter(LiveDataAdapter.create(true))

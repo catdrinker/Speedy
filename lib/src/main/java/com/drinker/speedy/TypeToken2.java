@@ -8,10 +8,10 @@ import java.lang.reflect.Type;
  *
  * @param <T>
  */
-public class TypeToken2<T> {
-    final Class<? super T> rawType;
+public final class TypeToken2<T> {
+    private final Class<? super T> rawType;
     final Type type;
-    final int hashCode;
+    private final int hashCode;
 
     protected TypeToken2() {
         this.type = getSuperclassTypeParameter(getClass());
@@ -23,7 +23,7 @@ public class TypeToken2<T> {
      * Returns the type from super class's type parameter in {@link $Gson$Types#canonicalize
      * canonical form}.
      */
-    static Type getSuperclassTypeParameter(Class<?> subclass) {
+    private static Type getSuperclassTypeParameter(Class<?> subclass) {
         Type superclass = subclass.getGenericSuperclass();
         if (superclass instanceof Class) {
             throw new RuntimeException("Missing type parameter.");

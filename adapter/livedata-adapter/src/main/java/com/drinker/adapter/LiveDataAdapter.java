@@ -3,6 +3,8 @@ package com.drinker.adapter;
 import com.drinker.speedy.Call;
 import com.drinker.speedy.CallAdapter;
 
+import javax.annotation.Nonnull;
+
 public class LiveDataAdapter<T> implements CallAdapter<T, LiveResult<T>> {
 
     public static LiveDataAdapter create(boolean isAsync) {
@@ -19,7 +21,7 @@ public class LiveDataAdapter<T> implements CallAdapter<T, LiveResult<T>> {
     }
 
     @Override
-    public LiveResult<T> adapt(Call<T> call) {
+    public LiveResult<T> adapt(@Nonnull Call<T> call) {
         LiveService<T> liveService;
         if (isAsync) {
             liveService = new EnqueueLiveService<>();

@@ -21,7 +21,7 @@ import okio.Timeout;
  *
  * @param <T>
  */
-public class WrapperCall<T> implements Call<T> {
+public final class WrapperCall<T> implements Call<T> {
 
     private okhttp3.Call rawCall;
     private okhttp3.Call.Factory callFactory;
@@ -41,7 +41,6 @@ public class WrapperCall<T> implements Call<T> {
 
     @Override
     public Response<T> execute() throws IOException {
-        assert rawCall != null;
         synchronized (this) {
             if (isExecuted) {
                 throw new IllegalStateException("one call only can execute one time");
@@ -53,7 +52,6 @@ public class WrapperCall<T> implements Call<T> {
 
     @Override
     public void enqueue(final Callback<T> callback) {
-        assert rawCall != null;
         synchronized (this) {
             if (isExecuted) {
                 throw new IllegalStateException("one call only can execute one time");
@@ -89,7 +87,7 @@ public class WrapperCall<T> implements Call<T> {
                             callback.onResponse(WrapperCall.this, response);
                         } catch (Throwable t) {
                             throwIfFatal(t);
-                            t.printStackTrace(); // TODO this is not great
+                            t.printStackTrace();
                         }
                     }
                 });
@@ -100,13 +98,13 @@ public class WrapperCall<T> implements Call<T> {
                     callback.onFailure(WrapperCall.this, e);
                 } catch (Throwable t) {
                     throwIfFatal(t);
-                    t.printStackTrace(); // TODO this is not great
+                    t.printStackTrace();
                 }
             }
         });
     }
 
-    static ResponseBody buffer(final ResponseBody body) throws IOException {
+    private static ResponseBody buffer(final ResponseBody body) throws IOException {
         Buffer buffer = new Buffer();
         body.source().readAll(buffer);
         return ResponseBody.create(body.contentType(), body.contentLength(), buffer);
@@ -166,7 +164,7 @@ public class WrapperCall<T> implements Call<T> {
         return rawRequest;
     }
 
-    static void throwIfFatal(Throwable t) {
+    private static void throwIfFatal(Throwable t) {
         if (t instanceof VirtualMachineError) {
             throw (VirtualMachineError) t;
         } else if (t instanceof ThreadDeath) {
@@ -177,8 +175,7 @@ public class WrapperCall<T> implements Call<T> {
     }
 
     static final class NoContentResponseBody extends ResponseBody {
-        private final @Nullable
-        MediaType contentType;
+        private final @Nullable MediaType contentType;
         private final long contentLength;
 
         NoContentResponseBody(@Nullable MediaType contentType, long contentLength) {

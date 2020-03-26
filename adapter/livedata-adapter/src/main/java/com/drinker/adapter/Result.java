@@ -2,7 +2,7 @@ package com.drinker.adapter;
 
 import androidx.annotation.Nullable;
 
-public class Result<T> {
+public final class Result<T> {
     private ResultStatus status;
 
     @Nullable
@@ -17,11 +17,11 @@ public class Result<T> {
         this.exception = exception;
     }
 
-    public static <T> Result<T> success(T response) {
+    static <T> Result<T> success(T response) {
         return new Result<>(ResultStatus.SUCCESS, response, null);
     }
 
-    public static <T> Result<T> failure(Throwable e) {
+    static <T> Result<T> failure(Throwable e) {
         return new Result<>(ResultStatus.FAILURE, null, e);
     }
 

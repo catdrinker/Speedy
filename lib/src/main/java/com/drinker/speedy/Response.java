@@ -13,7 +13,7 @@ import okhttp3.ResponseBody;
  * <p>
  * thanks for retrofit and thank's for retrofit https://github.com/square/retrofit
  */
-public class Response<T> {
+public final class Response<T> {
 
     /**
      * Create a synthetic successful response with {@code body} as the deserialized body.
@@ -111,17 +111,17 @@ public class Response<T> {
     private @Nullable T body;
     private @Nullable ResponseBody errorBody;
 
-    private Response(okhttp3.Response rawResponse, T body, ResponseBody errorBody) {
+    private Response(okhttp3.Response rawResponse, @Nullable T body, @Nullable ResponseBody errorBody) {
         this.rawResponse = rawResponse;
         this.body = body;
         this.errorBody = errorBody;
     }
 
-    public T getBody() {
+    public @Nullable T getBody() {
         return body;
     }
 
-    public ResponseBody getErrorBody() {
+    public @Nullable ResponseBody getErrorBody() {
         return errorBody;
     }
 

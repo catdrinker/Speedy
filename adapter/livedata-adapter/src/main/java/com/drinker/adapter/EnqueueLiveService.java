@@ -11,7 +11,11 @@ public class EnqueueLiveService<T> implements LiveService<T> {
         call.enqueue(new Callback<T>() {
             @Override
             public void onResponse(Call<T> call, Response<T> response) {
-                liveResult.postValue(Result.success(response.getBody()));
+                if (response.getBody() != null) {
+                    liveResult.postValue(Result.success(response.getBody()));
+                } else {
+                    liveResult.postValue(Result.<T>failure(new NullPointerException("don't have a response body")));
+                }
             }
 
             @Override

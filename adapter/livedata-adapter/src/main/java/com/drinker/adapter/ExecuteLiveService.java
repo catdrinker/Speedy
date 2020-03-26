@@ -11,7 +11,12 @@ public class ExecuteLiveService<T> implements LiveService<T> {
         LiveResult<T> result = new LiveResult<>();
         try {
             Response<T> response = call.execute();
-            result.postValue(Result.success(response.getBody()));
+            T body = response.getBody();
+            if (body != null) {
+                result.postValue(Result.success(response.getBody()));
+            } else {
+                result.postValue(Result.<T>failure(new NullPointerException("don't have a response body")));
+            }
         } catch (IOException e) {
             result.postValue(Result.<T>failure(e));
         }

@@ -1,8 +1,10 @@
 package com.drinker.speedy;
 
-public class TextUtil {
+import javax.annotation.Nullable;
 
-    public static boolean isEmpty(CharSequence charSequence) {
+public final class TextUtil {
+
+    public static boolean isEmpty(@Nullable CharSequence charSequence) {
         return charSequence == null || charSequence.length() == 0;
     }
 

@@ -1,15 +1,18 @@
 package com.drinker.speedy;
 
+import javax.annotation.Nonnull;
+
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
-public class DefaultConverterFactory implements Converter.Factory {
+public final class DefaultConverterFactory implements Converter.Factory {
 
+    @Nonnull
     @Override
-    public <T> Converter<T, RequestBody> reqBodyConverter(final TypeToken2<T> token) {
+    public <T> Converter<T, RequestBody> reqBodyConverter(@Nonnull final TypeToken2<T> token) {
         return new Converter<T, RequestBody>() {
             @Override
-            public RequestBody transform(T value) {
+            public RequestBody transform(@Nonnull T value) {
                 if (token.getType() == RequestBody.class) {
                     return (RequestBody) value;
                 }
@@ -18,11 +21,12 @@ public class DefaultConverterFactory implements Converter.Factory {
         };
     }
 
+    @Nonnull
     @Override
-    public <T> Converter<ResponseBody, T> respBodyConverter(final TypeToken2<T> token) {
+    public <T> Converter<ResponseBody, T> respBodyConverter(@Nonnull final TypeToken2<T> token) {
         return new Converter<ResponseBody, T>() {
             @Override
-            public T transform(ResponseBody value) {
+            public T transform(@Nonnull ResponseBody value) {
                 if (token.type == ResponseBody.class) {
                     return (T) value;
                 }
