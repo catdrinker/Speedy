@@ -64,8 +64,8 @@ public class ServiceTest {
         login.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                latch.countDown();
                 atomicReference.set(response);
+                latch.countDown();
             }
 
             @Override
@@ -104,7 +104,7 @@ public class ServiceTest {
 
     @Test
     public void testAsync404() throws InterruptedException, IOException {
-        server.enqueue(new MockResponse().setBody(""));
+        server.enqueue(new MockResponse().setResponseCode(404));
         Call<ResponseBody> login = service.getLogin();
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -113,15 +113,13 @@ public class ServiceTest {
         login.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                latch.countDown();
-                System.out.println("join here");
                 atomicReference.set(response);
+                latch.countDown();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable e) {
                 latch.countDown();
-                System.out.println(":failure");
             }
         });
 
