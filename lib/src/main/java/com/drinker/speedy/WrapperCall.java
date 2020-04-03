@@ -61,36 +61,26 @@ public final class WrapperCall<T> implements Call<T> {
         rawCall.enqueue(new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, final IOException e) {
-                delivery.delivery(new IDeliveryTask() {
-                    @Override
-                    public void exec() {
-                        callback.onFailure(WrapperCall.this, e);
-                    }
-                });
+                deliveryFailure(e);
             }
 
             @Override
             public void onResponse(okhttp3.Call call, final okhttp3.Response rawResponse) {
-                delivery.delivery(new IDeliveryTask() {
-                    @Override
-                    public void exec() {
-                        Response<T> response;
-                        try {
-                            response = parseResponse(rawResponse);
-                        } catch (Throwable e) {
-                            throwIfFatal(e);
-                            callFailure(e);
-                            return;
-                        }
+                Response<T> response;
+                try {
+                    response = parseResponse(rawResponse);
+                } catch (Throwable e) {
+                    throwIfFatal(e);
+                    deliveryCallFailure(e);
+                    return;
+                }
 
-                        try {
-                            callback.onResponse(WrapperCall.this, response);
-                        } catch (Throwable t) {
-                            throwIfFatal(t);
-                            t.printStackTrace();
-                        }
-                    }
-                });
+                try {
+                    deliverySuccess(response);
+                } catch (Throwable t) {
+                    throwIfFatal(t);
+                    t.printStackTrace();
+                }
             }
 
             private void callFailure(Throwable e) {
@@ -100,6 +90,33 @@ public final class WrapperCall<T> implements Call<T> {
                     throwIfFatal(t);
                     t.printStackTrace();
                 }
+            }
+
+            private void deliverySuccess(final Response<T> response) {
+                delivery.delivery(new IDeliveryTask() {
+                    @Override
+                    public void exec() {
+                        callback.onResponse(WrapperCall.this, response);
+                    }
+                });
+            }
+
+            private void deliveryFailure(final Throwable e) {
+                delivery.delivery(new IDeliveryTask() {
+                    @Override
+                    public void exec() {
+                        callback.onFailure(WrapperCall.this, e);
+                    }
+                });
+            }
+
+            private void deliveryCallFailure(final Throwable e) {
+                delivery.delivery(new IDeliveryTask() {
+                    @Override
+                    public void exec() {
+                        callFailure(e);
+                    }
+                });
             }
         });
     }

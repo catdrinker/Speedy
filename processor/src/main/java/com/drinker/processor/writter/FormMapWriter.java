@@ -31,8 +31,7 @@ public final class FormMapWriter extends MethodWriter {
         return MethodSpec.overriding(executableElement)
                 .addStatement("$T bodyBuilder = new $T()", FORM_BODY_BUILDER, FORM_BODY_BUILDER)
                 .addStatement("$T<$T<$T,$T>> iterator = " + mapParameter.getSimpleName() + ".entrySet().iterator()", ITERATOR, MAP_ENTRY, STRING, STRING)
-                .addCode("while (iterator.hasNext()) {\n")
-                .addStatement("$T<$T,$T> entry = iterator.next()", MAP_ENTRY, STRING, STRING)
+                .addCode("for($T<$T,$T> entry : " + mapParameter.getSimpleName() + ".entrySet()) {\n", MAP_ENTRY, STRING, STRING)
                 .addStatement("bodyBuilder.add(entry.getKey(), entry.getValue())")
                 .addCode("}\n")
 
