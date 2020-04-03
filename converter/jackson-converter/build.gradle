@@ -1,0 +1,17 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // TODO remote dependency
+    implementation project(':lib')
+
+    testImplementation "junit:junit:$JUNIT"
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.3'
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"

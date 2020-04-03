@@ -2,6 +2,12 @@ include ':app'
 include ':lib'
 include ':annotation'
 include ':processor'
+
+// converter
 include 'converter:gson-converter'
+include ':converter:jackson-converter'
+
+//adapter
 include 'adapter:livedata-adapter'
+
 rootProject.name = 'Speedy'
