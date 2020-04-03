@@ -36,13 +36,13 @@ public class GsonConverterFactory implements Converter.Factory {
     @Override
     public <T> Converter<T, RequestBody> reqBodyConverter(@Nonnull TypeToken2<T> token) {
         TypeAdapter<T> adapter = (TypeAdapter<T>) gson.getAdapter(TypeToken.get(token.getType()));
-        return GsonRequestBodyConverter.create(gson, adapter);
+        return new GsonRequestBodyConverter<>(gson, adapter);
     }
 
     @Nonnull
     @Override
     public <T> Converter<ResponseBody, T> respBodyConverter(@Nonnull TypeToken2<T> token) {
         TypeAdapter<T> adapter = (TypeAdapter<T>) gson.getAdapter(TypeToken.get(token.getType()));
-        return GsonResponseBodyConverter.create(gson, adapter);
+        return new GsonResponseBodyConverter<>(gson, adapter);
     }
 }

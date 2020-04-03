@@ -16,17 +16,11 @@ import okhttp3.ResponseBody;
 public class GsonResponseBodyConverter<T> implements ResponseBodyConverter<T> {
 
     private final Gson gson;
-    private TypeAdapter<T> adapter;
+    private final TypeAdapter<T> adapter;
 
-
-    private GsonResponseBodyConverter(Gson gson, TypeAdapter<T> adapter) {
+    GsonResponseBodyConverter(Gson gson, TypeAdapter<T> adapter) {
         this.gson = gson;
         this.adapter = adapter;
-    }
-
-    // TODO 改成每个方法创建一个新的Converter，这里还是要传入factory
-    static <T> GsonResponseBodyConverter<T> create(Gson gson, TypeAdapter<T> adapter) {
-        return new GsonResponseBodyConverter<>(gson, adapter);
     }
 
     @Override
