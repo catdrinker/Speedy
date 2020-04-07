@@ -12,7 +12,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
-public class ServiceMapHandler implements ProcessHandler {
+public final class ServiceMapHandler implements ProcessHandler {
 
     private static final String SERVICE_MAP_NAME = "ServiceMap";
 

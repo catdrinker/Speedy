@@ -25,7 +25,7 @@ import static com.drinker.processor.SpeedyClassName.SPEEDY_WRAPPER_CALL;
 import static com.drinker.processor.SpeedyClassName.STRING;
 import static com.drinker.processor.SpeedyClassName.STRING_BUILDER;
 
-public class UrlMapWriter extends MethodWriter {
+public final class UrlMapWriter extends MethodWriter {
 
     @Override
     public @Nonnull

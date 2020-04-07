@@ -5,7 +5,7 @@ import com.drinker.processor.handler.IHandler;
 import com.drinker.processor.writter.ConverterBodyWriter;
 import com.drinker.processor.writter.MethodWriter;
 
-public class PostConverterBodyProcessor extends HttpPostProcessor {
+public final class PostConverterBodyProcessor extends HttpPostProcessor {
     @Override
     protected MethodWriter getWriter() {
         return new ConverterBodyWriter();

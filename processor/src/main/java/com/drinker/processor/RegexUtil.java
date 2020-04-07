@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexUtil {
+public final class RegexUtil {
 
     private static final String PARAM = "[a-zA-Z][a-zA-Z0-9_-]*";
     private static final String WRAP_PARAM = "\\{" + PARAM + "\\}";

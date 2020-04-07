@@ -3,7 +3,7 @@ package com.drinker.processor;
 import javax.annotation.processing.Messager;
 import javax.tools.Diagnostic;
 
-public class Log {
+public final class Log {
 
     private static Messager messager;
 

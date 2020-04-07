@@ -12,7 +12,7 @@ import static com.drinker.processor.SpeedyClassName.MULTIPART_PART;
 import static com.drinker.processor.SpeedyClassName.REQ_BODY;
 import static com.drinker.processor.SpeedyClassName.STRING;
 
-public class CheckUtils {
+public final class CheckUtils {
 
     /**
      * check is legitimate Param value {@link com.drinker.annotation.Param}

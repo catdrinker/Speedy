@@ -5,7 +5,7 @@ import com.drinker.processor.handler.ParamMapHandler;
 import com.drinker.processor.writter.MethodWriter;
 import com.drinker.processor.writter.UrlMapWriter;
 
-public class GetParamMapProcessor extends GetProcessor {
+public final class GetParamMapProcessor extends GetProcessor {
     @Override
     protected MethodWriter getWriter() {
         return new UrlMapWriter();

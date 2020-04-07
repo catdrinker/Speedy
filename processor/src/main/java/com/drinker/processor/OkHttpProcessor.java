@@ -19,7 +19,7 @@ import javax.lang.model.util.Elements;
 
 @SupportedAnnotationTypes({"com.drinker.annotation.Get", "com.drinker.annotation.Post"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class OkHttpProcessor extends AbstractProcessor {
+public final class OkHttpProcessor extends AbstractProcessor {
 
     private Filer filer;
 

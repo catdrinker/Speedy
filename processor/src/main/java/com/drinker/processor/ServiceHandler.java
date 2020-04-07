@@ -43,7 +43,7 @@ import static com.drinker.processor.SpeedyClassName.CALL_FACTORY;
 import static com.drinker.processor.SpeedyClassName.CONVERTER_FACTORY;
 import static com.drinker.processor.SpeedyClassName.DELIVERY;
 
-class ServiceHandler implements ProcessHandler {
+final class ServiceHandler implements ProcessHandler {
 
     private final static String IMPL = "_impl";
     private Elements elements;

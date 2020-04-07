@@ -5,7 +5,7 @@ import com.drinker.processor.handler.TrueHandler;
 import com.drinker.processor.writter.MethodWriter;
 import com.drinker.processor.writter.NoBodyMethodWriter;
 
-public class GetParamProcessor extends GetProcessor {
+public final class GetParamProcessor extends GetProcessor {
     @Override
     protected MethodWriter getWriter() {
         return new NoBodyMethodWriter();
