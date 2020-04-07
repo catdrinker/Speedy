@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import okhttp3.RequestBody;
 
-public class CatchExceptionRequestBody<T> {
+public final class CatchExceptionRequestBody<T> {
 
     @Nonnull
     private Converter<T, okhttp3.RequestBody> requestBodyConverter;
@@ -15,7 +15,7 @@ public class CatchExceptionRequestBody<T> {
         this.requestBodyConverter = requestBodyConverter;
     }
 
-    okhttp3.RequestBody getBody(T value) {
+    public okhttp3.RequestBody getBody(T value) {
         try {
             RequestBody body = requestBodyConverter.transform(value);
             if (body == null) {
