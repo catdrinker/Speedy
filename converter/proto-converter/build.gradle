@@ -1,0 +1,16 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // TODO remote dependency
+    implementation project(':lib')
+
+    implementation 'com.google.protobuf:protobuf-java:3.11.0'
+
+    testImplementation "junit:junit:$JUNIT"
+
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"

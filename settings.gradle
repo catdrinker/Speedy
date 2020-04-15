@@ -6,7 +6,7 @@ include ':processor'
 // converter
 include 'converter:gson-converter'
 include ':converter:jackson-converter'
-
+include ':converter:proto-converter'
 //adapter
 include 'adapter:livedata-adapter'
 
