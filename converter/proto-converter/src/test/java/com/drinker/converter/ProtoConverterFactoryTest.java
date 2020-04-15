@@ -23,7 +23,7 @@ import okhttp3.ResponseBody;
 
 public class ProtoConverterFactoryTest {
 
-    ProtoConverterFactory protoConverterFactory;
+    private ProtoConverterFactory protoConverterFactory;
 
     @Before
     public void setUp() throws Exception {
@@ -34,7 +34,7 @@ public class ProtoConverterFactoryTest {
 
     @After
     public void tearDown() throws Exception {
-
+        protoConverterFactory = null;
     }
 
     @Test
@@ -45,24 +45,12 @@ public class ProtoConverterFactoryTest {
 
         TypeToken2<PhoneProtos.Phone> typeToken2 = new TypeToken2<PhoneProtos.Phone>() {
         };
-
         Converter<PhoneProtos.Phone, RequestBody> reqConverter = protoConverterFactory.reqBodyConverter(typeToken2);
-
         RequestBody requestBody = reqConverter.transform(phone);
-
-
         assert requestBody != null;
         MediaType mediaType = requestBody.contentType();
-
         assert mediaType != null;
-
         assert "application/x-protobuf".equals(mediaType.toString());
-
-        System.out.println(requestBody.contentLength());
-
-        System.out.println(requestBody.contentType());
-
-
     }
 
     @Test
@@ -74,18 +62,13 @@ public class ProtoConverterFactoryTest {
         PhoneProtos.Phone phone = PhoneProtos.Phone.newBuilder()
                 .setNumber("10086")
                 .build();
-
         byte[] bytes = phone.toByteArray();
         ResponseBody responseBody = ResponseBody.create(MultipartBody.FORM, bytes);
         PhoneProtos.Phone transformPhone = respBodyConverter.transform(responseBody);
-
         assert transformPhone != null;
-
         assert transformPhone.hasNumber();
-
         String number = transformPhone.getNumber();
         assert "10086".equals(number);
-        System.out.println(transformPhone);
     }
 
 
@@ -93,26 +76,28 @@ public class ProtoConverterFactoryTest {
     public void reqBodyNotClassTest() {
         TypeToken2<int[]> typeToken2 = new TypeToken2<int[]>() {
         };
+        Throwable e = null;
         try {
             protoConverterFactory.reqBodyConverter(typeToken2);
         } catch (Throwable throwable) {
-            System.out.println("throwable is " + throwable);
-            assert throwable instanceof IllegalStateException;
-            assert "token type must be cast Class<?> with protobuf".equals(throwable.getMessage());
+            e = throwable;
         }
+        assert e instanceof IllegalStateException;
+        assert "token type must be cast Class<?> with protobuf".equals(e.getMessage());
     }
 
     @Test
     public void reqBodyNotMessageLiteTest() {
         TypeToken2<User> typeToken2 = new TypeToken2<User>() {
         };
+        Throwable e = null;
         try {
             protoConverterFactory.reqBodyConverter(typeToken2);
         } catch (Throwable throwable) {
-            System.out.println("throwable is " + throwable);
-            assert throwable instanceof IllegalStateException;
-            assert "token type must be assignableFrom MessageLite".equals(throwable.getMessage());
+            e = throwable;
         }
+        assert e instanceof IllegalStateException;
+        assert "token type must be assignableFrom MessageLite".equals(e.getMessage());
     }
 
 
@@ -125,7 +110,6 @@ public class ProtoConverterFactoryTest {
             protoConverterFactory.respBodyConverter(typeToken2);
         } catch (Throwable throwable) {
             e = throwable;
-            System.out.println("throwable is " + throwable);
         }
         assert e instanceof IllegalStateException;
         assert "token type must be cast Class<?> with protobuf".equals(e.getMessage());
@@ -140,7 +124,6 @@ public class ProtoConverterFactoryTest {
             protoConverterFactory.respBodyConverter(typeToken2);
         } catch (Throwable throwable) {
             e = throwable;
-            System.out.println("throwable is " + throwable);
         }
         assert e instanceof IllegalStateException;
         assert "token type must be assignableFrom MessageLite".equals(e.getMessage());
@@ -155,19 +138,12 @@ public class ProtoConverterFactoryTest {
             protoConverterFactory.respBodyConverter(typeToken2);
         } catch (Throwable throwable) {
             e = throwable;
-            System.out.println("throwable is " + throwable);
         }
         assert e instanceof IllegalArgumentException;
         assert "Found a protobuf message but com.drinker.converter.ProtoConverterFactoryTest$HomeProto had no parser() method or PARSER field.".equals(e.getMessage());
     }
 
-    @Test
-    public void respNoParseMethodTest() {
-
-    }
-
     static class HomeProto implements MessageLite {
-
 
         @Override
         public void writeTo(CodedOutputStream output) throws IOException {
