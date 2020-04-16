@@ -1,6 +1,5 @@
 package com.drinker.converter
 
-import com.drinker.speedy.Converter
 import com.drinker.speedy.TypeToken2
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

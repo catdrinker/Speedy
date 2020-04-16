@@ -46,6 +46,5 @@ public class JacksonConverterFactory implements Converter.Factory {
         JavaType javaType = mapper.getTypeFactory().constructType(type);
         ObjectReader reader = mapper.readerFor(javaType);
         return new JacksonResponseBodyConverter<>(reader);
-
     }
 }
