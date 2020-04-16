@@ -1,0 +1,19 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':lib')
+
+    // moshi
+    implementation("com.squareup.moshi:moshi:1.9.2")
+
+
+    testImplementation "junit:junit:$JUNIT"
+    testImplementation("com.squareup.moshi:moshi-kotlin:1.9.2")
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
