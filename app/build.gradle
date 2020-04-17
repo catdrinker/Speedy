@@ -29,6 +29,9 @@ dependencies {
     // livedata adapter
     implementation project(':adapter:livedata-adapter')
 
+    // rx adapter
+    implementation project(':adapter:rxjava-adapter')
+
     // gson converter
     implementation project(':converter:gson-converter')
 

@@ -14,14 +14,14 @@ public final class Speedy {
     private final String baseHttpUrl;
     @Nullable private final Converter.Factory converterFactory;
     @Nullable private final IDelivery delivery;
-    @Nullable private final CallAdapter<?, ?> callAdapter;
+    @Nullable private final CallAdapter.Factory callAdapterFactory;
 
     private Speedy(Builder builder) {
         baseHttpUrl = builder.baseHttpUrl;
         callFactory = builder.callFactory;
         converterFactory = builder.converterFactory;
         delivery = builder.delivery;
-        callAdapter = builder.callAdapter;
+        callAdapterFactory = builder.callAdapterFactory;
     }
 
     public <T> T getService(Class<T> clazz) {
@@ -36,8 +36,8 @@ public final class Speedy {
             Constructor<?>[] constructors = implService.getConstructors();
             if (constructors.length != 1) //noinspection ConstantConditions
                 return null;
-            Constructor<?> serviceConstructor = implService.getConstructor(okhttp3.Call.Factory.class, String.class, Converter.Factory.class, IDelivery.class, CallAdapter.class);
-            Object newInstance = serviceConstructor.newInstance(callFactory, baseHttpUrl, converterFactory, delivery, callAdapter);
+            Constructor<?> serviceConstructor = implService.getConstructor(okhttp3.Call.Factory.class, String.class, Converter.Factory.class, IDelivery.class, CallAdapter.Factory.class);
+            Object newInstance = serviceConstructor.newInstance(callFactory, baseHttpUrl, converterFactory, delivery, callAdapterFactory);
             return (T) newInstance;
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException e) {
             throw new InitSpeedyFailException("can't init service cause " + e);
@@ -49,7 +49,7 @@ public final class Speedy {
         private String baseHttpUrl ="";
         @Nullable private Converter.Factory converterFactory;
         @Nullable private IDelivery delivery;
-        @Nullable private CallAdapter callAdapter;
+        @Nullable private CallAdapter.Factory callAdapterFactory;
 
         public Builder callFactory(Call.Factory callFactory) {
             this.callFactory = callFactory;
@@ -66,8 +66,8 @@ public final class Speedy {
             return this;
         }
 
-        public Builder callAdapter(CallAdapter callAdapter) {
-            this.callAdapter = callAdapter;
+        public Builder callAdapterFactory(CallAdapter.Factory callAdapterFactory) {
+            this.callAdapterFactory = callAdapterFactory;
             return this;
         }
 
@@ -81,8 +81,8 @@ public final class Speedy {
             if (converterFactory == null) {
                 converterFactory = new DefaultConverterFactory();
             }
-            if (callAdapter == null) {
-                callAdapter = new CallAdapter.DefaultCallAdapter();
+            if (callAdapterFactory == null) {
+                callAdapterFactory = new CallAdapter.DefaultCallAdapterFactory();
             }
             if (delivery == null) {
                 delivery = new IDelivery.DefaultDelivery();

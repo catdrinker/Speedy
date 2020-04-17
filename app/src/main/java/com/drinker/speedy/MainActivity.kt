@@ -5,7 +5,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.drinker.adapter.LiveDataAdapter
+import com.drinker.adapter.LiveDataAdapterFactory
 import com.drinker.adapter.ResultStatus
 import com.drinker.converter.GsonConverterFactory
 import okhttp3.Dispatcher
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             .baseUrl("https://ditu.amap.com/service/pl/")
             .callFactory(client)
             .converterFactory(GsonConverterFactory.create())
-            .callAdapter(LiveDataAdapter.create(true))
+            .callAdapterFactory(LiveDataAdapterFactory.create())
             .build()
 
         val service = speedy.getService(IService::class.java)

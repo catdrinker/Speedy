@@ -2,20 +2,20 @@ package com.drinker.processor;
 
 import com.drinker.processor.processor.DeleteBodyProcessor;
 import com.drinker.processor.processor.DeleteNoBodyProcessor;
-import com.drinker.processor.processor.GetParamProcessor;
 import com.drinker.processor.processor.GetParamMapProcessor;
+import com.drinker.processor.processor.GetParamProcessor;
 import com.drinker.processor.processor.IHttpMethodProcessor;
 import com.drinker.processor.processor.PostBodyProcessor;
 import com.drinker.processor.processor.PostConverterBodyProcessor;
-import com.drinker.processor.processor.PostFormProcessor;
 import com.drinker.processor.processor.PostFormMapProcessor;
-import com.drinker.processor.processor.PostMultipartProcessor;
+import com.drinker.processor.processor.PostFormProcessor;
 import com.drinker.processor.processor.PostMultipartMapProcessor;
+import com.drinker.processor.processor.PostMultipartProcessor;
 import com.drinker.processor.processor.PutBodyProcessor;
-import com.drinker.processor.processor.PutFormProcessor;
 import com.drinker.processor.processor.PutFormMapProcessor;
-import com.drinker.processor.processor.PutMultipartProcessor;
+import com.drinker.processor.processor.PutFormProcessor;
 import com.drinker.processor.processor.PutMultipartMapProcessor;
+import com.drinker.processor.processor.PutMultipartProcessor;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -38,7 +38,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 
-import static com.drinker.processor.SpeedyClassName.CALL_ADAPTER;
+import static com.drinker.processor.SpeedyClassName.CALL_ADAPTER_FACTORY;
 import static com.drinker.processor.SpeedyClassName.CALL_FACTORY;
 import static com.drinker.processor.SpeedyClassName.CONVERTER_FACTORY;
 import static com.drinker.processor.SpeedyClassName.DELIVERY;
@@ -89,7 +89,7 @@ final class ServiceHandler implements ProcessHandler {
                     .addModifiers(Modifier.PRIVATE)
                     .build();
 
-            FieldSpec callAdapterField = FieldSpec.builder(CALL_ADAPTER, "callAdapter")
+            FieldSpec callAdapterField = FieldSpec.builder(CALL_ADAPTER_FACTORY, "callAdapterFactory")
                     .addModifiers(Modifier.PRIVATE)
                     .build();
 
@@ -100,12 +100,12 @@ final class ServiceHandler implements ProcessHandler {
                     .addParameter(String.class, "baseHttpUrl")
                     .addParameter(CONVERTER_FACTORY, "converterFactory")
                     .addParameter(DELIVERY, "delivery")
-                    .addParameter(CALL_ADAPTER, "callAdapter")
+                    .addParameter(CALL_ADAPTER_FACTORY, "callAdapterFactory")
                     .addStatement("this.client = client")
                     .addStatement("this.baseHttpUrl = baseHttpUrl")
                     .addStatement("this.converterFactory = converterFactory")
                     .addStatement("this.delivery = delivery")
-                    .addStatement("this.callAdapter = callAdapter")
+                    .addStatement("this.callAdapterFactory = callAdapterFactory")
                     .build();
 
             TypeSpec typeSpec = classBuilder.addSuperinterface(ClassName.get(packageName, serviceElement.getSimpleName().toString()))

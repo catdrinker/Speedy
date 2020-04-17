@@ -7,16 +7,12 @@ import javax.annotation.Nonnull;
 
 public class LiveDataAdapter<T> implements CallAdapter<T, LiveResult<T>> {
 
-    public static LiveDataAdapter create(boolean isAsync) {
-        return new LiveDataAdapter(isAsync);
-    }
-
     /**
      * isAsync method with http
      */
     private boolean isAsync;
 
-    private LiveDataAdapter(boolean isAsync) {
+    public LiveDataAdapter(boolean isAsync) {
         this.isAsync = isAsync;
     }
 

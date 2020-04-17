@@ -14,6 +14,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import static com.drinker.processor.SpeedyClassName.CALL_ADAPTER;
 import static com.drinker.processor.SpeedyClassName.MEDIA_TYPE;
 import static com.drinker.processor.SpeedyClassName.MULTIPART_BODY;
 import static com.drinker.processor.SpeedyClassName.MULTIPART_BODY_BUILDER;
@@ -44,13 +45,14 @@ public final class MultipartBodyWriter extends MethodWriter {
         return methodSpec
                 .addStatement(".build()")
                 .addCode("$T request = new $T()\n", REQUEST, REQUEST_BODY_BUILDER)
-                .addCode(".url("+urlString.toString()+")\n")
+                .addCode(".url(" + urlString.toString() + ")\n")
                 .addCode("." + method + "(multipartBody)\n")
                 .addCode(".build();\n")
                 .addCode("")
                 .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter(new $T<$T>(){}), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL,SPEEDY_TYPE_TOKEN,generateType)
-                .addStatement("return ($T)callAdapter.adapt(wrapperCall)", TypeName.get(returnType))
+                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter(new $T<$T>(){}), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, SPEEDY_TYPE_TOKEN, generateType)
+                .addStatement("$T<$T,$T> callAdapter = callAdapterFactory.adapter()", CALL_ADAPTER, generateType, TypeName.get(returnType))
+                .addStatement("return callAdapter.adapt(wrapperCall)")
                 .returns(TypeName.get(returnType))
                 .build();
     }

@@ -163,10 +163,16 @@ public final class WrapperCall<T> implements Call<T> {
         }
     }
 
+    @Override
     public void cancel() {
         if (!rawCall.isCanceled()) {
             rawCall.cancel();
         }
+    }
+
+    @Override
+    public boolean isCancel() {
+        return rawCall.isCanceled();
     }
 
     public Timeout timeout() {
