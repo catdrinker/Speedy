@@ -1,7 +1,5 @@
 package com.drinker.adapter;
 
-import com.drinker.speedy.WrapperCall;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,18 +57,6 @@ public class RxJavaAdapterTest {
     public void testRxJavaAdapter() {
         RxJavaAdapter<User<Home>> userRxJavaAdapter = new RxJavaAdapter<>(true);
 
-    }
-
-    @Test
-    public void test() {
-        float testmoney = testmoney(3000);
-        System.out.println("testmoney" + testmoney);
-    }
-
-    private float testmoney(int money) {
-        float roomPay = money * 0.25f;
-        float pricePay = money * 0.4f;
-        return money + roomPay + pricePay;
     }
 
     static class Home {
