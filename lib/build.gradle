@@ -2,7 +2,7 @@ apply plugin: 'java-library'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api("com.squareup.okhttp3:okhttp:$OK_HTTP")
+    api "com.squareup.okhttp3:okhttp:$OK_HTTP"
     api "com.google.code.findbugs:jsr305:$FIND_BUGS"
     implementation project(':annotation')
     testImplementation "junit:junit:$JUNIT"
