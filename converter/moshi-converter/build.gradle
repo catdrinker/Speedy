@@ -8,11 +8,11 @@ dependencies {
     implementation project(':lib')
 
     // moshi
-    implementation("com.squareup.moshi:moshi:1.9.2")
+    implementation "com.squareup.moshi:moshi:$MOSHI"
 
 
     testImplementation "junit:junit:$JUNIT"
-    testImplementation("com.squareup.moshi:moshi-kotlin:1.9.2")
+    testImplementation("com.squareup.moshi:moshi-kotlin:$MOSHI")
 }
 
 sourceCompatibility = "7"

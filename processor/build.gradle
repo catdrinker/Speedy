@@ -4,7 +4,7 @@ dependencies {
     implementation project(":annotation")
     implementation 'com.squareup:javapoet:1.11.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation "com.google.code.findbugs:jsr305:$FIND_BUGS"
     testImplementation "junit:junit:$JUNIT"
 }
 

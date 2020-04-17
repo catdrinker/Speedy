@@ -8,9 +8,9 @@ dependencies {
 
     testImplementation "junit:junit:$JUNIT"
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.3'
+    implementation "com.fasterxml.jackson.core:jackson-databind:$JACKSON"
+    implementation "com.fasterxml.jackson.core:jackson-core:$JACKSON"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$JACKSON"
 }
 
 sourceCompatibility = "7"

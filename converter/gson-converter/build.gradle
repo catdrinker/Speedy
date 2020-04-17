@@ -7,7 +7,7 @@ dependencies {
     implementation project(':lib')
 
     // gson
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation "com.google.code.gson:gson:$GSON"
 
     testImplementation "junit:junit:$JUNIT"
 }
