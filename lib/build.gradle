@@ -1,12 +1,11 @@
 apply plugin: 'java-library'
 
-apply from: rootProject.file('publish/jcente-lib.gradle')
+apply from: rootProject.file('publish/jecenter-upload.gradle')
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api "com.squareup.okhttp3:okhttp:$OK_HTTP"
-    api "com.google.code.findbugs:jsr305:$FIND_BUGS"
-    implementation project(':annotation')
+    implementation "com.google.code.findbugs:jsr305:$FIND_BUGS"
     testImplementation "junit:junit:$JUNIT"
 }
 

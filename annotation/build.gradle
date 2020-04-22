@@ -1,5 +1,7 @@
 apply plugin: 'java-library'
 
+apply from: rootProject.file('publish/jecenter-upload.gradle')
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

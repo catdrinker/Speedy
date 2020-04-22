@@ -1,0 +1,37 @@
+apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven'
+
+
+def props = new Properties()
+rootProject.file('local.properties').withInputStream { props.load(it) }
+def user = props['bintray.user']
+
+
+def moduleArtifactId = project.properties["ARTIFACT_ID.${project.name.toUpperCase()}"]
+
+def moduleDesc = project.properties["DESC.${project.name.toUpperCase()}"]
+
+println "id is $moduleArtifactId $moduleDesc"
+
+publish {
+    userOrg = "${user}"                                         //bintray.com 账号用户名
+    groupId = "${GROUP_ID}"                                        //唯一 id，最后依赖的库名组成部分之一
+    artifactId = "${moduleArtifactId}"                                    //仓库名
+    publishVersion = "${PUBLISH_VERSION}"                                    //版本号
+    desc = "${moduleDesc}"            //描述
+    repoName = "${REPO_NAME}"
+    website = "${WEB_SITE}"   //开源项目网址
+}
+
+/**
+ * 如果没有这段代码，将不支持中文注释
+ */
+allprojects {
+    tasks.withType(Javadoc) {
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
+}
