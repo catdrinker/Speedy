@@ -4,7 +4,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api "io.reactivex:rxjava:$RX_JAVA"
 
-    implementation project(':lib')
+    implementation 'com.drinker.speedy:core:1.0.0'
     testImplementation "junit:junit:$JUNIT"
     testAnnotationProcessor project(':processor')
 }

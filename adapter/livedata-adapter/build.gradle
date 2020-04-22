@@ -30,8 +30,7 @@ dependencies {
     // alternatively, just LiveData
 
     implementation "android.arch.lifecycle:livedata:$LIFECYCLE_EXTENSIONS"
-    // TODO use maven
-    implementation project(':lib')
+    implementation 'com.drinker.speedy:core:1.0.0'
     testImplementation "junit:junit:$JUNIT"
     testImplementation "org.mockito:mockito-core:3.3.3"
 

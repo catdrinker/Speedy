@@ -2,10 +2,9 @@ apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':lib')
+    implementation 'com.drinker.speedy:core:1.0.0'
 
     // moshi
     implementation "com.squareup.moshi:moshi:$MOSHI"
@@ -13,6 +12,7 @@ dependencies {
 
     testImplementation "junit:junit:$JUNIT"
     testImplementation("com.squareup.moshi:moshi-kotlin:$MOSHI")
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 sourceCompatibility = "7"
