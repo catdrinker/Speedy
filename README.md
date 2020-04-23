@@ -35,8 +35,8 @@ annotationProcessor 'com.drinker.speedy:speedy-compile:1.0.2'
 @Service
 public interface IService {
 
-    @Get("login/namespace?rand=12")
-	Call<Value> getLogin(@Param String name, @Param String pwd);
+  @Get("login/namespace?rand=12")
+  Call<Value> getLogin(@Param String name, @Param String pwd);
     
 }
 ```
