@@ -4,7 +4,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api "io.reactivex:rxjava:$RX_JAVA"
 
-    implementation 'com.drinker.speedy:core:1.0.0'
+    implementation "com.drinker.speedy:core:$SPEEDY_VERSION"
+    compileOnly "com.google.code.findbugs:jsr305:$FIND_BUGS"
     testImplementation "junit:junit:$JUNIT"
 }
 

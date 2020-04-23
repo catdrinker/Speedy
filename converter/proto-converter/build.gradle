@@ -1,11 +1,15 @@
 apply plugin: 'java-library'
 
+apply from: rootProject.file('publish/jecenter-upload.gradle')
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.drinker.speedy:core:1.0.0'
+    api "com.drinker.speedy:core:$SPEEDY_VERSION"
 
-    implementation "com.google.protobuf:protobuf-java:$PROTOBUF_JAVA"
+    api "com.google.protobuf:protobuf-java:$PROTOBUF_JAVA"
+
+    compileOnly "com.google.code.findbugs:jsr305:$FIND_BUGS"
 
     testImplementation "junit:junit:$JUNIT"
 

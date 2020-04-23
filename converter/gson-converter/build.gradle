@@ -1,12 +1,16 @@
 apply plugin: 'java-library'
 
+apply from: rootProject.file('publish/jecenter-upload.gradle')
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.drinker.speedy:core:1.0.0'
+    api "com.drinker.speedy:core:$SPEEDY_VERSION"
 
     // gson
-    implementation "com.google.code.gson:gson:$GSON"
+    api "com.google.code.gson:gson:$GSON"
+
+    compileOnly "com.google.code.findbugs:jsr305:$FIND_BUGS"
 
     testImplementation "junit:junit:$JUNIT"
 }

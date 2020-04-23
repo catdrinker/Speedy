@@ -5,7 +5,7 @@ apply from: rootProject.file('publish/jecenter-upload.gradle')
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api "com.squareup.okhttp3:okhttp:$OK_HTTP"
-    implementation "com.google.code.findbugs:jsr305:$FIND_BUGS"
+    compileOnly "com.google.code.findbugs:jsr305:$FIND_BUGS"
     testImplementation "junit:junit:$JUNIT"
 }
 

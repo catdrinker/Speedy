@@ -1,15 +1,19 @@
 apply plugin: 'java-library'
 
+apply from: rootProject.file('publish/jecenter-upload.gradle')
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.drinker.speedy:core:1.0.0'
+    api "com.drinker.speedy:core:$SPEEDY_VERSION"
 
     testImplementation "junit:junit:$JUNIT"
 
-    implementation "com.fasterxml.jackson.core:jackson-databind:$JACKSON"
-    implementation "com.fasterxml.jackson.core:jackson-core:$JACKSON"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:$JACKSON"
+    api "com.fasterxml.jackson.core:jackson-databind:$JACKSON"
+    api "com.fasterxml.jackson.core:jackson-core:$JACKSON"
+    api "com.fasterxml.jackson.core:jackson-annotations:$JACKSON"
+
+    compileOnly "com.google.code.findbugs:jsr305:$FIND_BUGS"
 }
 
 sourceCompatibility = "7"
