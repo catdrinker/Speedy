@@ -26,6 +26,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(":annotation")
+
     implementation "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
     // alternatively, just LiveData
 
@@ -38,6 +40,9 @@ dependencies {
     testImplementation "org.mockito:mockito-core:3.3.3"
 
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
+
+
+    testAnnotationProcessor project(':processor')
 
     androidTestImplementation "androidx.test.ext:junit:$TEST_RUNNER"
     androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_CORE"
