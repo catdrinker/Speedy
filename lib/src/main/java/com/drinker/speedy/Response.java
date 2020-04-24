@@ -129,4 +129,15 @@ public final class Response<T> {
         return rawResponse;
     }
 
+    public int getCode(){
+        return rawResponse.code();
+    }
+
+    public String getMessage(){
+        return rawResponse.message();
+    }
+
+    public boolean isSuccessful(){
+        return rawResponse.isSuccessful();
+    }
 }
