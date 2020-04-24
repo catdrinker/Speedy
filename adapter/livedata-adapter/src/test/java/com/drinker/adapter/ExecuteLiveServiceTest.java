@@ -22,8 +22,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
-public class EnqueueLiveServiceTest {
-
+public class ExecuteLiveServiceTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
@@ -47,7 +46,7 @@ public class EnqueueLiveServiceTest {
 
         Speedy speedy = new Speedy.Builder()
                 .baseUrl(url.toString())
-                .callAdapterFactory(LiveDataAdapterFactory.create())
+                .callAdapterFactory(LiveDataAdapterFactory.create(false))
                 .converterFactory(GsonConverterFactory.create())
                 .callFactory(client)
                 .build();
@@ -67,11 +66,10 @@ public class EnqueueLiveServiceTest {
     }
 
     @Test
-    public void serviceEnqueueSuccessTest() throws InterruptedException {
+    public void serviceEnqueueSuccessTest() {
         String s = "{\"data\":{\"value\":1,\"h\":\"hahaah\"},\"name\":\"1321\",\"value\":\"12321321\"}";
         server.enqueue(new MockResponse().setBody(s));
 
-        final CountDownLatch latch = new CountDownLatch(1);
         LiveResult<CallService.User<CallService.Home>> liveResult = service.getService();
 
         final AtomicReference<Result<CallService.User<CallService.Home>>> atomicReference = new AtomicReference<>();
@@ -80,10 +78,8 @@ public class EnqueueLiveServiceTest {
             @Override
             public void onChanged(Result<CallService.User<CallService.Home>> userResult) {
                 atomicReference.set(userResult);
-                latch.countDown();
             }
         });
-        latch.await(10, TimeUnit.SECONDS);
         Result<CallService.User<CallService.Home>> result = atomicReference.get();
         assert result != null;
         assert result.isSuccess();
@@ -93,9 +89,8 @@ public class EnqueueLiveServiceTest {
     }
 
     @Test
-    public void serviceEnqueueFailTest() throws InterruptedException {
+    public void serviceEnqueueFailTest() {
         server.enqueue(new MockResponse().setResponseCode(404));
-        final CountDownLatch latch = new CountDownLatch(1);
         final AtomicReference<Result<CallService.User<CallService.Home>>> atomicReference = new AtomicReference<>();
 
         LiveResult<CallService.User<CallService.Home>> liveResult = service.getService();
@@ -103,10 +98,8 @@ public class EnqueueLiveServiceTest {
             @Override
             public void onChanged(Result<CallService.User<CallService.Home>> userResult) {
                 atomicReference.set(userResult);
-                latch.countDown();
             }
         });
-        latch.await(10, TimeUnit.SECONDS);
         Result<CallService.User<CallService.Home>> userResult = atomicReference.get();
         System.out.println("userresult " + userResult);
         assert userResult.isFailure();
@@ -114,23 +107,18 @@ public class EnqueueLiveServiceTest {
         assert userResult.getResponse() == null;
         assert userResult.getException() instanceof HttpException;
         assert "response not success code = 404 message = Client Error".equals(userResult.getException().getLocalizedMessage());
-
     }
 
     @Test
-    public void serviceEnqueueInterruptExceptionTest() throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
+    public void serviceEnqueueInterruptExceptionTest() {
         final AtomicReference<Result<CallService.User<CallService.Home>>> atomicReference = new AtomicReference<>();
-
         LiveResult<CallService.User<CallService.Home>> liveResult = service.getService();
         liveResult.observeForever(new Observer<Result<CallService.User<CallService.Home>>>() {
             @Override
             public void onChanged(Result<CallService.User<CallService.Home>> userResult) {
                 atomicReference.set(userResult);
-                latch.countDown();
             }
         });
-        latch.await(10, TimeUnit.SECONDS);
         Result<CallService.User<CallService.Home>> userResult = atomicReference.get();
         assert userResult.isFailure();
         assert userResult.getException() != null;
@@ -138,25 +126,4 @@ public class EnqueueLiveServiceTest {
         assert userResult.getException() instanceof InterruptedIOException;
         assert "timeout".equals(userResult.getException().getMessage());
     }
-
-    @Test
-    public void serviceEnqueueIOExceptionTest() throws InterruptedException {
-        String s = "{\"data\":{\"value\":1,\"h\":\"hahaah\"},\"name\":\"1321\",\"value\"}";
-        server.enqueue(new MockResponse().setBody(s));
-        final CountDownLatch latch = new CountDownLatch(1);
-        final AtomicReference<Result<CallService.User<CallService.Home>>> atomicReference = new AtomicReference<>();
-
-        LiveResult<CallService.User<CallService.Home>> liveResult = service.getService();
-        liveResult.observeForever(new Observer<Result<CallService.User<CallService.Home>>>() {
-            @Override
-            public void onChanged(Result<CallService.User<CallService.Home>> userResult) {
-                atomicReference.set(userResult);
-                latch.countDown();
-            }
-        });
-        latch.await(10, TimeUnit.SECONDS);
-        System.out.println(atomicReference.get());
-
-    }
-
 }

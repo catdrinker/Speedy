@@ -11,10 +11,16 @@ public class EnqueueLiveService<T> implements LiveService<T> {
         call.enqueue(new Callback<T>() {
             @Override
             public void onResponse(Call<T> call, Response<T> response) {
-                if (response.getBody() != null) {
-                    liveResult.postValue(Result.success(response.getBody()));
+                // TODO 先兼容旧版本，下个版本再更新这里
+                okhttp3.Response rawResponse = response.getRawResponse();
+                if (rawResponse.isSuccessful()) {
+                    if (response.getBody() != null) {
+                        liveResult.postValue(Result.success(response.getBody()));
+                    } else {
+                        liveResult.postValue(Result.<T>failure(new HttpException("don't have a response body" + rawResponse.code())));
+                    }
                 } else {
-                    liveResult.postValue(Result.<T>failure(new NullPointerException("don't have a response body")));
+                    liveResult.postValue(Result.<T>failure(new HttpException("response not success code = " + rawResponse.code() + " message = " + rawResponse.message())));
                 }
             }
 

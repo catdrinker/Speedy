@@ -39,10 +39,10 @@ dependencies {
     testImplementation "junit:junit:$JUNIT"
     testImplementation "org.mockito:mockito-core:3.3.3"
 
-    testImplementation 'androidx.arch.core:core-testing:2.1.0'
-
-
     testAnnotationProcessor project(':processor')
+    testImplementation "com.squareup.okhttp3:mockwebserver:$OK_HTTP"
+    testImplementation "com.drinker.speedy:gsons-converter:1.0.2"
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 
     androidTestImplementation "androidx.test.ext:junit:$TEST_RUNNER"
     androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_CORE"

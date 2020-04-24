@@ -1,5 +1,6 @@
 package com.drinker.adapter;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public final class Result<T> {
@@ -59,5 +60,13 @@ public final class Result<T> {
 
     public void setException(@Nullable Exception exception) {
         this.exception = exception;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "status = " + status
+                + " response = " + response
+                + " exception = " + exception;
     }
 }
