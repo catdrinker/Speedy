@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 
+apply from: rootProject.file('publish/jecenter-upload.gradle')
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
     buildToolsVersion BUILD_TOOL_VERSION as String
@@ -26,13 +27,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(":annotation")
-
-    implementation "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
     // alternatively, just LiveData
-
-    implementation "android.arch.lifecycle:livedata:$LIFECYCLE_EXTENSIONS"
-    implementation "com.drinker.speedy:core:$SPEEDY_VERSION"
+    api "android.arch.lifecycle:livedata:$LIFECYCLE_EXTENSIONS"
+    api "com.drinker.speedy:core:$SPEEDY_VERSION"
 
     compileOnly "com.google.code.findbugs:jsr305:$FIND_BUGS"
 
@@ -40,6 +37,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:3.3.3"
 
     testAnnotationProcessor project(':processor')
+    testImplementation project(":annotation")
     testImplementation "com.squareup.okhttp3:mockwebserver:$OK_HTTP"
     testImplementation "com.drinker.speedy:gsons-converter:1.0.2"
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
