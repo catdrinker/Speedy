@@ -46,7 +46,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$CORE_KT_X"
     implementation "androidx.constraintlayout:constraintlayout:$CONSTRAINT_LAYOUT"
     testImplementation "junit:junit:$JUNIT"
-//    testImplementation("com.squareup.okhttp3:mockwebserver:$OK_HTTP")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$OK_HTTP")
     androidTestImplementation "androidx.test.ext:junit:$TEST_RUNNER"
     androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_CORE"
     annotationProcessor project(':processor')
