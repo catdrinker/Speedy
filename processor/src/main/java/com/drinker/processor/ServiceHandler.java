@@ -109,6 +109,7 @@ final class ServiceHandler implements ProcessHandler {
                     .build();
 
             TypeSpec typeSpec = classBuilder.addSuperinterface(ClassName.get(packageName, serviceElement.getSimpleName().toString()))
+                    .addModifiers(Modifier.PUBLIC)
                     .addField(clientFiled)
                     .addField(baseHttpUrlField)
                     .addField(converterField)
