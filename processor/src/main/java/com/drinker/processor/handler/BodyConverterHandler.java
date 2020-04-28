@@ -17,8 +17,9 @@ public class BodyConverterHandler implements IHandler {
             Body body = parameter.getAnnotation(Body.class);
             if (body != null) {
                 TypeName typeName = ClassName.get(parameter.asType());
-                CheckUtils.checkConverterBody(typeName);
-                return true;
+                if (CheckUtils.isConverterBody(typeName)) {
+                    return true;
+                }
             }
         }
         return false;

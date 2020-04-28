@@ -36,7 +36,7 @@ public abstract class GetProcessor extends HttpProcessor<Get> {
                 Log.w("find format param just skip it ");
                 continue;
             }
-            CheckUtils.checkParam(ClassName.get(parameter.asType()));
+            CheckUtils.checkIsString(ClassName.get(parameter.asType()));
             String str = urlString.toString();
             int index = str.indexOf("?");
             if (index != -1) {

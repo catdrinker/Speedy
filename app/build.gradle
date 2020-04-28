@@ -50,6 +50,7 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$TEST_RUNNER"
     androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_CORE"
     annotationProcessor project(':processor')
+//    annotationProcessor "com.drinker.speedy:speedy-compile:$SPEEDY_ANNOTATION_VERSION"
 
     testAnnotationProcessor project(':processor')
 

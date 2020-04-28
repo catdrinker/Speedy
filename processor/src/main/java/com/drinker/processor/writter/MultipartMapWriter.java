@@ -2,6 +2,7 @@ package com.drinker.processor.writter;
 
 import com.drinker.annotation.MultiPart;
 import com.drinker.annotation.PartMap;
+import com.drinker.annotation.Path;
 import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
@@ -48,22 +49,36 @@ public final class MultipartMapWriter extends MethodWriter {
                 .addCode(".build();\n")
                 .addCode("")
                 .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter(new $T<$T>(){}), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL,SPEEDY_TYPE_TOKEN,generateType)
-                .addStatement("$T<$T,$T> callAdapter = callAdapterFactory.adapter()",CALL_ADAPTER,generateType,TypeName.get(returnType))
+                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter(new $T<$T>(){}), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, SPEEDY_TYPE_TOKEN, generateType)
+                .addStatement("$T<$T,$T> callAdapter = callAdapterFactory.adapter()", CALL_ADAPTER, generateType, TypeName.get(returnType))
                 .addStatement("return callAdapter.adapt(wrapperCall)")
                 .returns(TypeName.get(returnType))
                 .build();
     }
 
     private VariableElement getPartMap(List<? extends VariableElement> parameters) {
+        VariableElement element = null;
+        int mapCount = 0;
         for (VariableElement parameter : parameters) {
+            Path path = parameter.getAnnotation(Path.class);
             PartMap partMap = parameter.getAnnotation(PartMap.class);
+            if (path == null && partMap == null) {
+                throw new IllegalStateException("parameter must have @Path or @PartMap annotation on MultipartMapWriter");
+            }
+            TypeName typeName = ClassName.get(parameter.asType());
+            if (path != null) {
+                CheckUtils.checkIsString(typeName);
+            }
             if (partMap != null) {
                 // 参数校验
-                CheckUtils.checkMultipartMap(ClassName.get(parameter.asType()));
-                return parameter;
+                CheckUtils.checkMultipartMap(typeName);
+                element = parameter;
+                mapCount++;
             }
         }
-        throw new NullPointerException("PostMultiPartMapMethodHandler handle partMap parameter mus't be null");
+        if (mapCount == 1) {
+            return element;
+        }
+        throw new NullPointerException("do not find legitimate PartMap annotation with List<okhttp3.MultipartBody.Part>");
     }
 }

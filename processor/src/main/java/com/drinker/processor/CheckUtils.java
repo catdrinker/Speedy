@@ -19,10 +19,10 @@ public final class CheckUtils {
      *
      * @param typeName the parameter of typeName
      */
-    public static void checkParam(TypeName typeName) {
+    public static void checkIsString(TypeName typeName) {
         if (!typeName.equals(STRING)) {
             Log.w("check param " + typeName + typeName.getClass());
-            throw new IllegalStateException("Param parameter must use String");
+            throw new IllegalStateException("@Param or @Path parameter must use String");
         }
     }
 
@@ -122,4 +122,13 @@ public final class CheckUtils {
         }
 
     }
+
+    public static boolean isBody(TypeName typeName) {
+        return REQ_BODY.equals(typeName);
+    }
+
+    public static boolean isConverterBody(TypeName typeName) {
+        return !checkIsBasicType(typeName);
+    }
+
 }

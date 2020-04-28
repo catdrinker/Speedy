@@ -1,6 +1,7 @@
 package com.drinker.processor.writter;
 
 import com.drinker.annotation.Body;
+import com.drinker.annotation.Path;
 import com.drinker.processor.CheckUtils;
 import com.drinker.processor.Log;
 import com.squareup.javapoet.ClassName;
@@ -43,7 +44,7 @@ public final class ConverterBodyWriter extends MethodWriter {
                 .addCode("")
                 .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
                 .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter(new $T<$T>(){}), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, SPEEDY_TYPE_TOKEN, generateType)
-                .addStatement("$T<$T,$T> callAdapter = callAdapterFactory.adapter()",CALL_ADAPTER,generateType,TypeName.get(returnType))
+                .addStatement("$T<$T,$T> callAdapter = callAdapterFactory.adapter()", CALL_ADAPTER, generateType, TypeName.get(returnType))
                 .addStatement("return callAdapter.adapt(wrapperCall)")
                 .returns(TypeName.get(returnType))
 
@@ -51,13 +52,27 @@ public final class ConverterBodyWriter extends MethodWriter {
     }
 
     private VariableElement getBodyParam(List<? extends VariableElement> parameters) {
+        VariableElement element = null;
+        int bodyCount = 0;
         for (VariableElement parameter : parameters) {
+            Path path = parameter.getAnnotation(Path.class);
             Body body = parameter.getAnnotation(Body.class);
+            TypeName typeName = ClassName.get(parameter.asType());
+            if (path == null && body == null) {
+                throw new IllegalStateException("parameter must have @Path or @Body annotation on ConverterBodyWriter");
+            }
+            if (path != null) {
+                CheckUtils.checkIsString(typeName);
+            }
             if (body != null) {
-                CheckUtils.checkConverterBody(ClassName.get(parameter.asType()));
-                return parameter;
+                CheckUtils.checkConverterBody(typeName);
+                element = parameter;
+                bodyCount++;
             }
         }
-        throw new NullPointerException("do not find Body annotation");
+        if (bodyCount == 1) {
+            return element;
+        }
+        throw new NullPointerException("do not find legitimate Body annotation with common Object");
     }
 }

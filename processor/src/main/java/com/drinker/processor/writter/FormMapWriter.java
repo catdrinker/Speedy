@@ -1,6 +1,7 @@
 package com.drinker.processor.writter;
 
 import com.drinker.annotation.ParamMap;
+import com.drinker.annotation.Path;
 import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
@@ -53,14 +54,28 @@ public final class FormMapWriter extends MethodWriter {
 
 
     private VariableElement getParamMapParameter(List<? extends VariableElement> parameters) {
+        VariableElement element = null;
+        int bodyCount = 0;
         for (VariableElement parameter : parameters) {
-            ParamMap annotation = parameter.getAnnotation(ParamMap.class);
-            if (annotation != null) {
+            Path path = parameter.getAnnotation(Path.class);
+            ParamMap paramMap = parameter.getAnnotation(ParamMap.class);
+            if (path == null && paramMap == null) {
+                throw new IllegalStateException("parameter must have @Path or @ParamMap annotation on FormMapWriter");
+            }
+            TypeName typeName = ClassName.get(parameter.asType());
+            if (path != null) {
+                CheckUtils.checkIsString(typeName);
+            }
+            if (paramMap != null) {
                 // 参数校验
-                CheckUtils.checkParamMap(ClassName.get(parameter.asType()));
-                return parameter;
+                CheckUtils.checkParamMap(typeName);
+                bodyCount++;
+                element = parameter;
             }
         }
-        throw new NullPointerException("FormMapWriter handle ParamMap parameter mus't be null");
+        if (bodyCount == 1) {
+            return element;
+        }
+        throw new NullPointerException("do not find legitimate ParamMap annotation with Map<String,String>");
     }
 }

@@ -1,12 +1,14 @@
 package com.drinker.processor.writter;
 
 import com.drinker.annotation.Param;
+import com.drinker.annotation.Path;
 import com.drinker.processor.CheckUtils;
 import com.drinker.processor.Log;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
@@ -30,17 +32,11 @@ public final class FormBodyWriter extends MethodWriter {
         MethodSpec.Builder methodSpecBuilder = MethodSpec.overriding(executableElement)
                 .addCode("$T formBody = new $T.Builder()\n", REQ_BODY, FORM_BODY);
 
-        for (VariableElement parameter : parameters) {
-            // we just add parameter to formBody that not match with ${xxx} format, if find, just skip it
+        List<VariableElement> elements = getParams(parameters);
+        for (VariableElement parameter : elements) {
             Param param = parameter.getAnnotation(Param.class);
-            if (param == null) {
-                continue;
-            }
-            CheckUtils.checkParam(ClassName.get(parameter.asType()));
-            Log.w("params is " + param);
             methodSpecBuilder.addCode(".add($S," + parameter.getSimpleName().toString() + ")\n", param.value());
         }
-
         methodSpecBuilder.addCode(".build()");
 
         return methodSpecBuilder.addStatement("")
@@ -50,10 +46,28 @@ public final class FormBodyWriter extends MethodWriter {
                 .addCode(".build();\n")
                 .addCode("")
                 .addStatement("$T newCall = client.newCall(request)", OK_HTTP_CALL)
-                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter(new $T<$T>(){}), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL,SPEEDY_TYPE_TOKEN,generateType)
-                .addStatement("$T<$T,$T> callAdapter = callAdapterFactory.adapter()",CALL_ADAPTER,generateType,TypeName.get(returnType))
+                .addStatement("$T<$T> wrapperCall = new $T<>(converterFactory.respBodyConverter(new $T<$T>(){}), delivery, newCall, client, request)", SPEEDY_CALL, generateType, SPEEDY_WRAPPER_CALL, SPEEDY_TYPE_TOKEN, generateType)
+                .addStatement("$T<$T,$T> callAdapter = callAdapterFactory.adapter()", CALL_ADAPTER, generateType, TypeName.get(returnType))
                 .addStatement("return callAdapter.adapt(wrapperCall)")
                 .returns(TypeName.get(returnType))
                 .build();
+    }
+
+
+    private List<VariableElement> getParams(List<? extends VariableElement> parameters) {
+        List<VariableElement> elements = new ArrayList<>();
+        for (VariableElement parameter : parameters) {
+            // we just add parameter to formBody that not match with ${xxx} format, if find, just skip it
+            Path path = parameter.getAnnotation(Path.class);
+            Param param = parameter.getAnnotation(Param.class);
+            if (path == null && param == null) {
+                throw new IllegalStateException("parameter should have @Path or @Param annotation on FormBodyWriter");
+            }
+            if (param!=null){
+                elements.add(parameter);
+            }
+            CheckUtils.checkIsString(ClassName.get(parameter.asType()));
+        }
+        return elements;
     }
 }

@@ -2,6 +2,7 @@ package com.drinker.processor.writter;
 
 import com.drinker.annotation.MultiPart;
 import com.drinker.annotation.Part;
+import com.drinker.annotation.Path;
 import com.drinker.processor.CheckUtils;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
@@ -60,9 +61,17 @@ public final class MultipartBodyWriter extends MethodWriter {
     private List<VariableElement> getParts(List<? extends VariableElement> parameters) {
         List<VariableElement> list = new ArrayList<>();
         for (VariableElement parameter : parameters) {
+            Path path = parameter.getAnnotation(Path.class);
             Part part = parameter.getAnnotation(Part.class);
+            if (path == null && part == null) {
+                throw new IllegalStateException("parameter must have @Path or @Part annotation on MultipartBodyWriter");
+            }
+            TypeName typeName = ClassName.get(parameter.asType());
+            if (path != null) {
+                CheckUtils.checkIsString(typeName);
+            }
             if (part != null) {
-                CheckUtils.checkMultipart(ClassName.get(parameter.asType()));
+                CheckUtils.checkMultipart(typeName);
                 list.add(parameter);
             }
         }
