@@ -6,6 +6,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api "com.squareup.okhttp3:okhttp:$OK_HTTP"
     compileOnly "com.google.code.findbugs:jsr305:$FIND_BUGS"
+    testCompileOnly "com.google.code.findbugs:jsr305:$FIND_BUGS"
     testImplementation "junit:junit:$JUNIT"
 }
 
